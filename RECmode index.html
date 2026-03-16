@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECmode – Foto & Video</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #E8130A;
+    --black: #0A0A0A;
+    --white: #F5F5F0;
+    --gray: #1A1A1A;
+    --gray2: #2A2A2A;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* Custom cursor */
+  .cursor {
+    width: 12px; height: 12px;
+    background: var(--red);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transition: transform 0.15s ease;
+    transform: translate(-50%, -50%);
+  }
+  .cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(232,19,10,0.5);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transition: all 0.08s ease;
+    transform: translate(-50%, -50%);
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 24px 48px;
+    mix-blend-mode: difference;
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 3px;
+    color: var(--white);
+    text-decoration: none;
+  }
+
+  .logo span { color: var(--red); }
+
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 40px;
+  }
+
+  nav ul a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+  }
+
+  nav ul a:hover { opacity: 1; }
+
+  /* HERO */
+  #hero {
+    height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    padding: 80px 48px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background: 
+      radial-gradient(ellipse at 80% 20%, rgba(232,19,10,0.12) 0%, transparent 60%),
+      var(--black);
+  }
+
+  .hero-line {
+    position: absolute;
+    top: 0; right: 120px;
+    width: 1px;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(232,19,10,0.4), transparent);
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 900px; }
+
+  .hero-tag {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.3s forwards;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(80px, 14vw, 180px);
+    line-height: 0.9;
+    letter-spacing: -2px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.5s forwards;
+  }
+
+  h1 .outline {
+    -webkit-text-stroke: 1px var(--white);
+    color: transparent;
+  }
+
+  h1 .red { color: var(--red); }
+
+  .hero-sub {
+    margin-top: 40px;
+    font-size: 16px;
+    line-height: 1.7;
+    opacity: 0;
+    max-width: 440px;
+    animation: fadeUp 0.8s 0.7s forwards;
+    color: rgba(245,245,240,0.6);
+  }
+
+  .hero-cta {
+    margin-top: 48px;
+    display: flex;
+    gap: 20px;
+    opacity: 0;
+    animation: fadeUp 0.8s 0.9s forwards;
+  }
+
+  .btn-primary {
+    background: var(--red);
+    color: var(--white);
+    padding: 16px 40px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s, transform 0.2s;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  }
+
+  .btn-primary:hover { background: #c8100a; transform: translateY(-2px); }
+
+  .btn-outline {
+    border: 1px solid rgba(245,245,240,0.3);
+    color: var(--white);
+    padding: 16px 40px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+
+  .btn-outline:hover { border-color: var(--red); transform: translateY(-2px); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 40px; right: 48px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(245,245,240,0.3);
+    writing-mode: vertical-rl;
+    opacity: 0;
+    animation: fadeUp 0.8s 1.2s forwards;
+  }
+
+  /* SECTION BASE */
+  section { padding: 120px 48px; }
+
+  .section-label {
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: var(--red);
+    margin-bottom: 16px;
+  }
+
+  h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(48px, 7vw, 96px);
+    line-height: 1;
+    letter-spacing: 1px;
+  }
+
+  /* ABOUT */
+  #about {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+    border-top: 1px solid var(--gray2);
+  }
+
+  .about-text p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: rgba(245,245,240,0.7);
+    margin-top: 32px;
+  }
+
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2px;
+  }
+
+  .stat {
+    background: var(--gray);
+    padding: 40px 32px;
+    border-left: 3px solid var(--red);
+  }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 64px;
+    color: var(--white);
+    line-height: 1;
+  }
+
+  .stat-num span { color: var(--red); }
+
+  .stat-label {
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: rgba(245,245,240,0.4);
+    margin-top: 8px;
+  }
+
+  /* SERVICES */
+  #services { border-top: 1px solid var(--gray2); }
+
+  .services-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 80px;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+
+  .service-card {
+    background: var(--gray);
+    padding: 48px 40px;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.3s;
+  }
+
+  .service-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s;
+  }
+
+  .service-card:hover { background: #1f1f1f; }
+  .service-card:hover::before { transform: scaleX(1); }
+
+  .service-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 72px;
+    color: rgba(232,19,10,0.12);
+    line-height: 1;
+    margin-bottom: 24px;
+  }
+
+  .service-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 1px;
+    margin-bottom: 16px;
+  }
+
+  .service-desc {
+    font-size: 14px;
+    line-height: 1.8;
+    color: rgba(245,245,240,0.5);
+  }
+
+  /* PORTFOLIO */
+  #portfolio { border-top: 1px solid var(--gray2); }
+
+  .portfolio-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 80px;
+  }
+
+  .portfolio-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-template-rows: auto;
+    gap: 4px;
+  }
+
+  .portfolio-item {
+    background: var(--gray2);
+    position: relative;
+    overflow: hidden;
+    cursor: none;
+  }
+
+  .portfolio-item:nth-child(1) { grid-column: span 7; aspect-ratio: 16/9; }
+  .portfolio-item:nth-child(2) { grid-column: span 5; aspect-ratio: 4/3; }
+  .portfolio-item:nth-child(3) { grid-column: span 4; aspect-ratio: 4/3; }
+  .portfolio-item:nth-child(4) { grid-column: span 8; aspect-ratio: 16/9; }
+
+  .portfolio-placeholder {
+    width: 100%; height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--gray2), var(--gray));
+    min-height: 240px;
+  }
+
+  .portfolio-placeholder-text {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: rgba(245,245,240,0.15);
+    text-transform: uppercase;
+  }
+
+  .portfolio-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(232,19,10,0.85);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 32px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+
+  .portfolio-overlay h3 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    letter-spacing: 1px;
+  }
+
+  .portfolio-overlay p {
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.8;
+    margin-top: 4px;
+  }
+
+  /* CONTACT */
+  #contact {
+    border-top: 1px solid var(--gray2);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: start;
+  }
+
+  .contact-info p {
+    font-size: 18px;
+    line-height: 1.8;
+    color: rgba(245,245,240,0.6);
+    margin-top: 32px;
+    max-width: 400px;
+  }
+
+  .contact-detail {
+    margin-top: 48px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .contact-detail a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 15px;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: color 0.2s;
+  }
+
+  .contact-detail a:hover { color: var(--red); }
+
+  .contact-detail .dot {
+    width: 6px; height: 6px;
+    background: var(--red);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .contact-form { display: flex; flex-direction: column; gap: 2px; }
+
+  .form-field {
+    background: var(--gray);
+    border: none;
+    padding: 20px 24px;
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 300;
+    outline: none;
+    transition: background 0.2s;
+    width: 100%;
+    border-left: 3px solid transparent;
+  }
+
+  .form-field:focus {
+    background: var(--gray2);
+    border-left-color: var(--red);
+  }
+
+  .form-field::placeholder { color: rgba(245,245,240,0.3); }
+
+  textarea.form-field { resize: none; height: 140px; }
+
+  .form-submit {
+    background: var(--red);
+    color: var(--white);
+    border: none;
+    padding: 20px 40px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    cursor: none;
+    transition: background 0.2s;
+    align-self: flex-start;
+    clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+    margin-top: 2px;
+  }
+
+  .form-submit:hover { background: #c8100a; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid var(--gray2);
+    padding: 40px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  footer .logo { font-size: 22px; }
+
+  footer p {
+    font-size: 12px;
+    letter-spacing: 1px;
+    color: rgba(245,245,240,0.3);
+  }
+
+  footer nav ul { gap: 32px; }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 20px 24px; }
+    nav ul { display: none; }
+    section { padding: 80px 24px; }
+    #about, #contact { grid-template-columns: 1fr; gap: 48px; }
+    .services-grid { grid-template-columns: 1fr; }
+    .portfolio-item:nth-child(1),
+    .portfolio-item:nth-child(2),
+    .portfolio-item:nth-child(3),
+    .portfolio-item:nth-child(4) { grid-column: span 12; }
+    footer { flex-direction: column; gap: 20px; text-align: center; }
+    footer nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <a href="#" class="logo">REC<span>mo</span>.de</a>
+  <ul>
+    <li><a href="#about">Über uns</a></li>
+    <li><a href="#services">Leistungen</a></li>
+    <li><a href="#portfolio">Portfolio</a></li>
+    <li><a href="#contact">Kontakt</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+  <div class="hero-content">
+    <p class="hero-tag">Foto & Video Produktion · Berlin</p>
+    <h1>
+      REC<span class="red">—</span><br>
+      <span class="outline">MODE</span>
+    </h1>
+    <p class="hero-sub">Wir erschaffen visuelle Welten. Von der Idee bis zum finalen Schnitt — Foto und Video auf höchstem Niveau.</p>
+    <div class="hero-cta">
+      <a href="#portfolio" class="btn-primary">Projekte ansehen</a>
+      <a href="#contact" class="btn-outline">Kontakt aufnehmen</a>
+    </div>
+  </div>
+  <p class="scroll-hint">Scroll</p>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="about-text reveal">
+    <p class="section-label">Über uns</p>
+    <h2>Wir sind<br>RECmode</h2>
+    <p>RECmode steht für kompromisslosen visuellen Ausdruck. Wir verbinden technische Präzision mit kreativem Gespür — für Fotos und Videos, die in Erinnerung bleiben.</p>
+  </div>
+  <div class="about-stats reveal">
+    <div class="stat">
+      <div class="stat-num">5<span>+</span></div>
+      <div class="stat-label">Jahre Erfahrung</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">120<span>+</span></div>
+      <div class="stat-label">Projekte</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">80<span>+</span></div>
+      <div class="stat-label">Kunden</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">2<span>×</span></div>
+      <div class="stat-label">Award Winner</div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section id="services">
+  <div class="services-header reveal">
+    <div>
+      <p class="section-label">Leistungen</p>
+      <h2>Was wir<br>anbieten</h2>
+    </div>
+  </div>
+  <div class="services-grid reveal">
+    <div class="service-card">
+      <div class="service-num">01</div>
+      <div class="service-title">Fotografie</div>
+      <p class="service-desc">Portrait, Editorial, Produkt und Event-Fotografie. Jedes Bild erzählt eine Geschichte.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">02</div>
+      <div class="service-title">Videoproduktion</div>
+      <p class="service-desc">Imagefilme, Musikvideos, Social Content. Von der Konzeption bis zur Postproduktion.</p>
+    </div>
+    <div class="service-card">
+      <div class="service-num">03</div>
+      <div class="service-title">Postproduktion</div>
+      <p class="service-desc">Color Grading, Schnitt, Motion Graphics. Professionelle Nachbearbeitung auf höchstem Niveau.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="portfolio-header reveal">
+    <div>
+      <p class="section-label">Portfolio</p>
+      <h2>Ausgewählte<br>Arbeiten</h2>
+    </div>
+  </div>
+  <div class="portfolio-grid reveal">
+    <div class="portfolio-item">
+      <div class="portfolio-placeholder"><span class="portfolio-placeholder-text">Projekt hinzufügen</span></div>
+      <div class="portfolio-overlay"><h3>Imagefilm 2024</h3><p>Videoproduktion</p></div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-placeholder"><span class="portfolio-placeholder-text">Projekt hinzufügen</span></div>
+      <div class="portfolio-overlay"><h3>Editorial Shoot</h3><p>Fotografie</p></div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-placeholder"><span class="portfolio-placeholder-text">Projekt hinzufügen</span></div>
+      <div class="portfolio-overlay"><h3>Music Video</h3><p>Videoproduktion</p></div>
+    </div>
+    <div class="portfolio-item">
+      <div class="portfolio-placeholder"><span class="portfolio-placeholder-text">Projekt hinzufügen</span></div>
+      <div class="portfolio-overlay"><h3>Brand Campaign</h3><p>Foto & Video</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-info reveal">
+    <p class="section-label">Kontakt</p>
+    <h2>Lass uns<br>sprechen</h2>
+    <p>Hast du ein Projekt im Kopf? Wir freuen uns auf deine Nachricht.</p>
+    <div class="contact-detail">
+      <a href="mailto:info@recmo.de"><span class="dot"></span>info@recmo.de</a>
+      <a href="https://recmo.de"><span class="dot"></span>recmo.de</a>
+    </div>
+  </div>
+  <div class="contact-form reveal">
+    <input type="text" class="form-field" placeholder="Name">
+    <input type="email" class="form-field" placeholder="E-Mail">
+    <input type="text" class="form-field" placeholder="Betreff">
+    <textarea class="form-field" placeholder="Deine Nachricht..."></textarea>
+    <button class="form-submit">Nachricht senden</button>
+  </div>
+</section>
+
+<footer>
+  <a href="#" class="logo">REC<span>mo</span>.de</a>
+  <p>© 2026 RECmode. Alle Rechte vorbehalten.</p>
+  <nav>
+    <ul>
+      <li><a href="#about">Über uns</a></li>
+      <li><a href="#services">Leistungen</a></li>
+      <li><a href="#contact">Kontakt</a></li>
+    </ul>
+  </nav>
+</footer>
+
+<script>
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+
+  function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  }
+  animRing();
+
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  reveals.forEach(r => observer.observe(r));
+</script>
+</body>
+</html>
