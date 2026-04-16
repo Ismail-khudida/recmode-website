@@ -961,7 +961,7 @@ footer nav ul a:hover { color: var(--red); }
       </div>
       <input type="email" class="form-field" placeholder="E-Mail">
       <textarea class="form-field" placeholder="Beschreiben Sie kurz Ihr Projekt oder Ihre Herausforderung..."></textarea>
-      <button class="form-submit">Strategie anfragen</button>
+      <button class="form-submit" type="button" onclick="sendForm()">Strategie anfragen</button>
     </div>
   </div>
 </section>
@@ -997,5 +997,27 @@ const obs = new IntersectionObserver(entries=>entries.forEach(e=>{
 }),{threshold:0.08});
 document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
 </script>
-</body>
+<script>
+function sendForm() {
+  const name = document.querySelector('input[placeholder="Name"]').value;
+  const company = document.querySelector('input[placeholder="Unternehmen"]').value;
+  const email = document.querySelector('input[placeholder="E-Mail"]').value;
+  const message = document.querySelector('textarea').value;
+  
+  if(!name || !email || !message) {
+    alert('Bitte fülle alle Pflichtfelder aus.');
+    return;
+  }
+  
+  const subject = encodeURIComponent('Neue Anfrage von ' + name + ' – ' + company);
+  const body = encodeURIComponent(
+    'Name: ' + name + '\n' +
+    'Unternehmen: ' + company + '\n' +
+    'E-Mail: ' + email + '\n\n' +
+    'Nachricht:\n' + message
+  );
+  
+  window.location.href = 'mailto:info@recmo.de?subject=' + subject + '&body=' + body;
+}
+</script></body>
 </html>
