@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Impressum – RECmode</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Plus Jakarta Sans',sans-serif;color:#1a1a2e;background:#fff;cursor:none}
+.cursor{width:10px;height:10px;background:#E8130A;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+.cursor-ring{width:32px;height:32px;border:1.5px solid rgba(232,19,10,.2);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%)}
+
+nav{height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 64px;background:#0d0d0d;border-bottom:1px solid rgba(255,255,255,.08)}
+.nav-logo{height:28px;display:block}
+.nav-back{color:rgba(255,255,255,.5);text-decoration:none;font-size:14px;font-weight:500;display:flex;align-items:center;gap:8px;transition:color .2s}
+.nav-back:hover{color:#E8130A}
+
+.page-hero{background:#0d0d0d;padding:80px 64px 64px;border-bottom:1px solid rgba(255,255,255,.08)}
+.page-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(232,19,10,.1);border:1px solid rgba(232,19,10,.2);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:600;color:rgba(232,19,10,.8);letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
+.page-title{font-size:clamp(36px,5vw,64px);font-weight:800;color:#fff;letter-spacing:-2px;line-height:1.05}
+
+.content{max-width:760px;margin:0 auto;padding:80px 64px}
+
+h2{font-size:22px;font-weight:700;color:#1a1a2e;margin-top:48px;margin-bottom:16px;letter-spacing:-.3px}
+p{font-size:16px;line-height:1.8;color:#6b6b8a;margin-bottom:12px}
+a{color:#E8130A;text-decoration:none;transition:opacity .2s}
+a:hover{opacity:.7}
+
+.divider{width:100%;height:1px;background:#f0f0f6;margin:40px 0}
+
+footer{background:#0d0d0d;padding:40px 64px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.08)}
+footer p{font-size:12px;color:rgba(255,255,255,.2)}
+.footer-links{display:flex;gap:24px}
+.footer-links a{font-size:12px;color:rgba(255,255,255,.25);text-decoration:none;transition:color .2s}
+.footer-links a:hover{color:#fff}
+
+@media(max-width:768px){
+  nav,footer{padding:0 24px;height:60px}
+  .page-hero{padding:60px 24px 40px}
+  .content{padding:48px 24px}
+}
+</style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<nav>
+  <img src="./Recmode_weiß.PNG" alt="RECmode" class="nav-logo" onerror="this.src='https://i.imgur.com/Zvg0YSW.png'">
+  <a href="./index.html" class="nav-back">← Zurück zur Website</a>
+</nav>
+
+<div class="page-hero">
+  <p class="page-tag">Rechtliches</p>
+  <h1 class="page-title">Impressum</h1>
+</div>
+
+<div class="content">
+  <h2>Angaben gemäß § 5 TMG</h2>
+  <p>Ismail Khudida<br>RECmode<br>Bückeburger Str. 14<br>32457 Porta Westfalica<br>Deutschland</p>
+
+  <h2>Kontakt</h2>
+  <p>Telefon: <a href="tel:+4917832489043">0178 3248904</a><br>
+  E-Mail: <a href="mailto:info@recmo.de">info@recmo.de</a><br>
+  Website: <a href="https://recmo.de">recmo.de</a></p>
+
+  <h2>Umsatzsteuer-ID</h2>
+  <p>Umsatzsteuer-Identifikationsnummer gemäß § 27a Umsatzsteuergesetz:<br>DE 356097542</p>
+
+  <div class="divider"></div>
+
+  <h2>Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV</h2>
+  <p>Ismail Khudida<br>Bückeburger Str. 14<br>32457 Porta Westfalica</p>
+
+  <div class="divider"></div>
+
+  <h2>Haftung für Inhalte</h2>
+  <p>Als Diensteanbieter sind wir gemäß § 7 Abs.1 TMG für eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich. Nach §§ 8 bis 10 TMG sind wir als Diensteanbieter jedoch nicht verpflichtet, übermittelte oder gespeicherte fremde Informationen zu überwachen oder nach Umständen zu forschen, die auf eine rechtswidrige Tätigkeit hinweisen.</p>
+
+  <h2>Haftung für Links</h2>
+  <p>Unser Angebot enthält Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. Für die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter oder Betreiber der Seiten verantwortlich.</p>
+
+  <h2>Urheberrecht</h2>
+  <p>Die durch die Seitenbetreiber erstellten Inhalte und Werke auf diesen Seiten unterliegen dem deutschen Urheberrecht. Die Vervielfältigung, Bearbeitung, Verbreitung und jede Art der Verwertung außerhalb der Grenzen des Urheberrechtes bedürfen der schriftlichen Zustimmung des jeweiligen Autors.</p>
+
+  <div class="divider"></div>
+  <p style="font-size:13px;color:#b0b0c8;">Stand: Mai 2026</p>
+</div>
+
+<footer>
+  <p>© 2026 RECmode · Ismail Khudida</p>
+  <div class="footer-links">
+    <a href="./index.html">Startseite</a>
+    <a href="./impressum.html">Impressum</a>
+    <a href="./datenschutz.html">Datenschutz</a>
+  </div>
+</footer>
+
+<script>
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+(function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+</script>
+</body>
+</html>
