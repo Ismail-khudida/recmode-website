@@ -3,699 +3,363 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RECmode – Sichtbarkeit. Wachstum. Ergebnisse.</title>
-<meta name="description" content="RECmode – Wir machen Unternehmen sichtbar und steigern ihren Umsatz durch professionelle Foto- & Videoproduktion, Content und digitales Marketing.">
+<title>RECmode – Mehr Sichtbarkeit. Mehr Anfragen. Mehr Umsatz.</title>
+<meta name="description" content="RECmode – Wir übernehmen Ihr komplettes Marketing. Medienproduktion, Social Media, KI-Marketing und Website-Optimierung.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root {
-  --black: #0C0C0C;
-  --white: #FAFAF8;
-  --red: #E8130A;
-  --gray: #F5F4F1;
-  --gray2: #E8E7E3;
-  --gray3: #9B9A96;
-  --text: #1A1A18;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-
-body {
-  background: var(--white);
-  color: var(--text);
-  font-family: 'DM Sans', sans-serif;
-  font-weight: 300;
-  overflow-x: hidden;
-  cursor: none;
-}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;color:#1a1a2e;background:#fff;overflow-x:hidden;cursor:none}
 
 /* CURSOR */
-.cursor {
-  width: 8px; height: 8px;
-  background: var(--red);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: width 0.2s, height 0.2s;
-}
-.cursor-ring {
-  width: 32px; height: 32px;
-  border: 1px solid rgba(232,19,10,0.3);
-  border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9998;
-  transform: translate(-50%, -50%);
-}
+.cursor{width:10px;height:10px;background:#E8130A;border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s,background .3s}
+.cursor.big{width:40px;height:40px;background:rgba(232,19,10,.12)}
+.cursor-ring{width:32px;height:32px;border:1.5px solid rgba(232,19,10,.25);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%)}
 
-/* NAV */
-nav {
-  position: fixed; top: 0; left: 0; right: 0;
-  z-index: 100;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 28px 64px;
-  background: rgba(10,10,10,0.95);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid transparent;
-  transition: border-color 0.3s;
-}
-nav.scrolled { border-bottom-color: rgba(255,255,255,0.08); }
-
-.nav-logo { height: 30px; width: auto; }
-
-nav ul { list-style: none; display: flex; gap: 48px; align-items: center; }
-
-nav ul a {
-  color: var(--text);
-  text-decoration: none;
-  font-size: 13px;
-  letter-spacing: 1px;
-  opacity: 0.5;
-  transition: opacity 0.2s;
-}
-nav ul a:hover { opacity: 1; }
-
-.nav-btn {
-  background: var(--black) !important;
-  color: var(--white) !important;
-  opacity: 1 !important;
-  padding: 12px 28px;
-  font-size: 12px !important;
-  letter-spacing: 1.5px;
-  font-weight: 500 !important;
-  transition: background 0.2s !important;
-}
-.nav-btn:hover { background: var(--red) !important; }
+/* NAV - BLACK */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 64px;background:#0d0d0d;border-bottom:1px solid rgba(255,255,255,.08)}
+.nav-logo{height:28px;display:block}
+.nav-links{display:flex;list-style:none;gap:32px}
+.nav-links a{font-size:14px;font-weight:500;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:#E8130A;transition:width .3s}
+.nav-links a:hover{color:#fff}
+.nav-links a:hover::after{width:100%}
+.nav-right{display:flex;align-items:center;gap:16px}
+.lang-switch{display:flex;gap:4px;background:rgba(255,255,255,.08);border-radius:100px;padding:4px}
+.lang-btn{font-size:12px;font-weight:600;color:rgba(255,255,255,.4);padding:5px 12px;border-radius:100px;border:none;background:transparent;cursor:none;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif}
+.lang-btn.active{background:rgba(255,255,255,.12);color:#fff}
+.nav-cta{background:#E8130A;color:#fff;padding:10px 24px;border-radius:100px;font-size:14px;font-weight:600;text-decoration:none;transition:all .3s}
+.nav-cta:hover{background:#c8100a;transform:translateY(-1px);box-shadow:0 8px 24px rgba(232,19,10,.3)}
 
 /* HERO */
-#hero {
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  padding: 140px 64px 100px;
-  position: relative;
-  overflow: hidden;
-}
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 64px 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 15% 40%,rgba(255,100,100,.10) 0%,transparent 60%),radial-gradient(ellipse 60% 60% at 85% 20%,rgba(100,160,255,.08) 0%,transparent 60%),radial-gradient(ellipse 80% 50% at 50% 110%,rgba(200,100,255,.05) 0%,transparent 60%),#fff}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;animation:blobFloat 12s ease-in-out infinite}
+.blob-1{width:500px;height:500px;background:radial-gradient(circle,rgba(255,80,80,.10),transparent);top:-50px;left:-50px;animation-delay:0s}
+.blob-2{width:400px;height:400px;background:radial-gradient(circle,rgba(80,130,255,.08),transparent);top:0;right:0;animation-delay:-4s}
+.blob-3{width:350px;height:350px;background:radial-gradient(circle,rgba(180,80,255,.06),transparent);bottom:0;left:30%;animation-delay:-8s}
+@keyframes blobFloat{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(25px,-20px) scale(1.04)}66%{transform:translate(-15px,25px) scale(.96)}}
 
-.hero-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px;
-}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.95);border:1px solid rgba(0,0,0,.08);padding:8px 18px;border-radius:100px;font-size:13px;font-weight:500;color:#4a4a6a;margin-bottom:36px;box-shadow:0 2px 12px rgba(0,0,0,.06);opacity:0;animation:fadeUp .7s .1s forwards}
+.badge-dot{width:7px;height:7px;background:#E8130A;border-radius:50%;animation:pulseDot 2s infinite}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
-.hero-left { position: relative; }
+.hero-title{font-size:clamp(44px,6.5vw,88px);font-weight:800;line-height:1.06;letter-spacing:-2.5px;color:#1a1a2e;max-width:860px;opacity:0;animation:fadeUp .7s .25s forwards}
+.hero-title .red{background:linear-gradient(135deg,#E8130A 0%,#FF6B6B 50%,#E8130A 100%);background-size:200%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:shimmer 4s linear infinite}
+@keyframes shimmer{0%{background-position:0%}100%{background-position:200%}}
 
-.hero-eyebrow {
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--red);
-  margin-bottom: 32px;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.2s forwards;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+.hero-desc{font-size:17px;line-height:1.75;color:#6b6b8a;max-width:540px;margin-top:20px;opacity:0;animation:fadeUp .7s .4s forwards}
+.hero-btns{display:flex;gap:14px;margin-top:44px;justify-content:center;opacity:0;animation:fadeUp .7s .55s forwards}
+.btn-dark{background:#1a1a2e;color:#fff;padding:16px 40px;border-radius:100px;font-size:15px;font-weight:600;text-decoration:none;transition:all .3s;font-family:'Plus Jakarta Sans',sans-serif}
+.btn-dark:hover{background:#E8130A;transform:translateY(-2px);box-shadow:0 12px 32px rgba(232,19,10,.3)}
+.btn-outline{background:#fff;color:#1a1a2e;padding:16px 36px;border-radius:100px;font-size:15px;font-weight:600;text-decoration:none;border:1.5px solid rgba(0,0,0,.12);transition:all .3s;display:flex;align-items:center;gap:8px}
+.btn-outline:hover{border-color:#1a1a2e;transform:translateY(-2px)}
+.arr{transition:transform .3s}
+.btn-outline:hover .arr{transform:translateX(4px)}
 
-.hero-eyebrow::before {
-  content: '';
-  width: 32px; height: 1px;
-  background: var(--red);
-  flex-shrink: 0;
-}
+/* HERO DASHBOARD - Rich colors, success-oriented */
+.hero-mockup{margin-top:64px;width:100%;max-width:960px;opacity:0;animation:fadeUp .9s .8s forwards}
+.mockup-window{background:#fff;border-radius:20px;border:1px solid rgba(0,0,0,.08);box-shadow:0 4px 6px rgba(0,0,0,.04),0 20px 60px rgba(0,0,0,.08),0 40px 100px rgba(0,0,0,.05);overflow:hidden}
+.mockup-bar{background:#f5f5f7;padding:12px 18px;display:flex;align-items:center;gap:7px;border-bottom:1px solid rgba(0,0,0,.06)}
+.dot{width:11px;height:11px;border-radius:50%}
+.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
+.mockup-url{flex:1;background:#fff;border-radius:6px;height:22px;margin-left:8px;display:flex;align-items:center;padding:0 12px;font-size:11px;color:#999;border:1px solid rgba(0,0,0,.07)}
 
-h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(44px, 5.5vw, 72px);
-  font-weight: 400;
-  line-height: 1.1;
-  letter-spacing: -1px;
-  color: var(--black);
-  opacity: 0;
-  animation: fadeUp 0.8s 0.4s forwards;
-}
+.dash-body{display:grid;grid-template-columns:200px 1fr 1fr;gap:0;background:#f8f8fc;min-height:280px}
 
-h1 em {
-  font-style: italic;
-  color: var(--red);
-}
+/* Sidebar */
+.dash-sidebar{background:#0d0d0d;padding:20px 16px;display:flex;flex-direction:column;gap:4px}
+.dash-sidebar-logo{font-size:13px;font-weight:800;color:#fff;letter-spacing:-0.3px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.dash-logo-dot{width:8px;height:8px;background:#E8130A;border-radius:50%}
+.dash-nav-item{padding:9px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:rgba(255,255,255,.4);transition:all .2s;cursor:default}
+.dash-nav-item.active{background:rgba(232,19,10,.15);color:#E8130A}
+.dash-nav-item svg{flex-shrink:0}
+.dash-nav-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.dnd-red{background:#E8130A}
+.dnd-green{background:#28c840}
+.dnd-blue{background:#5080ff}
+.dnd-orange{background:#ff9500}
 
-.hero-sub {
-  margin-top: 32px;
-  font-size: 17px;
-  line-height: 1.8;
-  color: var(--gray3);
-  max-width: 440px;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.6s forwards;
-}
+/* Main content */
+.dash-main{padding:20px;display:flex;flex-direction:column;gap:12px}
+.dash-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 
-.hero-actions {
-  margin-top: 48px;
-  display: flex;
-  gap: 16px;
-  align-items: center;
-  opacity: 0;
-  animation: fadeUp 0.8s 0.8s forwards;
-}
+.dash-card{background:#fff;border-radius:12px;padding:16px;border:1px solid rgba(0,0,0,.06)}
 
-.btn-dark {
-  background: var(--black);
-  color: var(--white);
-  padding: 16px 40px;
-  font-size: 13px;
-  letter-spacing: 1.5px;
-  font-weight: 500;
-  text-decoration: none;
-  font-family: 'DM Sans', sans-serif;
-  transition: background 0.2s, transform 0.2s;
-}
-.btn-dark:hover { background: var(--red); transform: translateY(-2px); }
+.dc-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#b0b0c8;margin-bottom:8px}
+.dc-value{font-size:26px;font-weight:800;color:#1a1a2e;letter-spacing:-1px;line-height:1}
+.dc-trend{font-size:12px;font-weight:600;margin-top:4px;display:flex;align-items:center;gap:4px}
+.trend-up{color:#28b464}
+.trend-label{font-size:11px;color:#b0b0c8;font-weight:400}
 
-.btn-text {
-  color: var(--text);
-  text-decoration: none;
-  font-size: 13px;
-  letter-spacing: 1px;
-  opacity: 0.5;
-  transition: opacity 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.btn-text:hover { opacity: 1; }
-.btn-text::after { content: '→'; transition: transform 0.2s; }
-.btn-text:hover::after { transform: translateX(4px); }
+/* Animated bar chart */
+.bar-chart{display:flex;align-items:flex-end;gap:4px;height:48px;margin-top:8px}
+.bc-bar{border-radius:3px 3px 0 0;transform-origin:bottom;animation:barGrow 1.5s ease-out forwards}
+@keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.bc-b1{width:14px;background:#e8e8f6;height:40%;animation-delay:.05s}
+.bc-b2{width:14px;background:linear-gradient(180deg,#5080ff,#a0b8ff);height:65%;animation-delay:.1s}
+.bc-b3{width:14px;background:#e8e8f6;height:50%;animation-delay:.15s}
+.bc-b4{width:14px;background:linear-gradient(180deg,#E8130A,#ff9999);height:90%;animation-delay:.2s}
+.bc-b5{width:14px;background:#e8e8f6;height:58%;animation-delay:.25s}
+.bc-b6{width:14px;background:linear-gradient(180deg,#28b464,#7dd8a8);height:75%;animation-delay:.3s}
+.bc-b7{width:14px;background:linear-gradient(180deg,#E8130A,#ff9999);height:85%;animation-delay:.35s}
 
-.hero-right {
-  opacity: 0;
-  animation: fadeIn 1s 0.6s forwards;
-}
+/* Progress bars */
+.prog-rows{display:flex;flex-direction:column;gap:8px}
+.prog-row{display:flex;align-items:center;gap:8px}
+.prog-lbl{font-size:10px;color:#9090a8;width:72px;flex-shrink:0}
+.prog-track{flex:1;height:5px;background:#f0f0f8;border-radius:3px;overflow:hidden}
+.prog-fill{height:100%;border-radius:3px;animation:fillBar 1.5s ease-out forwards;transform-origin:left}
+@keyframes fillBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.pf-red{background:linear-gradient(90deg,#E8130A,#ff8888)}
+.pf-blue{background:linear-gradient(90deg,#5080ff,#a0b8ff)}
+.pf-green{background:linear-gradient(90deg,#28b464,#7dd8a8)}
+.pf-orange{background:linear-gradient(90deg,#ff9500,#ffcc80)}
+.prog-val{font-size:10px;font-weight:700;color:#E8130A;width:28px;text-align:right}
 
-.hero-stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2px;
-}
+/* SVG ring */
+.ring-wrap{display:flex;align-items:center;gap:14px}
+.ring-info{flex:1}
+.ring-big{font-size:20px;font-weight:800;color:#1a1a2e;letter-spacing:-0.5px}
+.ring-sub{font-size:10px;color:#9090a8;margin-top:2px}
 
-.hero-stat {
-  background: var(--gray);
-  padding: 40px 32px;
-  border-top: 2px solid transparent;
-  transition: border-color 0.3s, background 0.3s;
-}
-.hero-stat:hover { border-top-color: var(--red); background: var(--white); }
+/* Right panel */
+.dash-right{padding:20px;display:flex;flex-direction:column;gap:12px;background:#fff;border-left:1px solid rgba(0,0,0,.05)}
 
-.hero-stat-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 52px;
-  font-weight: 400;
-  color: var(--black);
-  line-height: 1;
-}
-.hero-stat-num span { color: var(--red); }
+.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.metric-box{background:#fafafc;border-radius:10px;padding:14px;border:1px solid rgba(0,0,0,.05)}
+.metric-box.red-box{background:linear-gradient(135deg,rgba(232,19,10,.06),rgba(255,107,107,.04));border-color:rgba(232,19,10,.1)}
+.metric-box.green-box{background:linear-gradient(135deg,rgba(40,180,100,.06),rgba(80,200,130,.04));border-color:rgba(40,180,100,.1)}
+.metric-box.blue-box{background:linear-gradient(135deg,rgba(80,130,255,.06),rgba(120,160,255,.04));border-color:rgba(80,130,255,.1)}
+.metric-box.purple-box{background:linear-gradient(135deg,rgba(160,80,255,.06),rgba(200,120,255,.04));border-color:rgba(160,80,255,.1)}
+.mb-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#b0b0c8;margin-bottom:6px}
+.mb-value{font-size:22px;font-weight:800;letter-spacing:-1px;color:#1a1a2e;line-height:1}
+.mb-value.red{color:#E8130A}
+.mb-value.green{color:#28b464}
+.mb-value.blue{color:#5080ff}
+.mb-value.purple{color:#a050ff}
+.mb-trend{font-size:10px;font-weight:600;margin-top:4px}
+.mt-up{color:#28b464}
 
-.hero-stat-label {
-  font-size: 12px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--gray3);
-  margin-top: 10px;
-}
+.activity-list{display:flex;flex-direction:column;gap:6px}
+.activity-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:#fafafc;border-radius:8px;border:1px solid rgba(0,0,0,.04)}
+.ai-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.ai-text{font-size:11px;color:#4a4a6a;flex:1}
+.ai-val{font-size:11px;font-weight:700}
+.aiv-red{color:#E8130A}
+.aiv-green{color:#28b464}
+.aiv-blue{color:#5080ff}
 
-/* CLIENTS STRIP */
-.clients-strip {
-  padding: 40px 64px;
-  border-top: 1px solid var(--gray2);
-  border-bottom: 1px solid var(--gray2);
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
+/* LOGOS */
+.logos-strip{padding:40px 64px;text-align:center;border-top:1px solid rgba(0,0,0,.06);border-bottom:1px solid rgba(0,0,0,.06);background:#fafafc}
+.logos-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#b0b0c8;font-weight:600;margin-bottom:20px}
+.logos-row{display:flex;justify-content:center;align-items:center;gap:48px;flex-wrap:wrap}
+.logo-item{font-size:14px;font-weight:700;color:#c8c8d8;letter-spacing:-.3px;transition:color .3s}
+.logo-item:hover{color:#9090a8}
 
-.clients-label {
-  font-size: 11px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gray3);
-  white-space: nowrap;
-  padding-right: 32px;
-  border-right: 1px solid var(--gray2);
-}
+/* SECTIONS */
+.section{padding:100px 64px}
+.section-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(232,19,10,.06);border:1px solid rgba(232,19,10,.12);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:600;color:#E8130A;letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
+.section-title{font-size:clamp(32px,4vw,52px);font-weight:800;line-height:1.08;letter-spacing:-1.5px;color:#1a1a2e}
+.section-title .g{background:linear-gradient(135deg,#E8130A,#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.section-desc{font-size:17px;line-height:1.75;color:#6b6b8a;margin-top:16px;max-width:560px}
 
-.clients-logos {
-  display: flex;
-  gap: 48px;
-  align-items: center;
-  overflow: hidden;
-}
+/* HOW IT WORKS */
+#how{background:#fafafc}
+.how-header{text-align:center;margin-bottom:64px}
+.how-header .section-desc{margin:16px auto 0}
 
-.client-placeholder {
-  font-size: 13px;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--gray2);
-  white-space: nowrap;
-  font-weight: 500;
-}
+/* 2x2 process grid */
+.process-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:64px}
 
-/* SECTION BASE */
-.section { padding: 120px 64px; }
+.process-box{background:#fff;border-radius:20px;padding:36px 32px;border:1px solid rgba(0,0,0,.06);transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+.process-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#E8130A,#FF6B6B);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.process-box:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.08);border-color:rgba(232,19,10,.1)}
+.process-box:hover::before{transform:scaleX(1)}
 
-.section-header { margin-bottom: 80px; }
+.pb-icon{width:64px;height:64px;border-radius:18px;display:flex;align-items:center;justify-content:center;margin-bottom:20px;transition:transform .3s}
+.process-box:hover .pb-icon{transform:scale(1.08) rotate(-5deg)}
+.pbi-1{background:linear-gradient(135deg,rgba(232,19,10,.1),rgba(255,107,107,.07))}
+.pbi-2{background:linear-gradient(135deg,rgba(80,130,255,.1),rgba(120,160,255,.07))}
+.pbi-3{background:linear-gradient(135deg,rgba(40,180,100,.1),rgba(80,200,130,.07))}
+.pbi-4{background:linear-gradient(135deg,rgba(255,149,0,.1),rgba(255,200,80,.07))}
 
-.section-eyebrow {
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--red);
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-.section-eyebrow::before {
-  content: '';
-  width: 24px; height: 1px;
-  background: var(--red);
-}
+.pb-num{font-size:11px;font-weight:700;letter-spacing:2px;color:rgba(232,19,10,.4);margin-bottom:10px}
+.pb-title{font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:10px;letter-spacing:-.3px}
+.pb-desc{font-size:14px;line-height:1.75;color:#6b6b8a}
 
-h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 4.5vw, 56px);
-  font-weight: 400;
-  line-height: 1.15;
-  letter-spacing: -0.5px;
-  color: var(--black);
-}
+/* 3 horizontal features */
+.how-features-h{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:0}
+.how-feat-h{display:flex;align-items:flex-start;gap:16px;padding:24px;background:#fff;border-radius:16px;border:1px solid rgba(0,0,0,.06);transition:all .3s}
+.how-feat-h:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,0,0,.07);border-color:rgba(232,19,10,.1)}
+.hfh-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .3s}
+.how-feat-h:hover .hfh-icon{transform:scale(1.1) rotate(-5deg)}
+.hfi-1{background:linear-gradient(135deg,rgba(232,19,10,.1),rgba(255,107,107,.07))}
+.hfi-2{background:linear-gradient(135deg,rgba(80,130,255,.1),rgba(120,160,255,.07))}
+.hfi-3{background:linear-gradient(135deg,rgba(40,180,100,.1),rgba(80,200,130,.07))}
+.hfh-title{font-size:15px;font-weight:700;color:#1a1a2e;margin-bottom:6px;letter-spacing:-.2px}
+.hfh-desc{font-size:13px;line-height:1.7;color:#6b6b8a}
 
-h2 em { font-style: italic; color: var(--red); }
+/* SERVICES - 2x2 horizontal */
+#leistungen{background:#fff}
+.services-header{margin-bottom:48px}
+.services-grid-2x2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 
-/* SERVICES */
-#services { background: var(--white); }
+.service-card-h{background:#fafafc;border-radius:20px;padding:36px;border:1px solid rgba(0,0,0,.06);transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+.service-card-h::after{content:'';position:absolute;top:0;left:0;bottom:0;width:3px;background:linear-gradient(180deg,#E8130A,#FF6B6B);transform:scaleY(0);transform-origin:top;transition:transform .4s}
+.service-card-h:hover{transform:translateY(-4px);box-shadow:0 20px 60px rgba(0,0,0,.08);border-color:rgba(232,19,10,.1);background:#fff}
+.service-card-h:hover::after{transform:scaleY(1)}
 
-.services-intro {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: end;
-  margin-bottom: 80px;
-}
+.sc-top{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.sc-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .3s}
+.service-card-h:hover .sc-icon{transform:scale(1.1) rotate(-5deg)}
+.sci-1{background:linear-gradient(135deg,rgba(232,19,10,.1),rgba(255,107,107,.07))}
+.sci-2{background:linear-gradient(135deg,rgba(80,130,255,.1),rgba(120,160,255,.07))}
+.sci-3{background:linear-gradient(135deg,rgba(40,180,100,.1),rgba(80,200,130,.07))}
+.sci-4{background:linear-gradient(135deg,rgba(255,149,0,.1),rgba(255,200,80,.07))}
+.sc-num{font-size:11px;font-weight:700;letter-spacing:2px;color:rgba(232,19,10,.35)}
+.sc-title{font-size:20px;font-weight:700;color:#1a1a2e;margin-bottom:10px;letter-spacing:-.3px}
+.sc-text{font-size:14px;line-height:1.75;color:#6b6b8a;margin-bottom:16px}
+.sc-cta{display:inline-flex;align-items:center;gap:8px;background:rgba(232,19,10,.06);border:1px solid rgba(232,19,10,.12);padding:9px 16px;border-radius:100px;font-size:13px;font-weight:600;color:#E8130A;text-decoration:none;transition:all .3s}
+.sc-cta:hover{background:#E8130A;color:#fff;transform:translateY(-1px)}
 
-.services-intro-text {
-  font-size: 18px;
-  line-height: 1.8;
-  color: var(--gray3);
-  max-width: 420px;
-}
+/* KI - 2x2 horizontal */
+#ki{background:#0d0d0d;position:relative;overflow:hidden}
+.ki-glow{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 80% 20%,rgba(232,19,10,.10) 0%,transparent 60%),radial-gradient(ellipse 50% 50% at 20% 80%,rgba(80,100,255,.07) 0%,transparent 60%);pointer-events:none}
+#ki .section-tag{background:rgba(232,19,10,.1);border-color:rgba(232,19,10,.2);color:rgba(232,19,10,.8)}
+#ki .section-title{color:#fff}
+#ki .section-desc{color:rgba(255,255,255,.4)}
 
-.services-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2px;
-}
+.ki-header{margin-bottom:56px;position:relative;z-index:1}
 
-.service-item {
-  background: var(--gray);
-  padding: 48px 44px;
-  position: relative;
-  overflow: hidden;
-  transition: background 0.3s;
-  border-top: 2px solid transparent;
-}
-.service-item:hover { background: var(--white); border-top-color: var(--red); }
+.ki-grid-2x2{display:grid;grid-template-columns:1fr 1fr;gap:16px;position:relative;z-index:1}
 
-.service-number {
-  font-family: 'Playfair Display', serif;
-  font-size: 13px;
-  color: var(--gray2);
-  margin-bottom: 32px;
-  letter-spacing: 2px;
-}
+.ki-card-h{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:20px;padding:36px 32px;transition:all .3s;position:relative;overflow:hidden}
+.ki-card-h::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,#E8130A,#FF6B6B);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.ki-card-h:hover{background:rgba(255,255,255,.07);transform:translateY(-4px)}
+.ki-card-h:hover::before{transform:scaleX(1)}
 
-.service-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 24px;
-  font-weight: 400;
-  color: var(--black);
-  margin-bottom: 16px;
-  line-height: 1.2;
-}
+.kch-header{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.kch-icon{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.kci-1{background:rgba(232,19,10,.15)}
+.kci-2{background:rgba(80,130,255,.15)}
+.kci-3{background:rgba(40,180,100,.15)}
+.kci-4{background:rgba(200,80,255,.15)}
+.kch-title{font-size:18px;font-weight:700;color:#fff;letter-spacing:-.2px}
+.kch-desc{font-size:14px;line-height:1.75;color:rgba(255,255,255,.35);margin-bottom:16px}
+.kch-tags{display:flex;flex-wrap:wrap;gap:8px}
+.kch-tag{font-size:11px;font-weight:600;padding:4px 12px;border-radius:100px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.4)}
 
-.service-desc {
-  font-size: 14px;
-  line-height: 1.85;
-  color: var(--gray3);
-  margin-bottom: 28px;
-}
+.ki-banner{margin-top:20px;background:rgba(232,19,10,.08);border:1px solid rgba(232,19,10,.15);border-radius:20px;padding:36px 40px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1}
+.ki-banner-left h4{font-size:22px;font-weight:800;color:#fff;margin-bottom:8px;letter-spacing:-.5px}
+.ki-banner-left p{font-size:15px;color:rgba(255,255,255,.4);max-width:500px;line-height:1.7}
+.ki-banner-btn{background:#E8130A;color:#fff;padding:16px 36px;border-radius:100px;font-size:15px;font-weight:700;text-decoration:none;white-space:nowrap;transition:all .3s;flex-shrink:0;margin-left:40px}
+.ki-banner-btn:hover{background:#c8100a;transform:scale(1.04);box-shadow:0 8px 24px rgba(232,19,10,.3)}
 
-.service-result {
-  font-size: 12px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: var(--red);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-.service-result::before {
-  content: '';
-  width: 16px; height: 1px;
-  background: var(--red);
-}
+/* ABOUT */
+#ueber-uns{background:#fafafc}
+.about-grid{display:grid;grid-template-columns:280px 1fr;gap:64px;align-items:start}
+.about-img{border-radius:20px;overflow:hidden;background:linear-gradient(135deg,#f0f0f6,#e8e8f0);aspect-ratio:3/4;display:flex;align-items:center;justify-content:center;position:relative;border:1px solid rgba(0,0,0,.06);box-shadow:0 12px 40px rgba(0,0,0,.08)}
+.about-img-ph{text-align:center}
+.about-big-letter{font-size:80px;font-weight:800;color:rgba(232,19,10,.1);line-height:1;letter-spacing:-3px}
+.about-img-sub{font-size:12px;color:#b0b0c8;letter-spacing:1px;margin-top:6px}
+.about-badge-float{position:absolute;bottom:16px;left:12px;right:12px;background:#fff;border-radius:12px;padding:12px 14px;box-shadow:0 6px 20px rgba(0,0,0,.1);display:flex;align-items:center;gap:10px}
+.about-badge-icon{width:32px;height:32px;background:linear-gradient(135deg,#E8130A,#FF6B6B);border-radius:9px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.about-badge-name{font-size:12px;font-weight:700;color:#1a1a2e}
+.about-badge-role{font-size:10px;color:#9090a8;margin-top:1px}
+.about-text{font-size:15px;line-height:1.85;color:#6b6b8a;margin-top:14px}
 
-/* WHY */
-#why {
-  background: var(--black);
-  color: var(--white);
-}
-
-#why h2 { color: var(--white); }
-#why .section-eyebrow { color: rgba(232,19,10,0.8); }
-#why .section-eyebrow::before { background: rgba(232,19,10,0.8); }
-
-.why-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 2px;
-  margin-top: 64px;
-}
-
-.why-item {
-  padding: 48px 40px;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  transition: background 0.3s;
-}
-.why-item:hover { background: rgba(255,255,255,0.03); }
-
-.why-icon {
-  width: 40px; height: 40px;
-  border: 1px solid rgba(232,19,10,0.4);
-  margin-bottom: 32px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: 'Playfair Display', serif;
-  font-size: 18px;
-  color: var(--red);
-}
-
-.why-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px;
-  color: var(--white);
-  margin-bottom: 16px;
-  font-weight: 400;
-}
-
-.why-desc {
-  font-size: 14px;
-  line-height: 1.85;
-  color: rgba(255,255,255,0.35);
-}
-
-/* PORTFOLIO */
-#portfolio { background: var(--gray); }
-
-.portfolio-grid {
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-  gap: 4px;
-  margin-top: 64px;
-}
-
-.portfolio-item {
-  background: var(--gray2);
-  position: relative;
-  overflow: hidden;
-}
-
-.portfolio-item:nth-child(1) { grid-column: span 8; aspect-ratio: 16/9; }
-.portfolio-item:nth-child(2) { grid-column: span 4; aspect-ratio: 4/5; }
-.portfolio-item:nth-child(3) { grid-column: span 4; aspect-ratio: 4/3; }
-.portfolio-item:nth-child(4) { grid-column: span 8; aspect-ratio: 16/9; }
-
-.portfolio-bg {
-  width: 100%; height: 100%;
-  min-height: 200px;
-  background: var(--gray2);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.portfolio-placeholder-text {
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--gray3);
-  opacity: 0.4;
-}
-
-.portfolio-overlay {
-  position: absolute; inset: 0;
-  background: rgba(12,12,12,0.9);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: 32px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}
-.portfolio-item:hover .portfolio-overlay { opacity: 1; }
-
-.portfolio-cat {
-  font-size: 10px;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--red);
-  margin-bottom: 8px;
-}
-
-.portfolio-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  color: var(--white);
-  font-weight: 400;
-}
-
-/* PROCESS */
-#process { background: var(--white); }
-
-.process-steps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 2px;
-  margin-top: 64px;
-}
-
-.process-step {
-  padding: 48px 36px;
-  background: var(--gray);
-  position: relative;
-}
-
-.process-step::after {
-  content: '→';
-  position: absolute;
-  right: -16px; top: 50%;
-  transform: translateY(-50%);
-  color: var(--gray2);
-  font-size: 20px;
-  z-index: 1;
-}
-.process-step:last-child::after { display: none; }
-
-.process-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 48px;
-  color: var(--gray2);
-  line-height: 1;
-  margin-bottom: 24px;
-}
-
-.process-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px;
-  color: var(--black);
-  margin-bottom: 12px;
-  font-weight: 400;
-}
-
-.process-desc {
-  font-size: 13px;
-  line-height: 1.8;
-  color: var(--gray3);
-}
+/* 3 horizontal about points */
+.about-points-h{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:32px}
+.ap-h{display:flex;flex-direction:column;align-items:flex-start;gap:10px;padding:20px;background:#fff;border-radius:14px;border:1px solid rgba(0,0,0,.06);transition:all .3s}
+.ap-h:hover{border-color:rgba(232,19,10,.12);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,0,0,.07)}
+.aph-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center}
+.aphi-1{background:linear-gradient(135deg,rgba(232,19,10,.1),rgba(255,107,107,.07))}
+.aphi-2{background:linear-gradient(135deg,rgba(80,130,255,.1),rgba(120,160,255,.07))}
+.aphi-3{background:linear-gradient(135deg,rgba(40,180,100,.1),rgba(80,200,130,.07))}
+.aph-title{font-size:14px;font-weight:700;color:#1a1a2e}
+.aph-sub{font-size:12px;color:#6b6b8a;line-height:1.5}
 
 /* CONTACT */
-#contact { background: var(--black); }
-#contact h2 { color: var(--white); }
-#contact .section-eyebrow { color: rgba(232,19,10,0.8); }
-#contact .section-eyebrow::before { background: rgba(232,19,10,0.8); }
+#kontakt{background:#fff}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start}
+.contact-left h3{font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:12px;letter-spacing:-.3px}
+.contact-left>p{font-size:16px;line-height:1.8;color:#6b6b8a;margin-bottom:28px}
+.contact-personal{background:#fafafc;border-radius:16px;padding:24px;border:1px solid rgba(0,0,0,.06)}
+.contact-personal-head{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.contact-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#E8130A,#FF6B6B);display:flex;align-items:center;justify-content:center;font-size:17px;font-weight:700;color:#fff;flex-shrink:0}
+.contact-av-name{font-size:15px;font-weight:700;color:#1a1a2e}
+.contact-av-role{font-size:13px;color:#6b6b8a;margin-top:2px}
+.contact-links{display:flex;flex-direction:column;gap:10px}
+.contact-link-item{display:flex;align-items:center;gap:10px;font-size:14px;color:#6b6b8a;text-decoration:none;transition:color .2s}
+.contact-link-item:hover{color:#E8130A}
+.cl-dot{width:4px;height:4px;background:#E8130A;border-radius:50%;flex-shrink:0}
+.contact-form{display:flex;flex-direction:column;gap:14px}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.form-field{background:#fafafc;border:1.5px solid rgba(0,0,0,.08);border-radius:12px;padding:16px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#1a1a2e;outline:none;width:100%;transition:all .3s}
+.form-field:focus{border-color:#E8130A;background:#fff;box-shadow:0 0 0 4px rgba(232,19,10,.06)}
+.form-field::placeholder{color:#b0b0c8}
+textarea.form-field{resize:none;height:130px}
+.form-btn{background:linear-gradient(135deg,#E8130A,#FF4B4B);color:#fff;border:none;border-radius:100px;padding:18px 48px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;cursor:none;align-self:flex-start;transition:all .3s;box-shadow:0 8px 24px rgba(232,19,10,.25)}
+.form-btn:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(232,19,10,.35)}
 
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  margin-top: 64px;
-}
-
-.contact-left p {
-  font-size: 17px;
-  line-height: 1.8;
-  color: rgba(255,255,255,0.4);
-  margin-top: 24px;
-  max-width: 360px;
-}
-
-.contact-details {
-  margin-top: 48px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.contact-detail {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.contact-detail-dot {
-  width: 4px; height: 4px;
-  background: var(--red);
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.contact-detail a {
-  color: rgba(255,255,255,0.5);
-  text-decoration: none;
-  font-size: 14px;
-  letter-spacing: 0.5px;
-  transition: color 0.2s;
-}
-.contact-detail a:hover { color: var(--white); }
-
-.contact-form {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
-
-.form-field {
-  background: rgba(255,255,255,0.05);
-  border: none;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-  padding: 20px 24px;
-  color: var(--white);
-  font-family: 'DM Sans', sans-serif;
-  font-size: 14px;
-  font-weight: 300;
-  outline: none;
-  width: 100%;
-  transition: background 0.2s, border-color 0.2s;
-}
-.form-field:focus {
-  background: rgba(255,255,255,0.08);
-  border-bottom-color: var(--red);
-}
-.form-field::placeholder { color: rgba(255,255,255,0.2); }
-textarea.form-field { resize: none; height: 120px; }
-
-.form-submit {
-  background: var(--red);
-  color: var(--white);
-  border: none;
-  padding: 20px 48px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 12px;
-  letter-spacing: 2px;
-  font-weight: 500;
-  text-transform: uppercase;
-  cursor: none;
-  align-self: flex-start;
-  margin-top: 4px;
-  transition: background 0.2s, transform 0.2s;
-}
-.form-submit:hover { background: #c8100a; transform: translateY(-2px); }
-
-/* FOOTER */
-footer {
-  background: var(--black);
-  border-top: 1px solid rgba(255,255,255,0.06);
-  padding: 40px 64px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.footer-logo { height: 24px; width: auto; filter: brightness(0) invert(1); }
-
-footer p {
-  font-size: 12px;
-  letter-spacing: 0.5px;
-  color: rgba(255,255,255,0.2);
-}
-
-footer nav ul { list-style: none; display: flex; gap: 32px; }
-footer nav ul a {
-  color: rgba(255,255,255,0.25);
-  text-decoration: none;
-  font-size: 11px;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  transition: color 0.2s;
-}
-footer nav ul a:hover { color: var(--red); }
+/* FOOTER - BLACK */
+footer{background:#0d0d0d;padding:64px 64px 32px}
+.footer-top{display:grid;grid-template-columns:1.2fr 1fr 1fr 1fr;gap:48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,.08);margin-bottom:32px}
+.footer-brand p{font-size:14px;color:rgba(255,255,255,.3);margin-top:14px;line-height:1.7}
+.footer-brand-contact{margin-top:20px;display:flex;flex-direction:column;gap:8px}
+.fbc-item{display:flex;align-items:center;gap:8px;font-size:13px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s}
+.fbc-item:hover{color:#E8130A}
+.fbc-dot{width:4px;height:4px;background:#E8130A;border-radius:50%;flex-shrink:0}
+.footer-col h5{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.25);margin-bottom:16px}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.footer-col ul a{font-size:14px;color:rgba(255,255,255,.35);text-decoration:none;transition:color .2s}
+.footer-col ul a:hover{color:#fff}
+.footer-bottom{display:flex;justify-content:space-between;align-items:center}
+.footer-bottom p{font-size:12px;color:rgba(255,255,255,.18)}
+.footer-legal{display:flex;gap:20px}
+.footer-legal a{font-size:12px;color:rgba(255,255,255,.18);text-decoration:none;transition:color .2s}
+.footer-legal a:hover{color:rgba(255,255,255,.5)}
 
 /* ANIMATIONS */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity: 0; } to { opacity: 1; }
-}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
-.reveal {
-  opacity: 0; transform: translateY(32px);
-  transition: opacity 0.9s ease, transform 0.9s ease;
-}
-.reveal.visible { opacity: 1; transform: translateY(0); }
-
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
+/* LANG */
+[data-lang="en"]{display:none}
+body.en [data-lang="de"]{display:none}
+body.en [data-lang="en"]{display:unset}
 
 /* RESPONSIVE */
-@media (max-width: 1024px) {
-  nav { padding: 24px 32px; }
-  .section { padding: 80px 32px; }
-  #hero { padding: 120px 32px 80px; }
-  .hero-grid { grid-template-columns: 1fr; gap: 48px; }
-  .services-intro { grid-template-columns: 1fr; gap: 32px; }
-  .services-grid { grid-template-columns: 1fr; }
-  .why-grid { grid-template-columns: 1fr; }
-  .process-steps { grid-template-columns: 1fr 1fr; }
-  .contact-grid { grid-template-columns: 1fr; gap: 48px; }
-  footer { flex-direction: column; gap: 20px; text-align: center; }
-  footer nav { display: none; }
-  .portfolio-item:nth-child(n) { grid-column: span 12; }
-  nav ul { display: none; }
-  .clients-strip { padding: 32px; }
+@media(max-width:1280px){
+  .process-grid{grid-template-columns:repeat(4,1fr)}
+  .services-grid-2x2{grid-template-columns:repeat(2,1fr)}
+  .ki-grid-2x2{grid-template-columns:repeat(2,1fr)}
+  .how-features-h{grid-template-columns:repeat(3,1fr)}
+  .about-points-h{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:768px){
+  nav,.section,#hero,footer{padding-left:24px;padding-right:24px}
+  .nav-links{display:none}
+  .process-grid{grid-template-columns:1fr}
+  .services-grid-2x2{grid-template-columns:1fr}
+  .ki-grid-2x2{grid-template-columns:1fr}
+  .how-features-h{grid-template-columns:1fr}
+  .about-points-h{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr}
+  .contact-grid{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr 1fr}
+  .footer-bottom{flex-direction:column;gap:12px;text-align:center}
+  .footer-legal{justify-content:center}
+  .ki-banner{flex-direction:column;gap:20px;text-align:center}
+  .ki-banner-btn{margin-left:0}
+  .dash-body{grid-template-columns:1fr}
+  .dash-sidebar{display:none}
+  .dash-right{border-left:none;border-top:1px solid rgba(0,0,0,.05)}
+  .form-row{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -704,320 +368,600 @@ footer nav ul a:hover { color: var(--red); }
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 
-<!-- NAV -->
-<nav id="nav">
-  <img src="Recmode.PNG" alt="RECmode" class="nav-logo">
-  <ul>
-    <li><a href="#services">Leistungen</a></li>
-    <li><a href="#portfolio">Referenzen</a></li>
+<!-- NAV - BLACK -->
+<nav>
+  <img src="./Recmode_weiß.PNG" alt="RECmode" class="nav-logo" onerror="this.src='https://i.imgur.com/Zvg0YSW.png'">
+  <ul class="nav-links">
+    <li><a href="#how"><span data-lang="de">Wie es funktioniert</span><span data-lang="en">How it works</span></a></li>
+    <li><a href="#leistungen"><span data-lang="de">Leistungen</span><span data-lang="en">Services</span></a></li>
     <li><a href="#ki">KI & Innovation</a></li>
-    <li><a href="#process">Prozess</a></li>
-    <li><a href="#contact" class="nav-btn">Beratung anfragen</a></li>
+    <li><a href="#ueber-uns"><span data-lang="de">Über uns</span><span data-lang="en">About</span></a></li>
+    <li><a href="#kontakt">Kontakt</a></li>
   </ul>
+  <div class="nav-right">
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLang('de')">DE</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <a href="#kontakt" class="nav-cta"><span data-lang="de">Anfrage stellen</span><span data-lang="en">Get in touch</span></a>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section id="hero">
-  <div class="hero-grid">
-    <div class="hero-left">
-      <p class="hero-eyebrow">Digital Marketing & Medienproduktion</p>
-      <h1>Wir machen Ihr Unternehmen <em>sichtbar</em> und steigern Ihren Umsatz.</h1>
-      <p class="hero-sub">RECmode verbindet strategisches Marketing mit professioneller Medienproduktion — für Unternehmen, die wachsen wollen.</p>
-      <div class="hero-actions">
-        <a href="#contact" class="btn-dark">Beratung anfragen</a>
-        <a href="#services" class="btn-text">Leistungen ansehen</a>
+  <div class="hero-bg"></div>
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+  <div class="blob blob-3"></div>
+
+  <div class="hero-badge">
+    <span class="badge-dot"></span>
+    <span data-lang="de">Medienproduktion · KI-Marketing · Website</span>
+    <span data-lang="en">Media Production · AI Marketing · Website</span>
+  </div>
+
+  <h1 class="hero-title">
+    <span data-lang="de">Mehr Sichtbarkeit.<br><span class="red">Mehr Anfragen.</span><br>Mehr Umsatz.</span>
+    <span data-lang="en">More visibility.<br><span class="red">More inquiries.</span><br>More revenue.</span>
+  </h1>
+
+  <p class="hero-desc">
+    <span data-lang="de">Wir übernehmen Ihr komplettes Marketing — damit Sie sich auf Ihr Kerngeschäft konzentrieren können. Professionell präsentiert, gezielt positioniert, mehr Anfragen.</span>
+    <span data-lang="en">We take over your complete marketing — so you can focus on your core business. Professionally presented, strategically positioned, more inquiries.</span>
+  </p>
+
+  <div class="hero-btns">
+    <a href="#kontakt" class="btn-dark"><span data-lang="de">Jetzt starten</span><span data-lang="en">Get started</span></a>
+    <a href="#how" class="btn-outline"><span data-lang="de">Wie es funktioniert</span><span data-lang="en">How it works</span><span class="arr">→</span></a>
+  </div>
+
+  <!-- Rich animated dashboard -->
+  <div class="hero-mockup">
+    <div class="mockup-window">
+      <div class="mockup-bar">
+        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
+        <div class="mockup-url">recmo.de · Marketing Dashboard</div>
       </div>
-    </div>
-    <div class="hero-right">
-      <div class="hero-stats">
-        <div class="hero-stat">
-          <div class="hero-stat-num">5<span>+</span></div>
-          <div class="hero-stat-label">Jahre Erfahrung</div>
+      <div class="dash-body">
+        <!-- Sidebar -->
+        <div class="dash-sidebar">
+          <div class="dash-sidebar-logo"><span class="dash-logo-dot"></span>RECmode</div>
+          <div class="dash-nav-item active">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Dashboard
+          </div>
+          <div class="dash-nav-item"><span class="dash-nav-dot dnd-blue"></span>Analytics</div>
+          <div class="dash-nav-item"><span class="dash-nav-dot dnd-green"></span>Kampagnen</div>
+          <div class="dash-nav-item"><span class="dash-nav-dot dnd-orange"></span>Content</div>
+          <div class="dash-nav-item"><span class="dash-nav-dot dnd-red"></span>Reports</div>
         </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">100<span>+</span></div>
-          <div class="hero-stat-label">Projekte</div>
+
+        <!-- Main -->
+        <div class="dash-main">
+          <div class="dash-row">
+            <!-- Bar chart -->
+            <div class="dash-card">
+              <div class="dc-label">Reichweite (letzte 7 Tage)</div>
+              <div class="dc-value">12,456</div>
+              <div class="dc-trend"><span class="trend-up">↑ +89%</span><span class="trend-label">&nbsp;vs. Vormonat</span></div>
+              <div class="bar-chart">
+                <div class="bc-bar bc-b1"></div><div class="bc-bar bc-b2"></div>
+                <div class="bc-bar bc-b3"></div><div class="bc-bar bc-b4"></div>
+                <div class="bc-bar bc-b5"></div><div class="bc-bar bc-b6"></div>
+                <div class="bc-bar bc-b7"></div>
+              </div>
+            </div>
+            <!-- Progress bars -->
+            <div class="dash-card">
+              <div class="dc-label">Kanal-Performance</div>
+              <div class="prog-rows" style="margin-top:8px;">
+                <div class="prog-row">
+                  <span class="prog-lbl">Instagram</span>
+                  <div class="prog-track"><div class="prog-fill pf-red" style="width:85%"></div></div>
+                  <span class="prog-val" style="color:#E8130A;">85%</span>
+                </div>
+                <div class="prog-row">
+                  <span class="prog-lbl">YouTube</span>
+                  <div class="prog-track"><div class="prog-fill pf-blue" style="width:72%;animation-delay:.1s"></div></div>
+                  <span class="prog-val" style="color:#5080ff;">72%</span>
+                </div>
+                <div class="prog-row">
+                  <span class="prog-lbl">TikTok</span>
+                  <div class="prog-track"><div class="prog-fill pf-green" style="width:91%;animation-delay:.2s"></div></div>
+                  <span class="prog-val" style="color:#28b464;">91%</span>
+                </div>
+                <div class="prog-row">
+                  <span class="prog-lbl">LinkedIn</span>
+                  <div class="prog-track"><div class="prog-fill pf-orange" style="width:60%;animation-delay:.3s"></div></div>
+                  <span class="prog-val" style="color:#ff9500;">60%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Ring + metric -->
+          <div class="dash-card" style="display:flex;align-items:center;gap:20px;">
+            <div class="ring-wrap">
+              <svg width="72" height="72" viewBox="0 0 72 72" style="transform:rotate(-90deg)">
+                <circle cx="36" cy="36" r="28" fill="none" stroke="#f0f0f8" stroke-width="7"/>
+                <circle cx="36" cy="36" r="28" fill="none" stroke="#E8130A" stroke-width="7" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="44"/>
+                <circle cx="36" cy="36" r="20" fill="none" stroke="#5080ff" stroke-width="5" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="50" opacity=".6"/>
+              </svg>
+              <div class="ring-info">
+                <div class="ring-big">+75%</div>
+                <div class="ring-sub" data-lang="de">Conversion Rate</div>
+                <div class="ring-sub" data-lang="en">Conversion Rate</div>
+              </div>
+            </div>
+            <div style="flex:1;display:flex;gap:8px;flex-wrap:wrap;">
+              <span style="padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;background:rgba(232,19,10,.08);color:#E8130A;">+34% Anfragen</span>
+              <span style="padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;background:rgba(40,180,100,.08);color:#28b464;">+56% Umsatz</span>
+              <span style="padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;background:rgba(80,130,255,.08);color:#5080ff;">+120% KI-Boost</span>
+            </div>
+          </div>
         </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">50<span>+</span></div>
-          <div class="hero-stat-label">Kunden</div>
-        </div>
-        <div class="hero-stat">
-          <div class="hero-stat-num">6<span>×</span></div>
-          <div class="hero-stat-label">Branchen</div>
+
+        <!-- Right panel -->
+        <div class="dash-right">
+          <div class="metrics-grid">
+            <div class="metric-box red-box">
+              <div class="mb-label" data-lang="de">Anfragen</div>
+              <div class="mb-label" data-lang="en">Inquiries</div>
+              <div class="mb-value red">+34%</div>
+              <div class="mb-trend mt-up">↑ diesen Monat</div>
+            </div>
+            <div class="metric-box green-box">
+              <div class="mb-label" data-lang="de">Umsatz</div>
+              <div class="mb-label" data-lang="en">Revenue</div>
+              <div class="mb-value green">+56%</div>
+              <div class="mb-trend mt-up">↑ vs. Vorjahr</div>
+            </div>
+            <div class="metric-box blue-box">
+              <div class="mb-label">Video Views</div>
+              <div class="mb-value blue">+89%</div>
+              <div class="mb-trend mt-up">↑ organisch</div>
+            </div>
+            <div class="metric-box purple-box">
+              <div class="mb-label">KI-Content</div>
+              <div class="mb-value purple">+120%</div>
+              <div class="mb-trend mt-up">↑ Reichweite</div>
+            </div>
+          </div>
+          <div class="activity-list">
+            <div class="activity-item">
+              <div class="ai-dot" style="background:#E8130A;"></div>
+              <span class="ai-text" data-lang="de">Imagefilm veröffentlicht</span>
+              <span class="ai-text" data-lang="en">Image film published</span>
+              <span class="ai-val aiv-red">+47%</span>
+            </div>
+            <div class="activity-item">
+              <div class="ai-dot" style="background:#28b464;"></div>
+              <span class="ai-text">Social Media Post</span>
+              <span class="ai-val aiv-green">+2.4k</span>
+            </div>
+            <div class="activity-item">
+              <div class="ai-dot" style="background:#5080ff;"></div>
+              <span class="ai-text">KI-Content Live</span>
+              <span class="ai-val aiv-blue">+89%</span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CLIENTS -->
-<div class="clients-strip">
-  <p class="clients-label">Vertrauen von</p>
-  <div class="clients-logos">
-    <span class="client-placeholder">Unternehmen A</span>
-    <span class="client-placeholder">Unternehmen B</span>
-    <span class="client-placeholder">Unternehmen C</span>
-    <span class="client-placeholder">Unternehmen D</span>
-    <span class="client-placeholder">Unternehmen E</span>
+<!-- LOGOS -->
+<div class="logos-strip reveal">
+  <p class="logos-label"><span data-lang="de">Vertrauen von Unternehmen aus verschiedenen Branchen</span><span data-lang="en">Trusted by companies across various industries</span></p>
+  <div class="logos-row">
+    <span class="logo-item">Bioclimatic GmbH</span>
+    <span class="logo-item">SiegerbuschFilm</span>
+    <span class="logo-item">Abbeo AG</span>
+    <span class="logo-item">Dyck & Stratemann</span>
+    <span class="logo-item">ECT</span>
   </div>
 </div>
 
-<!-- SERVICES -->
-<section id="services" class="section">
-  <div class="services-intro reveal">
-    <div>
-      <p class="section-eyebrow">Unser Angebot</p>
-      <h2>Was wir für Ihr Unternehmen <em>leisten</em></h2>
-    </div>
-    <p class="services-intro-text">Wir entwickeln maßgeschneiderte Lösungen, die Ihre Zielgruppe ansprechen, Vertrauen aufbauen und messbare Ergebnisse liefern.</p>
+<!-- HOW IT WORKS -->
+<section id="how" class="section">
+  <div class="how-header reveal">
+    <p class="section-tag"><span data-lang="de">Wie es funktioniert</span><span data-lang="en">How it works</span></p>
+    <h2 class="section-title"><span data-lang="de">Ihr Marketing. <span class="g">Unser Job.</span></span><span data-lang="en">Your marketing. <span class="g">Our job.</span></span></h2>
+    <p class="section-desc"><span data-lang="de">Wir kommen zu Ihnen, analysieren Ihr Angebot und Ihre Zielgruppe — und machen Sie genau dort sichtbar, wo Ihre Kunden sind.</span><span data-lang="en">We come to you, analyze your offer and target group — and make you visible exactly where your customers are.</span></p>
   </div>
-  <div class="services-grid">
-    <div class="service-item reveal">
-      <div class="service-number">01</div>
-      <div class="service-title">Website-Optimierung</div>
-      <p class="service-desc">Wir überarbeiten Ihre bestehende Website und passen sie perfekt an Ihr Angebot und Ihre Zielgruppe an. Das Ergebnis: Besucher werden zu Kunden.</p>
-      <p class="service-result">Höhere Conversion-Rate</p>
-    </div>
-    <div class="service-item reveal reveal-delay-1">
-      <div class="service-number">02</div>
-      <div class="service-title">Content & Social Media</div>
-      <p class="service-desc">Strategische Erstellung und Planung von Inhalten für Instagram, LinkedIn und YouTube. Regelmäßiger Content, der Reichweite und Sichtbarkeit aufbaut.</p>
-      <p class="service-result">Mehr Sichtbarkeit & Reichweite</p>
-    </div>
-    <div class="service-item reveal reveal-delay-2">
-      <div class="service-number">03</div>
-      <div class="service-title">Foto- & Videoproduktion</div>
-      <p class="service-desc">Professionelle Darstellung Ihrer Produkte und Dienstleistungen. Hochwertige visuelle Inhalte, die Vertrauen schaffen und Ihre Marke stärken.</p>
-      <p class="service-result">Professionelle Außenwirkung</p>
-    </div>
-    <div class="service-item reveal reveal-delay-3">
-      <div class="service-number">04</div>
-      <div class="service-title">Broschüren & Design</div>
-      <p class="service-desc">Gestaltung hochwertiger Printmaterialien und digitaler Unterlagen. Klare Präsentation Ihrer Leistungen, die Entscheider überzeugen.</p>
-      <p class="service-result">Überzeugende Präsentation</p>
-    </div>
-  </div>
-</section>
 
-<!-- WHY -->
-<section id="why" class="section">
-  <div class="section-header reveal">
-    <p class="section-eyebrow">Warum RECmode</p>
-    <h2>Der Unterschied, den Sie <em>spüren</em></h2>
+  <!-- 2x2 process boxes -->
+  <div class="process-grid">
+    <div class="process-box reveal">
+      <div class="pb-icon pbi-1">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#E8130A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+      </div>
+      <div class="pb-num">SCHRITT 01</div>
+      <div class="pb-title" data-lang="de">Analyse</div>
+      <div class="pb-title" data-lang="en">Analysis</div>
+      <p class="pb-desc" data-lang="de">Wir schauen uns Ihr Produkt oder Ihre Dienstleistung genau an, analysieren Ihre Zielgruppe und ermitteln den Marktbedarf.</p>
+      <p class="pb-desc" data-lang="en">We take a close look at your product or service, analyze your target group and determine the market demand.</p>
+    </div>
+    <div class="process-box reveal d1">
+      <div class="pb-icon pbi-2">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#5080ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </div>
+      <div class="pb-num">SCHRITT 02</div>
+      <div class="pb-title" data-lang="de">Konzept</div>
+      <div class="pb-title" data-lang="en">Concept</div>
+      <p class="pb-desc" data-lang="de">Basierend auf der Analyse entwickeln wir ein maßgeschneidertes Marketing-Konzept, das Ihr Angebot optimal präsentiert.</p>
+      <p class="pb-desc" data-lang="en">Based on the analysis, we develop a tailored marketing concept that presents your offer optimally.</p>
+    </div>
+    <div class="process-box reveal d2">
+      <div class="pb-icon pbi-3">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#28b464" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      </div>
+      <div class="pb-num">SCHRITT 03</div>
+      <div class="pb-title" data-lang="de">Produktion</div>
+      <div class="pb-title" data-lang="en">Production</div>
+      <p class="pb-desc" data-lang="de">Wir erstellen professionelles Bild-, Video- und Textmaterial — alles was nötig ist, um Ihr Angebot überzeugend darzustellen.</p>
+      <p class="pb-desc" data-lang="en">We create professional image, video and text material — everything needed to present your offer convincingly.</p>
+    </div>
+    <div class="process-box reveal d3">
+      <div class="pb-icon pbi-4">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ff9500" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      </div>
+      <div class="pb-num">SCHRITT 04</div>
+      <div class="pb-title" data-lang="de">Sichtbarkeit</div>
+      <div class="pb-title" data-lang="en">Visibility</div>
+      <p class="pb-desc" data-lang="de">Wir verbreiten Ihre Inhalte gezielt an potenzielle Kunden — über Social Media, Website und alle digitalen Kanäle.</p>
+      <p class="pb-desc" data-lang="en">We distribute your content directly to potential customers — via social media, website and all digital channels.</p>
+    </div>
   </div>
-  <div class="why-grid">
-    <div class="why-item reveal">
-      <div class="why-icon">I</div>
-      <div class="why-title">Strategie zuerst</div>
-      <p class="why-desc">Jedes Projekt beginnt mit einem tiefen Verständnis Ihrer Ziele, Zielgruppe und Positionierung. Erst dann entstehen Inhalte.</p>
-    </div>
-    <div class="why-item reveal reveal-delay-1">
-      <div class="why-icon">II</div>
-      <div class="why-title">Ergebnisorientiert</div>
-      <p class="why-desc">Wir produzieren keine Inhalte um der Inhalte willen. Jede Maßnahme ist auf messbare Ergebnisse ausgerichtet — mehr Anfragen, mehr Umsatz.</p>
-    </div>
-    <div class="why-item reveal reveal-delay-2">
-      <div class="why-icon">III</div>
-      <div class="why-title">Persönliche Betreuung</div>
-      <p class="why-desc">Direkter Kontakt, kurze Wege, transparente Kommunikation. Sie arbeiten mit Ismail Khudida persönlich — nicht mit einem anonymen Team.</p>
-    </div>
-  </div>
-</section>
 
-<!-- PORTFOLIO -->
-<section id="portfolio" class="section">
-  <div class="section-header reveal">
-    <p class="section-eyebrow">Referenzen</p>
-    <h2>Ausgewählte <em>Projekte</em></h2>
-  </div>
-  <div class="portfolio-grid reveal">
-    <div class="portfolio-item">
-      <div class="portfolio-bg"><span class="portfolio-placeholder-text">Projekt hinzufügen</span></div>
-      <div class="portfolio-overlay">
-        <p class="portfolio-cat">Imagefilm</p>
-        <div class="portfolio-title">Unternehmensfilm 2024</div>
+  <!-- 3 horizontal features -->
+  <div class="how-features-h reveal">
+    <div class="how-feat-h">
+      <div class="hfh-icon hfi-1">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#E8130A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </div>
+      <div>
+        <div class="hfh-title" data-lang="de">Zielgruppen erreichen</div>
+        <div class="hfh-title" data-lang="en">Reach target audiences</div>
+        <p class="hfh-desc" data-lang="de">Wir sprechen genau die Menschen an, die Ihre Produkte oder Dienstleistungen brauchen.</p>
+        <p class="hfh-desc" data-lang="en">We reach exactly the people who need your products or services.</p>
       </div>
     </div>
-    <div class="portfolio-item">
-      <div class="portfolio-bg"><span class="portfolio-placeholder-text">Projekt hinzufügen</span></div>
-      <div class="portfolio-overlay">
-        <p class="portfolio-cat">Fotografie</p>
-        <div class="portfolio-title">Produktfotografie</div>
+    <div class="how-feat-h">
+      <div class="hfh-icon hfi-2">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5080ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div>
+        <div class="hfh-title" data-lang="de">Zeit sparen</div>
+        <div class="hfh-title" data-lang="en">Save time</div>
+        <p class="hfh-desc" data-lang="de">Kein Aufwand für Sie. Wir übernehmen alles von der Idee bis zur Veröffentlichung.</p>
+        <p class="hfh-desc" data-lang="en">No effort for you. We handle everything from idea to publication.</p>
       </div>
     </div>
-    <div class="portfolio-item">
-      <div class="portfolio-bg"><span class="portfolio-placeholder-text">Projekt hinzufügen</span></div>
-      <div class="portfolio-overlay">
-        <p class="portfolio-cat">Social Media</p>
-        <div class="portfolio-title">Content Kampagne</div>
+    <div class="how-feat-h">
+      <div class="hfh-icon hfi-3">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#28b464" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
       </div>
-    </div>
-    <div class="portfolio-item">
-      <div class="portfolio-bg"><span class="portfolio-placeholder-text">Projekt hinzufügen</span></div>
-      <div class="portfolio-overlay">
-        <p class="portfolio-cat">Videoproduktion</p>
-        <div class="portfolio-title">Eventdokumentation</div>
+      <div>
+        <div class="hfh-title" data-lang="de">Clever investieren</div>
+        <div class="hfh-title" data-lang="en">Invest cleverly</div>
+        <p class="hfh-desc" data-lang="de">Maximaler Output bei optimalem Budgeteinsatz. Jeder Euro zählt.</p>
+        <p class="hfh-desc" data-lang="en">Maximum output with optimal budget use. Every euro counts.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- AI SECTION -->
-<section id="ki" class="section" style="background: var(--black); overflow: hidden; position: relative;">
-  <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse at 80% 50%, rgba(232,19,10,0.06) 0%, transparent 60%);pointer-events:none;"></div>
-  <div class="section-header reveal" style="position:relative;z-index:1;">
-    <p class="section-eyebrow" style="color:rgba(232,19,10,0.8);">
-      <span style="width:24px;height:1px;background:rgba(232,19,10,0.8);display:inline-block;margin-right:12px;vertical-align:middle;"></span>
-      KI-gestützte Produktion
-    </p>
-    <h2 style="color:var(--white);">Wir arbeiten mit <em>Künstlicher Intelligenz</em> —<br>für bessere Ergebnisse, schneller.</h2>
+<!-- SERVICES - 2x2 -->
+<section id="leistungen" class="section">
+  <div class="services-header reveal">
+    <p class="section-tag"><span data-lang="de">Leistungen</span><span data-lang="en">Services</span></p>
+    <h2 class="section-title"><span data-lang="de">Alles aus <span class="g">einer Hand.</span></span><span data-lang="en">Everything from <span class="g">one source.</span></span></h2>
+    <p class="section-desc"><span data-lang="de">Von der Idee bis zur Veröffentlichung — wir decken alles ab.</span><span data-lang="en">From idea to publication — we cover everything.</span></p>
   </div>
-
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-top:64px;position:relative;z-index:1;" class="reveal">
-    <div style="background:rgba(255,255,255,0.03);padding:56px 48px;border-top:2px solid var(--red);">
-      <p style="font-size:11px;letter-spacing:3px;text-transform:uppercase;color:var(--red);margin-bottom:24px;">Was das bedeutet</p>
-      <p style="font-family:'Playfair Display',serif;font-size:22px;color:var(--white);line-height:1.5;font-weight:400;margin-bottom:24px;">RECmode ist keine klassische Medienagentur. Wir kombinieren menschliche Kreativität mit den leistungsstärksten KI-Tools — für Inhalte die schneller entstehen, weniger kosten und trotzdem höchste Qualität haben.</p>
-      <p style="font-size:14px;line-height:1.85;color:rgba(255,255,255,0.35);">Alle KI-generierten Inhalte werden von uns geprüft, verfeinert und mit vollständiger kommerzieller Lizenz übergeben. Kein Rechtsproblem, kein Graubereich.</p>
+  <div class="services-grid-2x2">
+    <div class="service-card-h reveal">
+      <div class="sc-top">
+        <div class="sc-icon sci-1">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8130A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <div class="sc-num">01</div>
+      </div>
+      <div class="sc-title" data-lang="de">Medienproduktion</div>
+      <div class="sc-title" data-lang="en">Media Production</div>
+      <p class="sc-text" data-lang="de">Professionelle Foto- und Videoproduktion für Ihr Unternehmen. Image- und Werbefilme, Produktfotos, Design & Broschüren.</p>
+      <p class="sc-text" data-lang="en">Professional photo and video production for your company. Image and commercial films, product photos, design & brochures.</p>
     </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;">
-      <div style="background:rgba(255,255,255,0.03);padding:40px 32px;transition:background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-        <p style="font-family:'Playfair Display',serif;font-size:18px;color:var(--white);margin-bottom:12px;font-weight:400;">KI-Texte</p>
-        <p style="font-size:13px;line-height:1.8;color:rgba(255,255,255,0.3);">Website, Social Media, Newsletter, Produktbeschreibungen — SEO-optimiert, in Ihrem Ton.</p>
+    <div class="service-card-h reveal d1">
+      <div class="sc-top">
+        <div class="sc-icon sci-2">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5080ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+        </div>
+        <div class="sc-num">02</div>
       </div>
-      <div style="background:rgba(255,255,255,0.03);padding:40px 32px;transition:background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-        <p style="font-family:'Playfair Display',serif;font-size:18px;color:var(--white);margin-bottom:12px;font-weight:400;">KI-Bilder</p>
-        <p style="font-size:13px;line-height:1.8;color:rgba(255,255,255,0.3);">Produktvisualisierungen, Moodboards, Konzeptbilder — mit vollständiger kommerzieller Lizenz.</p>
-      </div>
-      <div style="background:rgba(255,255,255,0.03);padding:40px 32px;transition:background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-        <p style="font-family:'Playfair Display',serif;font-size:18px;color:var(--white);margin-bottom:12px;font-weight:400;">KI-Strategie</p>
-        <p style="font-size:13px;line-height:1.8;color:rgba(255,255,255,0.3);">Zielgruppenanalyse, Content-Planung, Wettbewerbsanalyse — datenbasiert und präzise.</p>
-      </div>
-      <div style="background:rgba(255,255,255,0.03);padding:40px 32px;transition:background 0.3s;" onmouseover="this.style.background='rgba(255,255,255,0.06)'" onmouseout="this.style.background='rgba(255,255,255,0.03)'">
-        <p style="font-family:'Playfair Display',serif;font-size:18px;color:var(--white);margin-bottom:12px;font-weight:400;">KI-Video</p>
-        <p style="font-size:13px;line-height:1.8;color:rgba(255,255,255,0.3);">Automatische Untertitel, Übersetzungen, Skripte und KI-gestützte Videoschnitt-Konzepte.</p>
-      </div>
+      <div class="sc-title">Social Media Content</div>
+      <p class="sc-text" data-lang="de">Regelmäßiger, strategischer Content für Instagram, TikTok und YouTube — der Ihre Zielgruppe erreicht und Ihre Marke stärkt.</p>
+      <p class="sc-text" data-lang="en">Regular, strategic content for Instagram, TikTok and YouTube — that reaches your target audience and strengthens your brand.</p>
     </div>
-  </div>
-
-  <div style="margin-top:2px;background:rgba(232,19,10,0.08);border:1px solid rgba(232,19,10,0.15);padding:40px 48px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;" class="reveal">
-    <div>
-      <p style="font-family:'Playfair Display',serif;font-size:20px;color:var(--white);font-weight:400;">Mensch + KI = schneller, besser, günstiger.</p>
-      <p style="font-size:13px;color:rgba(255,255,255,0.35);margin-top:8px;letter-spacing:0.5px;">Alle Inhalte mit vollständiger kommerzieller Lizenz — sofort einsetzbar.</p>
+    <div class="service-card-h reveal d2">
+      <div class="sc-top">
+        <div class="sc-icon sci-3">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#28b464" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="sc-num">03</div>
+      </div>
+      <div class="sc-title" data-lang="de">KI-Marketing</div>
+      <div class="sc-title" data-lang="en">AI Marketing</div>
+      <p class="sc-text" data-lang="de">Wir nutzen die neuesten KI-Tools für Texte, Bilder und Strategie — schneller, günstiger, mit vollständiger kommerzieller Lizenz.</p>
+      <p class="sc-text" data-lang="en">We use the latest AI tools for texts, images and strategy — faster, cheaper, with full commercial license.</p>
     </div>
-    <a href="#contact" style="background:var(--red);color:var(--white);padding:16px 40px;font-size:12px;letter-spacing:2px;font-weight:500;text-transform:uppercase;text-decoration:none;white-space:nowrap;transition:background 0.2s;" onmouseover="this.style.background='#c8100a'" onmouseout="this.style.background='var(--red)'">KI-Paket anfragen</a>
+    <div class="service-card-h reveal d3">
+      <div class="sc-top">
+        <div class="sc-icon sci-4">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff9500" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <div class="sc-num">04</div>
+      </div>
+      <div class="sc-title" data-lang="de">Website-Optimierung</div>
+      <div class="sc-title" data-lang="en">Website Optimization</div>
+      <p class="sc-text" data-lang="de">Wir überarbeiten Ihre Website und passen sie perfekt an Ihre Zielgruppe an — damit Besucher zu Kunden werden.</p>
+      <p class="sc-text" data-lang="en">We revamp your website and tailor it to your target audience — so visitors become customers.</p>
+      <a href="#kontakt" class="sc-cta" data-lang="de">Noch keine Website? Jetzt erstellen lassen →</a>
+      <a href="#kontakt" class="sc-cta" data-lang="en">No website yet? Get one created now →</a>
+    </div>
   </div>
 </section>
 
-<!-- PROCESS -->
-<section id="process" class="section">
-  <div class="section-header reveal">
-    <p class="section-eyebrow">Unser Prozess</p>
-    <h2>Von der Idee zum <em>Ergebnis</em></h2>
+<!-- KI - 2x2 -->
+<section id="ki" class="section">
+  <div class="ki-glow"></div>
+  <div class="ki-header reveal">
+    <p class="section-tag">KI & Innovation</p>
+    <h2 class="section-title"><span data-lang="de">Wir heben Ihr Angebot auf ein <span class="g">neues Level.</span></span><span data-lang="en">We take your offer to a <span class="g">new level.</span></span></h2>
+    <p class="section-desc"><span data-lang="de">Durch KI-gestützte Prozesse erstellen wir passendes Marketing-Material — Bilder, Videos, Grafiken und SEO-Texte — schneller, günstiger und mit vollständiger kommerzieller Lizenz.</span><span data-lang="en">Through AI-powered processes we create matching marketing material — images, videos, graphics and SEO texts — faster, cheaper and with full commercial license.</span></p>
   </div>
-  <div class="process-steps">
-    <div class="process-step reveal">
-      <div class="process-num">01</div>
-      <div class="process-title">Erstgespräch</div>
-      <p class="process-desc">Wir verstehen Ihre Ziele, Zielgruppe und aktuelle Situation. Kostenlos und unverbindlich.</p>
+  <div class="ki-grid-2x2">
+    <div class="ki-card-h reveal">
+      <div class="kch-header">
+        <div class="kch-icon kci-1">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8130A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="kch-title" data-lang="de">KI-Texte & SEO</div>
+        <div class="kch-title" data-lang="en">AI Texts & SEO</div>
+      </div>
+      <p class="kch-desc" data-lang="de">Website-Texte, Social Media Captions, Newsletter und SEO-optimierte Inhalte — in Ihrem Ton, sofort einsetzbar.</p>
+      <p class="kch-desc" data-lang="en">Website texts, social media captions, newsletters and SEO-optimized content — in your tone, ready to use.</p>
+      <div class="kch-tags"><span class="kch-tag">SEO</span><span class="kch-tag">Social Media</span><span class="kch-tag">Newsletter</span></div>
     </div>
-    <div class="process-step reveal reveal-delay-1">
-      <div class="process-num">02</div>
-      <div class="process-title">Strategie</div>
-      <p class="process-desc">Wir entwickeln einen maßgeschneiderten Plan, der auf Ihre Ziele und Ihr Budget abgestimmt ist.</p>
+    <div class="ki-card-h reveal d1">
+      <div class="kch-header">
+        <div class="kch-icon kci-2">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5080ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+        </div>
+        <div class="kch-title" data-lang="de">KI-Bilder & Grafiken</div>
+        <div class="kch-title" data-lang="en">AI Images & Graphics</div>
+      </div>
+      <p class="kch-desc" data-lang="de">Produktvisualisierungen, Marketinggrafiken und Konzeptbilder mit vollständiger kommerzieller Lizenz.</p>
+      <p class="kch-desc" data-lang="en">Product visualizations, marketing graphics and concept images with full commercial license.</p>
+      <div class="kch-tags"><span class="kch-tag">Produktfotos</span><span class="kch-tag">Werbegrafiken</span><span class="kch-tag">Vollizenz</span></div>
     </div>
-    <div class="process-step reveal reveal-delay-2">
-      <div class="process-num">03</div>
-      <div class="process-title">Produktion</div>
-      <p class="process-desc">Professionelle Umsetzung — Foto, Video, Content oder Design. Termingerecht und in höchster Qualität.</p>
+    <div class="ki-card-h reveal d2">
+      <div class="kch-header">
+        <div class="kch-icon kci-3">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#28b464" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <div class="kch-title" data-lang="de">KI-Video & Konzepte</div>
+        <div class="kch-title" data-lang="en">AI Video & Concepts</div>
+      </div>
+      <p class="kch-desc" data-lang="de">Automatische Untertitel, Übersetzungen, Videoskripte und KI-gestützte Videokonzepte für mehr Reichweite.</p>
+      <p class="kch-desc" data-lang="en">Automatic subtitles, translations, video scripts and AI-powered video concepts for more reach.</p>
+      <div class="kch-tags"><span class="kch-tag">Untertitel</span><span class="kch-tag">Übersetzung</span><span class="kch-tag">Skripte</span></div>
     </div>
-    <div class="process-step reveal reveal-delay-3">
-      <div class="process-num">04</div>
-      <div class="process-title">Ergebnisse</div>
-      <p class="process-desc">Deployment, Veröffentlichung und Erfolgsmessung. Wir begleiten Sie auch nach dem Projekt.</p>
+    <div class="ki-card-h reveal d3">
+      <div class="kch-header">
+        <div class="kch-icon kci-4">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c850ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+        <div class="kch-title" data-lang="de">KI-Strategie</div>
+        <div class="kch-title" data-lang="en">AI Strategy</div>
+      </div>
+      <p class="kch-desc" data-lang="de">Datenbasierte Zielgruppenanalyse und Content-Planung — präzise auf Ihr Unternehmen und Ihren Markt zugeschnitten.</p>
+      <p class="kch-desc" data-lang="en">Data-based target group analysis and content planning — precisely tailored to your company and your market.</p>
+      <div class="kch-tags"><span class="kch-tag">Analyse</span><span class="kch-tag">Planung</span><span class="kch-tag">Datenbasiert</span></div>
+    </div>
+  </div>
+  <div class="ki-banner reveal">
+    <div class="ki-banner-left">
+      <h4 data-lang="de">Mensch + KI = schneller, besser, günstiger.</h4>
+      <h4 data-lang="en">Human + AI = faster, better, cheaper.</h4>
+      <p data-lang="de">Wir kombinieren kreatives Handwerk mit den leistungsstärksten KI-Tools — alle Inhalte mit vollständiger kommerzieller Lizenz, sofort einsetzbar.</p>
+      <p data-lang="en">We combine creative craftsmanship with the most powerful AI tools — all content with full commercial license, ready to use immediately.</p>
+    </div>
+    <a href="#kontakt" class="ki-banner-btn"><span data-lang="de">KI-Paket anfragen</span><span data-lang="en">Request AI package</span></a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="ueber-uns" class="section">
+  <div class="about-grid">
+    <div class="about-img reveal">
+      <div class="about-img-ph">
+        <div class="about-big-letter">IK</div>
+        <p class="about-img-sub" data-lang="de">Foto hinzufügen</p>
+        <p class="about-img-sub" data-lang="en">Add photo</p>
+      </div>
+      <div class="about-badge-float">
+        <div class="about-badge-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <div>
+          <div class="about-badge-name">Ismail Khudida</div>
+          <div class="about-badge-role" data-lang="de">Gründer · RECmode</div>
+          <div class="about-badge-role" data-lang="en">Founder · RECmode</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal d1">
+      <p class="section-tag"><span data-lang="de">Über uns</span><span data-lang="en">About us</span></p>
+      <h2 class="section-title"><span data-lang="de">Der Mensch hinter <span class="g">RECmode.</span></span><span data-lang="en">The person behind <span class="g">RECmode.</span></span></h2>
+      <p class="about-text" data-lang="de">RECmode wurde von Ismail Khudida gegründet — Filmemacher, Content Creator und kreativer Produzent. Mit langjähriger Erfahrung in Medienproduktion und digitalem Marketing habe ich für Unternehmen aus verschiedenen Branchen gearbeitet und ihnen geholfen, ihre Produkte und Dienstleistungen professionell zu präsentieren und mehr Kunden zu gewinnen.</p>
+      <p class="about-text" data-lang="en">RECmode was founded by Ismail Khudida — filmmaker, content creator and creative producer. With many years of experience in media production and digital marketing, I have worked for companies from various industries, helping them professionally present their products and services and win more customers.</p>
+      <p class="about-text" style="margin-top:12px;" data-lang="de">Bei RECmode arbeiten Sie nicht mit einer anonymen Agentur — Sie arbeiten direkt mit mir. Persönlicher Austausch, kurze Wege, transparente Kommunikation.</p>
+      <p class="about-text" style="margin-top:12px;" data-lang="en">At RECmode you don't work with an anonymous agency — you work directly with me. Personal exchange, short paths, transparent communication.</p>
+
+      <!-- 3 horizontal points -->
+      <div class="about-points-h">
+        <div class="ap-h">
+          <div class="aph-icon aphi-1">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8130A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          </div>
+          <div class="aph-title" data-lang="de">Persönliche Betreuung</div>
+          <div class="aph-title" data-lang="en">Personal support</div>
+          <p class="aph-sub" data-lang="de">Direkt mit Ismail — kein anonymes Team</p>
+          <p class="aph-sub" data-lang="en">Directly with Ismail — no anonymous team</p>
+        </div>
+        <div class="ap-h">
+          <div class="aph-icon aphi-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5080ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="aph-title" data-lang="de">Langjährige Erfahrung</div>
+          <div class="aph-title" data-lang="en">Years of experience</div>
+          <p class="aph-sub" data-lang="de">In Medienproduktion & digitalem Marketing</p>
+          <p class="aph-sub" data-lang="en">In media production & digital marketing</p>
+        </div>
+        <div class="ap-h">
+          <div class="aph-icon aphi-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#28b464" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="aph-title" data-lang="de">Viele Branchen</div>
+          <div class="aph-title" data-lang="en">Many industries</div>
+          <p class="aph-sub" data-lang="de">Von Startups bis etablierten Unternehmen</p>
+          <p class="aph-sub" data-lang="en">From startups to established companies</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="section">
-  <div class="section-header reveal">
-    <p class="section-eyebrow">Kontakt</p>
-    <h2>Bereit für mehr <em>Sichtbarkeit?</em></h2>
+<section id="kontakt" class="section">
+  <div style="margin-bottom:48px;" class="reveal">
+    <p class="section-tag"><span data-lang="de">Kontakt</span><span data-lang="en">Contact</span></p>
+    <h2 class="section-title"><span data-lang="de">Bereit für mehr <span class="g">Sichtbarkeit?</span></span><span data-lang="en">Ready for more <span class="g">visibility?</span></span></h2>
   </div>
   <div class="contact-grid">
-    <div class="contact-left reveal">
-      <p>Lassen Sie uns in einem kostenlosen Erstgespräch herausfinden, wie wir Ihr Unternehmen voranbringen können.</p>
-      <div class="contact-details">
-        <div class="contact-detail"><div class="contact-detail-dot"></div><a href="mailto:info@recmo.de">info@recmo.de</a></div>
-        <div class="contact-detail"><div class="contact-detail-dot"></div><a href="tel:+4917832489043">0178 3248904</a></div>
-        <div class="contact-detail"><div class="contact-detail-dot"></div><a href="#">Porta Westfalica, NRW</a></div>
+    <div class="reveal">
+      <h3 data-lang="de">Persönliche Zusammenarbeit</h3>
+      <h3 data-lang="en">Personal collaboration</h3>
+      <p data-lang="de">Sie arbeiten direkt mit mir — Ismail Khudida. Kein Ticketsystem, kein anonymes Team. Wir besprechen Ihr Projekt persönlich und finden gemeinsam die beste Lösung für Ihr Unternehmen.</p>
+      <p data-lang="en">You work directly with me — Ismail Khudida. No ticket system, no anonymous team. We discuss your project personally and find the best solution for your company together.</p>
+      <div class="contact-personal">
+        <div class="contact-personal-head">
+          <div class="contact-av">IK</div>
+          <div>
+            <div class="contact-av-name">Ismail Khudida</div>
+            <div class="contact-av-role" data-lang="de">Gründer & Ansprechpartner · RECmode</div>
+            <div class="contact-av-role" data-lang="en">Founder & Contact Person · RECmode</div>
+          </div>
+        </div>
+        <div class="contact-links">
+          <a href="mailto:info@recmo.de" class="contact-link-item"><span class="cl-dot"></span>info@recmo.de</a>
+          <a href="tel:+4917832489043" class="contact-link-item"><span class="cl-dot"></span>0178 3248904</a>
+        </div>
       </div>
     </div>
-    <div class="contact-form reveal reveal-delay-1">
+    <div class="contact-form reveal d1">
       <div class="form-row">
-        <input type="text" class="form-field" placeholder="Name">
-        <input type="text" class="form-field" placeholder="Unternehmen">
+        <input type="text" class="form-field" id="f-name" placeholder="Name">
+        <input type="text" class="form-field" id="f-company" data-placeholder-de="Unternehmen" data-placeholder-en="Company" placeholder="Unternehmen">
       </div>
-      <input type="email" class="form-field" placeholder="E-Mail">
-      <textarea class="form-field" placeholder="Beschreiben Sie kurz Ihr Projekt oder Ihre Herausforderung..."></textarea>
-      <button class="form-submit" type="button" onclick="sendForm()">Strategie anfragen</button>
+      <input type="email" class="form-field" id="f-email" placeholder="E-Mail">
+      <textarea class="form-field" id="f-message" data-placeholder-de="Beschreiben Sie kurz Ihr Projekt..." data-placeholder-en="Briefly describe your project..." placeholder="Beschreiben Sie kurz Ihr Projekt..."></textarea>
+      <button class="form-btn" onclick="sendForm()"><span data-lang="de">Anfrage senden</span><span data-lang="en">Send inquiry</span></button>
     </div>
   </div>
 </section>
 
-<!-- FOOTER -->
+<!-- FOOTER - BLACK with full nav -->
 <footer>
-  <img src="Recmode.PNG" alt="RECmode" class="footer-logo">
-  <p>© 2026 RECmode · Porta Westfalica, NRW</p>
-  <nav><ul>
-    <li><a href="#services">Leistungen</a></li>
-    <li><a href="#portfolio">Referenzen</a></li>
-    <li><a href="#contact">Kontakt</a></li>
-  </ul></nav>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <img src="./Recmode_weiß.PNG" alt="RECmode" style="height:26px;" onerror="this.src='https://i.imgur.com/Zvg0YSW.png'">
+      <p data-lang="de">Professionelle Medienproduktion und KI-gestütztes Marketing für Unternehmen.</p>
+      <p data-lang="en">Professional media production and AI-powered marketing for companies.</p>
+      <div class="footer-brand-contact">
+        <a href="mailto:info@recmo.de" class="fbc-item"><span class="fbc-dot"></span>info@recmo.de</a>
+        <a href="tel:+4917832489043" class="fbc-item"><span class="fbc-dot"></span>0178 3248904</a>
+        <a href="https://recmo.de" class="fbc-item"><span class="fbc-dot"></span>recmo.de</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h5 data-lang="de">Navigation</h5><h5 data-lang="en">Navigation</h5>
+      <ul>
+        <li><a href="#how" data-lang="de">Wie es funktioniert</a><a href="#how" data-lang="en">How it works</a></li>
+        <li><a href="#leistungen" data-lang="de">Leistungen</a><a href="#leistungen" data-lang="en">Services</a></li>
+        <li><a href="#ki">KI & Innovation</a></li>
+        <li><a href="#ueber-uns" data-lang="de">Über uns</a><a href="#ueber-uns" data-lang="en">About us</a></li>
+        <li><a href="#kontakt">Kontakt</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5 data-lang="de">Leistungen</h5><h5 data-lang="en">Services</h5>
+      <ul>
+        <li><a href="#leistungen" data-lang="de">Medienproduktion</a><a href="#leistungen" data-lang="en">Media Production</a></li>
+        <li><a href="#leistungen">Social Media</a></li>
+        <li><a href="#ki">KI-Marketing</a></li>
+        <li><a href="#leistungen" data-lang="de">Website-Optimierung</a><a href="#leistungen" data-lang="en">Website Optimization</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5 data-lang="de">Rechtliches</h5><h5 data-lang="en">Legal</h5>
+      <ul>
+        <li><a href="./impressum.html">Impressum</a></li>
+        <li><a href="./datenschutz.html" data-lang="de">Datenschutz</a><a href="./datenschutz.html" data-lang="en">Privacy Policy</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 RECmode · Ismail Khudida</p>
+    <div class="footer-legal">
+      <a href="./impressum.html">Impressum</a>
+      <a href="./datenschutz.html" data-lang="de">Datenschutz</a>
+      <a href="./datenschutz.html" data-lang="en">Privacy Policy</a>
+    </div>
+  </div>
 </footer>
 
 <script>
-const cursor = document.getElementById('cursor');
-const ring = document.getElementById('cursorRing');
+const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
 let mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',e=>{
-  mx=e.clientX;my=e.clientY;
-  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+document.querySelectorAll('a,button,.service-card-h,.ki-card-h,.how-feat-h,.ap-h,.process-box').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cursor.classList.add('big'));
+  el.addEventListener('mouseleave',()=>cursor.classList.remove('big'));
 });
-(function anim(){rx+=(mx-rx)*0.1;ry+=(my-ry)*0.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim)})();
+(function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
 
-const nav = document.getElementById('nav');
-window.addEventListener('scroll',()=>{
-  nav.classList.toggle('scrolled', window.scrollY > 50);
-});
-
-const obs = new IntersectionObserver(entries=>entries.forEach(e=>{
-  if(e.isIntersecting) e.target.classList.add('visible');
-}),{threshold:0.08});
+const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:.07});
 document.querySelectorAll('.reveal').forEach(r=>obs.observe(r));
-</script>
-<script>
-function sendForm() {
-  const name = document.querySelector('input[placeholder="Name"]').value;
-  const company = document.querySelector('input[placeholder="Unternehmen"]').value;
-  const email = document.querySelector('input[placeholder="E-Mail"]').value;
-  const message = document.querySelector('textarea').value;
-  
-  if(!name || !email || !message) {
-    alert('Bitte fülle alle Pflichtfelder aus.');
-    return;
-  }
-  
-  const subject = encodeURIComponent('Neue Anfrage von ' + name + ' – ' + company);
-  const body = encodeURIComponent(
-    'Name: ' + name + '\n' +
-    'Unternehmen: ' + company + '\n' +
-    'E-Mail: ' + email + '\n\n' +
-    'Nachricht:\n' + message
-  );
-  
-  window.location.href = 'mailto:info@recmo.de?subject=' + subject + '&body=' + body;
+
+function setLang(lang){
+  document.body.classList.toggle('en',lang==='en');
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+  document.querySelectorAll('[data-placeholder-'+lang+']').forEach(el=>{el.placeholder=el.getAttribute('data-placeholder-'+lang);});
 }
-</script></body>
+
+function sendForm(){
+  const name=document.getElementById('f-name').value;
+  const company=document.getElementById('f-company').value;
+  const email=document.getElementById('f-email').value;
+  const message=document.getElementById('f-message').value;
+  if(!name||!email||!message){alert(document.body.classList.contains('en')?'Please fill in all required fields.':'Bitte alle Pflichtfelder ausfüllen.');return;}
+  const sub=encodeURIComponent('Neue Anfrage von '+name+(company?' – '+company:''));
+  const body=encodeURIComponent('Name: '+name+'\nUnternehmen: '+company+'\nE-Mail: '+email+'\n\nNachricht:\n'+message);
+  window.location.href='mailto:info@recmo.de?subject='+sub+'&body='+body;
+}
+</script>
+</body>
 </html>
