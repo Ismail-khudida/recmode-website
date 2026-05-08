@@ -349,6 +349,7 @@ body.en [data-lang="en"]{display:unset}
   .ki-grid-2x2{grid-template-columns:1fr}
   .how-features-h{grid-template-columns:1fr}
   .about-points-h{grid-template-columns:1fr}
+  .team-grid{grid-template-columns:1fr 1fr}
   .about-grid{grid-template-columns:1fr}
   .contact-grid{grid-template-columns:1fr}
   .footer-top{grid-template-columns:1fr 1fr}
@@ -361,6 +362,29 @@ body.en [data-lang="en"]{display:unset}
   .dash-right{border-left:none;border-top:1px solid rgba(0,0,0,.05)}
   .form-row{grid-template-columns:1fr}
 }
+/* TEAM SECTION */
+.team-section{margin-top:56px}
+.team-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#b0b0c8;margin-bottom:24px;display:flex;align-items:center;gap:12px}
+.team-label::after{content:"";flex:1;height:1px;background:#f0f0f6}
+.team-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.team-card{background:#fff;border-radius:20px;padding:28px 24px;border:1px solid rgba(0,0,0,.07);text-align:center;transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
+.team-card::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#E8130A,#FF6B6B);transform:scaleX(0);transform-origin:left;transition:transform .4s}
+.team-card:hover{transform:translateY(-6px);box-shadow:0 24px 60px rgba(0,0,0,.09);border-color:rgba(232,19,10,.1)}
+.team-card:hover::before{transform:scaleX(1)}
+.team-avatar{width:72px;height:72px;border-radius:50%;margin:0 auto 16px;overflow:hidden;border:2px solid rgba(0,0,0,.06)}
+.team-avatar img{width:100%;height:100%;object-fit:cover;object-position:center top}
+.team-avatar-ai{width:72px;height:72px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(0,0,0,.06)}
+.tai-1{background:linear-gradient(135deg,rgba(232,19,10,.12),rgba(255,107,107,.08))}
+.tai-2{background:linear-gradient(135deg,rgba(80,130,255,.12),rgba(120,160,255,.08))}
+.tai-3{background:linear-gradient(135deg,rgba(40,180,100,.12),rgba(80,200,130,.08))}
+.team-badge{position:absolute;top:14px;right:14px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:100px}
+.tb-human{background:rgba(232,19,10,.08);color:#E8130A}
+.tb-ai{background:rgba(80,130,255,.08);color:#5080ff}
+.team-name{font-size:16px;font-weight:700;color:#1a1a2e;margin-bottom:4px;letter-spacing:-.2px}
+.team-role{font-size:11px;font-weight:700;color:#E8130A;letter-spacing:1px;text-transform:uppercase;margin-bottom:10px}
+.team-desc{font-size:13px;line-height:1.7;color:#6b6b8a}
+.team-tags{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:12px}
+.team-tag{font-size:10px;font-weight:600;padding:3px 10px;border-radius:100px;background:#f4f4f8;color:#9090a8}
 </style>
 </head>
 <body>
@@ -406,8 +430,8 @@ body.en [data-lang="en"]{display:unset}
   </h1>
 
   <p class="hero-desc">
-    <span data-lang="de">Wir übernehmen Ihr komplettes Marketing damit Sie sich auf Ihr Kerngeschäft konzentrieren können. Professionell präsentiert, gezielt positioniert, mehr Anfragen.</span>
-    <span data-lang="en">We take over your complete marketing so you can focus on your core business. Professionally presented, strategically positioned, more inquiries.</span>
+    <span data-lang="de">Wir übernehmen Ihr komplettes Marketing damit Sie sich auf Ihr Kerngeschäft konzentrieren können. Professionell präsentiert, gezielt positioniert für mehr Anfragen.</span>
+    <span data-lang="en">We take over your complete marketing so you can focus on your core business. Professionally presented, strategically positioned for more inquiries.</span>
   </p>
 
   <div class="hero-btns">
@@ -654,10 +678,10 @@ body.en [data-lang="en"]{display:unset}
 
 <!-- SERVICES - 2x2 -->
 <section id="leistungen" class="section">
-  <div class="services-header reveal">
-    <p class="section-tag"><span data-lang="de">Leistungen</span><span data-lang="en">Services</span></p>
-    <h2 class="section-title"><span data-lang="de">Alles aus <span class="g">einer Hand.</span></span><span data-lang="en">Everything from <span class="g">one source.</span></span></h2>
-    <p class="section-desc"><span data-lang="de">Von der Idee bis zur Veröffentlichung wir decken alles ab.</span><span data-lang="en">From idea to publication we cover everything.</span></p>
+  <div class="reveal" style="text-align:center;margin-bottom:48px;">
+    <p class="section-tag" style="display:inline-flex;"><span data-lang="de">Leistungen</span><span data-lang="en">Services</span></p>
+    <h2 class="section-title" style="text-align:center;"><span data-lang="de">Alles aus <span class="g">einer Hand.</span></span><span data-lang="en">Everything from <span class="g">one source.</span></span></h2>
+    <p style="font-size:17px;line-height:1.75;color:#6b6b8a;margin:16px auto 0;max-width:500px;text-align:center;"><span data-lang="de">Von der Idee bis zur Veröffentlichung, wir decken alles ab.</span><span data-lang="en">From idea to publication, we cover everything.</span></p>
   </div>
   <div class="services-grid-2x2">
     <div class="service-card-h reveal">
@@ -804,10 +828,10 @@ body.en [data-lang="en"]{display:unset}
     <div class="reveal d1">
       <p class="section-tag"><span data-lang="de">Über uns</span><span data-lang="en">About us</span></p>
       <h2 class="section-title"><span data-lang="de">Der Mensch hinter <span class="g">RECmode.</span></span><span data-lang="en">The person behind <span class="g">RECmode.</span></span></h2>
-      <p class="about-text" data-lang="de">RECmode wurde von Ismail Khudida gegründet, Filmemacher, Content Creator und kreativer Produzent. Mit langjähriger Erfahrung in Medienproduktion und digitalem Marketing habe ich für Unternehmen aus verschiedenen Branchen gearbeitet und ihnen geholfen, ihre Produkte und Dienstleistungen professionell zu präsentieren und mehr Kunden zu gewinnen.</p>
-      <p class="about-text" data-lang="en">RECmode was founded by Ismail Khudida, filmmaker, content creator and creative producer. With many years of experience in media production and digital marketing, I have worked for companies from various industries, helping them professionally present their products and services and win more customers.</p>
-      <p class="about-text" style="margin-top:12px;" data-lang="de">Bei RECmode arbeiten Sie nicht mit einer anonymen Agentur. Sie arbeiten direkt mit mir. Persönlicher Austausch, kurze Wege, transparente Kommunikation.</p>
-      <p class="about-text" style="margin-top:12px;" data-lang="en">At RECmode you don't work with an anonymous agency. You work directly with me. Personal exchange, short paths, transparent communication.</p>
+      <p class="about-text" data-lang="de">Ich bin Filmemacher, Content Creator und kreativer Produzent. Mit langjähriger Erfahrung in Medienproduktion und digitalem Marketing habe ich für Unternehmen aus verschiedenen Branchen gearbeitet und ihnen geholfen, ihre Produkte und Dienstleistungen professionell zu präsentieren und mehr Kunden zu gewinnen.</p>
+      <p class="about-text" data-lang="en">RECmode was founded by me, filmmaker, content creator and creative producer. With many years of experience in media production and digital marketing, I have worked for companies from various industries, helping them professionally present their products and services and win more customers.</p>
+      <p class="about-text" style="margin-top:12px;" data-lang="de">Sie arbeiten direkt mit mir. Kein anonymes Team, kein Ticketsystem. Persönlicher Austausch, kurze Wege, transparente Kommunikation.</p>
+      <p class="about-text" style="margin-top:12px;" data-lang="en">You work directly with me. No anonymous team, no ticket system. Personal exchange, short paths, transparent communication.</p>
 
       <!-- 3 horizontal points -->
       <div class="about-points-h">
@@ -839,6 +863,160 @@ body.en [data-lang="en"]{display:unset}
           <p class="aph-sub" data-lang="en">From startups to established companies</p>
         </div>
       </div>
+
+      <!-- TEAM -->
+      <div class="team-section reveal">
+        <div class="team-label"><span data-lang="de">Mein Team</span><span data-lang="en">My Team</span></div>
+        
+        <!-- Team intro -->
+        <div style="background:#fafafc;border-radius:16px;padding:24px 28px;border:1px solid rgba(0,0,0,.06);margin-bottom:24px;display:flex;align-items:flex-start;gap:16px;">
+          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,rgba(80,130,255,.12),rgba(120,160,255,.08));display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5080ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          </div>
+          <div>
+            <div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:6px;" data-lang="de">Individuell konfigurierte KI-Agenten</div>
+            <div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:6px;" data-lang="en">Individually configured AI agents</div>
+            <p style="font-size:13px;line-height:1.7;color:#6b6b8a;" data-lang="de">Diese Agenten sind keine Standard-KI. Jeder Agent wird von mir speziell für Ihr Unternehmen konfiguriert und mit maßgeschneiderten Prompts versorgt, die auf Ihre Branche, Ihre Zielgruppe und Ihre Markenstimme zugeschnitten sind. Das Ergebnis: Inhalte die klingen als hätten Sie sie selbst geschrieben.</p>
+            <p style="font-size:13px;line-height:1.7;color:#6b6b8a;" data-lang="en">These are not standard AI tools. Each agent is specifically configured by me for your company and supplied with tailored prompts adapted to your industry, target group and brand voice. The result: content that sounds like you wrote it yourself.</p>
+          </div>
+        </div>
+        <div class="team-grid">
+
+          <!-- Ismail -->
+          <div class="team-card">
+            <span class="team-badge tb-human" data-lang="de">Mensch</span>
+            <span class="team-badge tb-human" data-lang="en">Human</span>
+            <div class="team-avatar">
+              <img src="./ismail.jpg" alt="Ismail Khudida" onerror="this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#E8130A,#ff9999);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;&quot;>IK</div>'">
+            </div>
+            <div class="team-name">Ismail Khudida</div>
+            <div class="team-role" data-lang="de">Gründer & Kreativdirektor</div>
+            <div class="team-role" data-lang="en">Founder & Creative Director</div>
+            <p class="team-desc" data-lang="de">Filmemacher, Content Creator und kreativer Produzent. Steuert Strategie, Produktion und konfiguriert alle KI-Agenten speziell für jedes Projekt.</p>
+            <p class="team-desc" data-lang="en">Filmmaker, content creator and creative producer. Manages strategy, production and configures all AI agents specifically for each project.</p>
+            <div class="team-tags">
+              <span class="team-tag">Regie</span>
+              <span class="team-tag">Strategie</span>
+              <span class="team-tag">Kunden</span>
+            </div>
+          </div>
+
+          <!-- NOVA -->
+          <div class="team-card">
+            <span class="team-badge tb-ai">KI Agent</span>
+            <div class="team-avatar-ai tai-1">
+              <svg width="52" height="52" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Head -->
+                <rect x="20" y="25" width="60" height="50" rx="12" fill="rgba(232,19,10,.12)" stroke="#E8130A" stroke-width="2.5"/>
+                <!-- Antenna -->
+                <line x1="50" y1="25" x2="50" y2="12" stroke="#E8130A" stroke-width="2.5" stroke-linecap="round"/>
+                <circle cx="50" cy="9" r="4" fill="#E8130A"/>
+                <!-- Eyes - happy wide -->
+                <circle cx="37" cy="44" r="7" fill="white" stroke="#E8130A" stroke-width="2"/>
+                <circle cx="63" cy="44" r="7" fill="white" stroke="#E8130A" stroke-width="2"/>
+                <circle cx="37" cy="44" r="3.5" fill="#E8130A"/>
+                <circle cx="63" cy="44" r="3.5" fill="#E8130A"/>
+                <circle cx="38.5" cy="42.5" r="1.5" fill="white"/>
+                <circle cx="64.5" cy="42.5" r="1.5" fill="white"/>
+                <!-- Big smile -->
+                <path d="M33 60 Q50 72 67 60" stroke="#E8130A" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <!-- Arms -->
+                <line x1="20" y1="45" x2="8" y2="40" stroke="#E8130A" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="20" y1="55" x2="8" y2="60" stroke="#E8130A" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="80" y1="45" x2="92" y2="40" stroke="#E8130A" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="80" y1="55" x2="92" y2="60" stroke="#E8130A" stroke-width="2.5" stroke-linecap="round"/>
+                <!-- Text lines on forehead -->
+                <line x1="35" y1="32" x2="65" y2="32" stroke="#E8130A" stroke-width="1.5" stroke-linecap="round" opacity=".4"/>
+              </svg>
+            </div>
+            <div class="team-name">NOVA</div>
+            <div class="team-role" data-lang="de">Content Creator KI</div>
+            <div class="team-role" data-lang="en">Content Creator AI</div>
+            <p class="team-desc" data-lang="de">Erstellt SEO-Texte, Social Media Captions und Newsletter. Individuell konfiguriert für Ihre Markenstimme.</p>
+            <p class="team-desc" data-lang="en">Creates SEO texts, social media captions and newsletters. Individually configured for your brand voice.</p>
+            <div class="team-tags">
+              <span class="team-tag">SEO</span>
+              <span class="team-tag">Copywriting</span>
+              <span class="team-tag">Social</span>
+            </div>
+          </div>
+
+          <!-- VEGA -->
+          <div class="team-card">
+            <span class="team-badge tb-ai">KI Agent</span>
+            <div class="team-avatar-ai tai-2">
+              <svg width="52" height="52" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Head -->
+                <rect x="20" y="25" width="60" height="50" rx="12" fill="rgba(80,130,255,.12)" stroke="#5080ff" stroke-width="2.5"/>
+                <!-- Antenna with star -->
+                <line x1="50" y1="25" x2="50" y2="13" stroke="#5080ff" stroke-width="2.5" stroke-linecap="round"/>
+                <polygon points="50,5 52.5,11 59,11 54,15 56,21 50,17 44,21 46,15 41,11 47.5,11" fill="#5080ff"/>
+                <!-- Eyes - square screen style -->
+                <rect x="30" y="37" width="14" height="12" rx="3" fill="white" stroke="#5080ff" stroke-width="2"/>
+                <rect x="56" y="37" width="14" height="12" rx="3" fill="white" stroke="#5080ff" stroke-width="2"/>
+                <rect x="33" y="40" width="8" height="6" rx="1.5" fill="#5080ff"/>
+                <rect x="59" y="40" width="8" height="6" rx="1.5" fill="#5080ff"/>
+                <!-- Happy mouth - wide grin -->
+                <path d="M34 60 Q50 70 66 60" stroke="#5080ff" stroke-width="2.5" stroke-linecap="round" fill="rgba(80,130,255,.1)"/>
+                <!-- Arms -->
+                <line x1="20" y1="43" x2="7" y2="37" stroke="#5080ff" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="20" y1="55" x2="7" y2="61" stroke="#5080ff" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="80" y1="43" x2="93" y2="37" stroke="#5080ff" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="80" y1="55" x2="93" y2="61" stroke="#5080ff" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="team-name">VEGA</div>
+            <div class="team-role" data-lang="de">Visual Designer KI</div>
+            <div class="team-role" data-lang="en">Visual Designer AI</div>
+            <p class="team-desc" data-lang="de">Generiert Produktbilder, Marketinggrafiken und Visualisierungen. Passend zu Ihrer Marke und mit vollständiger kommerzieller Lizenz.</p>
+            <p class="team-desc" data-lang="en">Generates product images, marketing graphics and visualizations. Matching your brand with full commercial license.</p>
+            <div class="team-tags">
+              <span class="team-tag">Bilder</span>
+              <span class="team-tag">Grafiken</span>
+              <span class="team-tag">Lizenz</span>
+            </div>
+          </div>
+
+          <!-- ORBIT -->
+          <div class="team-card">
+            <span class="team-badge tb-ai">KI Agent</span>
+            <div class="team-avatar-ai" style="background:linear-gradient(135deg,rgba(160,80,255,.12),rgba(200,120,255,.08));width:72px;height:72px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;border:2px solid rgba(0,0,0,.06);">
+              <svg width="52" height="52" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Head -->
+                <rect x="20" y="25" width="60" height="50" rx="12" fill="rgba(160,80,255,.12)" stroke="#a050ff" stroke-width="2.5"/>
+                <!-- Antenna with wifi -->
+                <line x1="50" y1="25" x2="50" y2="14" stroke="#a050ff" stroke-width="2.5" stroke-linecap="round"/>
+                <path d="M42 18 Q50 12 58 18" stroke="#a050ff" stroke-width="2" stroke-linecap="round" fill="none"/>
+                <path d="M45 21 Q50 17 55 21" stroke="#a050ff" stroke-width="2" stroke-linecap="round" fill="none"/>
+                <circle cx="50" cy="23" r="2" fill="#a050ff"/>
+                <!-- Eyes - code brackets style -->
+                <text x="29" y="52" font-family="monospace" font-size="16" fill="#a050ff" font-weight="bold">&lt;/&gt;</text>
+                <text x="55" y="52" font-family="monospace" font-size="16" fill="#a050ff" font-weight="bold">&lt;&gt;</text>
+                <!-- Happy mouth -->
+                <path d="M34 63 Q50 74 66 63" stroke="#a050ff" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <!-- Arms with hands up -->
+                <line x1="20" y1="40" x2="7" y2="30" stroke="#a050ff" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="80" y1="40" x2="93" y2="30" stroke="#a050ff" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="20" y1="55" x2="8" y2="62" stroke="#a050ff" stroke-width="2.5" stroke-linecap="round"/>
+                <line x1="80" y1="55" x2="92" y2="62" stroke="#a050ff" stroke-width="2.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="team-name">ORBIT</div>
+            <div class="team-role" data-lang="de">Web & Development KI</div>
+            <div class="team-role" data-lang="en">Web & Development AI</div>
+            <p class="team-desc" data-lang="de">Konzipiert, gestaltet und optimiert Websites. Von UX-Layout bis zur technischen SEO-Struktur für maximale Performance.</p>
+            <p class="team-desc" data-lang="en">Designs and optimizes websites. From UX layout to technical SEO structure for maximum performance.</p>
+            <div class="team-tags">
+              <span class="team-tag">Webdesign</span>
+              <span class="team-tag">Code</span>
+              <span class="team-tag">SEO</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <!-- END TEAM -->
+
     </div>
   </div>
 </section>
@@ -853,8 +1031,8 @@ body.en [data-lang="en"]{display:unset}
     <div class="reveal">
       <h3 data-lang="de">Persönliche Zusammenarbeit</h3>
       <h3 data-lang="en">Personal collaboration</h3>
-      <p data-lang="de" style="margin-top:16px;">Sie arbeiten direkt mit mir, Ismail Khudida. Kein Ticketsystem, kein anonymes Team. Wir besprechen Ihr Projekt persönlich und finden gemeinsam die beste Lösung für Ihr Unternehmen.</p>
-      <p data-lang="en" style="margin-top:16px;">You work directly with me, Ismail Khudida. No ticket system, no anonymous team. We discuss your project personally and find the best solution for your company together.</p>
+      <p data-lang="de" style="margin-top:16px;">Sie arbeiten direkt mit mir. Kein Ticketsystem, kein anonymes Team. Wir besprechen Ihr Projekt persönlich und finden gemeinsam die beste Lösung für Ihr Unternehmen.</p>
+      <p data-lang="en" style="margin-top:16px;">You work directly with me. No ticket system, no anonymous team. We discuss your project personally and find the best solution for your company together.</p>
       <div class="contact-personal" style="margin-top:32px;">
         <div class="contact-personal-head">
           <div class="contact-av">IK</div>
