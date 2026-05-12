@@ -28,7 +28,7 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--black);color:va
 .progress-wrap{position:fixed;top:0;left:0;right:0;height:3px;z-index:100;background:rgba(255,255,255,.05)}
 .progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--red2));transition:width .6s cubic-bezier(.16,1,.3,1);border-radius:0 2px 2px 0}
 
-.quiz-logo{position:fixed;top:26px;left:40px;font-size:17px;font-weight:800;color:var(--white);letter-spacing:-.3px;display:flex;align-items:center;gap:6px;z-index:10}
+.quiz-logo-old{display:none}
 .logo-dot{width:8px;height:8px;background:var(--red);border-radius:50%;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
 
@@ -175,16 +175,69 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--black);color:va
 .btn-cta:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(232,19,10,.35)}
 .btn-restart{background:transparent;color:rgba(255,255,255,.52);padding:18px 28px;border-radius:100px;font-size:14px;font-weight:600;border:1.5px solid rgba(255,255,255,.08);cursor:none;transition:all .3s}
 .btn-restart:hover{color:var(--white);border-color:rgba(255,255,255,.4)}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:200;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 64px;background:#0d0d0d;border-bottom:1px solid rgba(255,255,255,.08)}
+.nav-logo{height:28px;display:block}
+.nav-links{display:flex;list-style:none;gap:32px}
+.nav-links a{font-size:14px;font-weight:500;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s;position:relative}
+.nav-links a::after{content:'';position:absolute;bottom:-2px;left:0;width:0;height:1.5px;background:#E8130A;transition:width .3s}
+.nav-links a:hover{color:#fff}
+.nav-links a:hover::after{width:100%}
+.nav-right{display:flex;align-items:center;gap:16px}
+.lang-switch{display:flex;gap:4px;background:rgba(255,255,255,.08);border-radius:100px;padding:4px}
+.lang-btn{font-size:12px;font-weight:600;color:rgba(255,255,255,.4);padding:5px 12px;border-radius:100px;border:none;background:transparent;cursor:none;transition:all .2s;font-family:'Plus Jakarta Sans',sans-serif}
+.lang-btn.active{background:rgba(255,255,255,.12);color:#fff}
+.nav-cta{background:#E8130A;color:#fff;padding:10px 24px;border-radius:100px;font-size:14px;font-weight:600;text-decoration:none;transition:all .3s}
+.nav-cta:hover{background:#c8100a;transform:translateY(-1px)}
+
+/* FOOTER */
+.quiz-footer{background:#0d0d0d;padding:40px 64px;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px}
+.qf-left p{font-size:12px;color:rgba(255,255,255,.2)}
+.qf-right{display:flex;gap:20px}
+.qf-right a{font-size:12px;color:rgba(255,255,255,.2);text-decoration:none;transition:color .2s}
+.qf-right a:hover{color:rgba(255,255,255,.6)}
+
+/* lang */
+[data-lang="en"]{display:none}
+body.en [data-lang="de"]{display:none}
+body.en [data-lang="en"]{display:unset}
+
+@media(max-width:768px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .quiz-footer{padding:28px 24px;flex-direction:column;text-align:center}
+  .quiz-wrap{padding:100px 16px 60px}
+}
 </style>
 </head>
 <body>
+
+
+<nav>
+  <img src="./Recmode_weiß.PNG" alt="RECmode" class="nav-logo" onerror="this.src='https://i.imgur.com/Zvg0YSW.png'">
+  <ul class="nav-links">
+    <li><a href="./index.html#how"><span data-lang="de">Wie es funktioniert</span><span data-lang="en">How it works</span></a></li>
+    <li><a href="./index.html#leistungen"><span data-lang="de">Leistungen</span><span data-lang="en">Services</span></a></li>
+    <li><a href="./index.html#ki"><span data-lang="de">KI & Innovation</span><span data-lang="en">AI & Innovation</span></a></li>
+    <li><a href="./index.html#ueber-uns"><span data-lang="de">Über uns</span><span data-lang="en">About</span></a></li>
+    <li><a href="./index.html#kontakt">Kontakt</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="lang-switch">
+      <button class="lang-btn active" onclick="setLang('de')">DE</button>
+      <button class="lang-btn" onclick="setLang('en')">EN</button>
+    </div>
+    <a href="./index.html#kontakt" class="nav-cta"><span data-lang="de">Anfrage stellen</span><span data-lang="en">Get in touch</span></a>
+  </div>
+</nav>
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-ring" id="cursorRing"></div>
 <div class="bg-mesh"></div>
 <div class="bg-grid"></div>
 <div class="progress-wrap"><div class="progress-fill" id="prog" style="width:0%"></div></div>
-<div class="quiz-logo"><span class="logo-dot"></span>RECmode</div>
+
 <div class="step-count" id="stepCount"></div>
 
 <div class="quiz-wrap">
@@ -551,6 +604,13 @@ body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--black);color:va
 </div><!-- quiz-wrap -->
 
 <script>
+// LANG
+function setLang(lang){
+  document.body.classList.toggle('en',lang==='en');
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+}
+
 // CURSOR
 const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
 let mx=0,my=0,rx=0,ry=0;
@@ -794,5 +854,17 @@ function restart(){
   showScreen('s-intro');
 }
 </script>
+
+<footer class="quiz-footer">
+  <div class="qf-left">
+    <p>© 2026 RECmode · Ismail Khudida · info@recmo.de · 0178 3248904</p>
+  </div>
+  <div class="qf-right">
+    <a href="./index.html"><span data-lang="de">Startseite</span><span data-lang="en">Home</span></a>
+    <a href="./impressum.html">Impressum</a>
+    <a href="./datenschutz.html"><span data-lang="de">Datenschutz</span><span data-lang="en">Privacy</span></a>
+  </div>
+</footer>
+
 </body>
 </html>
