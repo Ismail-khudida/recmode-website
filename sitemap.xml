@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml">
+
+  <!-- Hauptseite Deutsch -->
+  <url>
+    <loc>https://recmo.de/</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://recmo.de/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recmo.de/?lang=en"/>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+
+  <!-- Quiz -->
+  <url>
+    <loc>https://recmo.de/quiz.html</loc>
+    <xhtml:link rel="alternate" hreflang="de" href="https://recmo.de/quiz.html"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://recmo.de/quiz.html?lang=en"/>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
+  <!-- Impressum -->
+  <url>
+    <loc>https://recmo.de/impressum.html</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Datenschutz -->
+  <url>
+    <loc>https://recmo.de/datenschutz.html</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+
+  <!-- Sektionen als Ankerlinks -->
+  <url>
+    <loc>https://recmo.de/#leistungen</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
+    <loc>https://recmo.de/#ki</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <url>
+    <loc>https://recmo.de/#ueber-uns</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <url>
+    <loc>https://recmo.de/#kontakt</loc>
+    <lastmod>2026-05-13</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+</urlset>
