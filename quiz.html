@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECmode – Ihr kostenloser Marketing-Check</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #E8130A;
+  --red2: #FF4B43;
+  --black: #080808;
+  --white: #FAFAFA;
+  --gray: rgba(255,255,255,.04);
+  --border: rgba(255,255,255,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--black);color:var(--white);min-height:100vh;overflow-x:hidden;cursor:none}
+
+.cursor{width:12px;height:12px;background:var(--red);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .3s,height .3s;mix-blend-mode:difference}
+.cursor.big{width:48px;height:48px}
+.cursor-ring{width:36px;height:36px;border:1px solid rgba(232,19,10,.3);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%)}
+
+.bg-mesh{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 60% 50% at 10% 20%,rgba(232,19,10,.07) 0%,transparent 60%),radial-gradient(ellipse 50% 60% at 90% 80%,rgba(232,19,10,.05) 0%,transparent 60%),var(--black)}
+.bg-grid{position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);background-size:60px 60px}
+
+.progress-wrap{position:fixed;top:0;left:0;right:0;height:3px;z-index:100;background:rgba(255,255,255,.05)}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--red),var(--red2));transition:width .6s cubic-bezier(.16,1,.3,1);border-radius:0 2px 2px 0}
+
+.quiz-logo{position:fixed;top:26px;left:40px;font-size:17px;font-weight:800;color:var(--white);letter-spacing:-.3px;display:flex;align-items:center;gap:6px;z-index:10}
+.logo-dot{width:8px;height:8px;background:var(--red);border-radius:50%;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+
+.step-count{position:fixed;top:22px;right:40px;font-size:13px;font-weight:600;color:rgba(255,255,255,.45);z-index:10;letter-spacing:1px}
+.step-count em{color:var(--red);font-style:normal}
+
+.quiz-wrap{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 24px 60px}
+
+/* SCREENS */
+.screen{width:100%;max-width:740px;display:none;flex-direction:column;align-items:center;text-align:center}
+.screen.active{display:flex;animation:sIn .5s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes sIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+
+/* INTRO */
+.intro-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(232,19,10,.08);border:1px solid rgba(232,19,10,.18);padding:7px 18px;border-radius:100px;font-size:11px;font-weight:700;color:rgba(232,19,10,.7);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:32px}
+.intro-h1{font-size:clamp(38px,6.5vw,68px);font-weight:900;line-height:1.0;letter-spacing:-2.5px;margin-bottom:22px}
+.intro-h1 .g{background:linear-gradient(135deg,var(--red),var(--red2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.intro-sub{font-size:16px;line-height:1.75;color:rgba(255,255,255,.55);max-width:480px;margin-bottom:44px}
+.intro-stats{display:flex;gap:40px;justify-content:center;margin-bottom:44px}
+.istat{display:flex;flex-direction:column;align-items:center;gap:4px}
+.istat-n{font-size:30px;font-weight:900;color:var(--white);letter-spacing:-1px}
+.istat-n em{color:var(--red);font-style:normal}
+.istat-l{font-size:10px;font-weight:700;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase}
+
+.btn-start{background:linear-gradient(135deg,var(--red),var(--red2));color:var(--white);padding:20px 56px;border-radius:100px;font-size:16px;font-weight:800;border:none;cursor:none;transition:all .3s;letter-spacing:.3px;position:relative;overflow:hidden}
+.btn-start::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,.1);transform:translateX(-100%);transition:transform .3s}
+.btn-start:hover::after{transform:translateX(0)}
+.btn-start:hover{transform:translateY(-3px);box-shadow:0 20px 48px rgba(232,19,10,.4)}
+
+/* QUESTION */
+.q-step{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--red);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+.q-step::before,.q-step::after{content:'';flex:1;height:1px;background:rgba(232,19,10,.15)}
+.q-h{font-size:clamp(22px,3.5vw,36px);font-weight:800;line-height:1.15;letter-spacing:-1px;margin-bottom:10px}
+.q-sub{font-size:14px;color:rgba(255,255,255,.5);margin-bottom:40px}
+
+/* OPTIONS */
+.opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;margin-bottom:28px}
+.opts.cols-1{grid-template-columns:1fr}
+.opts.cols-3{grid-template-columns:repeat(3,1fr)}
+
+.opt{background:var(--gray);border:1.5px solid var(--border);border-radius:16px;padding:22px 20px;cursor:none;transition:all .3s cubic-bezier(.16,1,.3,1);text-align:left;position:relative;overflow:visible}
+.opt::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(232,19,10,.07),transparent);opacity:0;transition:opacity .3s;border-radius:16px;pointer-events:none}
+.opt:hover{border-color:rgba(232,19,10,.35);transform:translateY(-2px)}
+.opt:hover::before{opacity:1}
+.opt.sel{border-color:var(--red);background:rgba(232,19,10,.07);transform:translateY(-2px);box-shadow:0 8px 28px rgba(232,19,10,.12)}
+.opt.sel::before{opacity:1}
+
+.opt-ico{font-size:28px;margin-bottom:12px;display:block;transition:transform .3s}
+.opt:hover .opt-ico,.opt.sel .opt-ico{transform:scale(1.05)}
+.opt-t{font-size:14px;font-weight:700;color:var(--white);margin-bottom:4px;letter-spacing:-.2px}
+.opt-d{font-size:12px;line-height:1.55;color:rgba(255,255,255,.5)}
+.opt-chk{position:absolute;top:12px;right:12px;width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(255,255,255,.12);display:flex;align-items:center;justify-content:center;transition:all .3s}
+.opt.sel .opt-chk{background:var(--red);border-color:var(--red)}
+.opt-chk svg{opacity:0;transition:opacity .2s}
+.opt.sel .opt-chk svg{opacity:1}
+
+/* MULTI SELECT HINT */
+.multi-hint{font-size:11px;font-weight:600;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+
+/* BUDGET INPUT */
+.budget-input-wrap{width:100%;margin-bottom:28px}
+.budget-field{width:100%;background:var(--gray);border:1.5px solid var(--border);border-radius:14px;padding:18px 22px;font-family:'Plus Jakarta Sans',sans-serif;font-size:16px;font-weight:600;color:var(--white);outline:none;transition:all .3s;text-align:center;letter-spacing:-.3px}
+.budget-field:focus{border-color:var(--red);background:rgba(232,19,10,.05);box-shadow:0 0 0 4px rgba(232,19,10,.08)}
+.budget-field::placeholder{color:rgba(255,255,255,.4);font-weight:400}
+
+/* NAV */
+.q-nav{display:flex;align-items:center;gap:12px}
+.btn-next{background:var(--white);color:var(--black);padding:15px 44px;border-radius:100px;font-size:14px;font-weight:700;border:none;cursor:none;transition:all .3s;opacity:.25;pointer-events:none}
+.btn-next.on{opacity:1;pointer-events:all;background:linear-gradient(135deg,var(--red),var(--red2));color:var(--white)}
+.btn-next.on:hover{transform:translateY(-2px);box-shadow:0 12px 32px rgba(232,19,10,.3)}
+.btn-back{background:transparent;color:rgba(255,255,255,.5);padding:15px 22px;border-radius:100px;font-size:14px;font-weight:600;border:1.5px solid rgba(255,255,255,.07);cursor:none;transition:all .3s;display:flex;align-items:center;gap:6px}
+.btn-back:hover{color:var(--white);border-color:rgba(255,255,255,.4)}
+
+/* RESULT */
+.res-wrap{width:100%;max-width:740px}
+
+.res-top{display:grid;grid-template-columns:200px 1fr;gap:32px;align-items:center;background:var(--gray);border:1px solid var(--border);border-radius:24px;padding:36px;margin-bottom:20px;text-align:left}
+
+.res-ring-wrap{position:relative;flex-shrink:0;width:160px;height:160px}
+.res-ring{transform:rotate(-90deg)}
+.res-ring-bg{stroke:rgba(255,255,255,.06)}
+.res-ring-fill{stroke-dasharray:502;stroke-dashoffset:502;transition:stroke-dashoffset 1.6s cubic-bezier(.16,1,.3,1) .3s;stroke-linecap:round}
+.res-score-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.res-score-n{font-size:40px;font-weight:900;color:var(--white);letter-spacing:-2px;line-height:1}
+.res-score-l{font-size:10px;font-weight:700;color:rgba(255,255,255,.5);letter-spacing:1.5px;text-transform:uppercase;margin-top:4px}
+
+.res-badge{display:inline-flex;align-items:center;gap:6px;padding:6px 14px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:12px}
+.rb-high{background:rgba(40,180,100,.1);border:1px solid rgba(40,180,100,.2);color:#28b464}
+.rb-mid{background:rgba(255,149,0,.1);border:1px solid rgba(255,149,0,.2);color:#ff9500}
+.rb-low{background:rgba(232,19,10,.1);border:1px solid rgba(232,19,10,.2);color:var(--red)}
+
+.res-title{font-size:clamp(22px,3.5vw,32px);font-weight:900;letter-spacing:-1px;margin-bottom:10px;line-height:1.1}
+.res-desc{font-size:14px;line-height:1.75;color:rgba(255,255,255,.55)}
+
+/* STATS GRID */
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.stat-box{background:var(--gray);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center;animation:sIn .5s cubic-bezier(.16,1,.3,1) backwards}
+.stat-box-n{font-size:32px;font-weight:900;letter-spacing:-1.5px;line-height:1}
+.stat-box-l{font-size:11px;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:1px;text-transform:uppercase;margin-top:6px}
+
+/* PLATFORM CHART */
+.platform-section{background:var(--gray);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:20px;text-align:left}
+.platform-title{font-size:13px;font-weight:700;color:rgba(255,255,255,.55);letter-spacing:1px;text-transform:uppercase;margin-bottom:20px}
+.platform-rows{display:flex;flex-direction:column;gap:12px}
+.platform-row{display:flex;align-items:center;gap:14px}
+.platform-name{font-size:13px;font-weight:600;color:var(--white);width:90px;flex-shrink:0}
+.platform-bar-track{flex:1;height:8px;background:rgba(255,255,255,.06);border-radius:4px;overflow:hidden}
+.platform-bar-fill{height:100%;border-radius:4px;animation:fillBar 1.2s cubic-bezier(.16,1,.3,1) backwards}
+@keyframes fillBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.pf-has{background:linear-gradient(90deg,var(--red),var(--red2))}
+.pf-miss{background:rgba(255,255,255,.1)}
+.platform-status{font-size:11px;font-weight:700;width:70px;text-align:right}
+.ps-has{color:#28b464}
+.ps-miss{color:rgba(255,255,255,.4)}
+
+/* RECS */
+.recs-section{background:var(--gray);border:1px solid var(--border);border-radius:20px;padding:28px;margin-bottom:20px;text-align:left}
+.recs-title{font-size:13px;font-weight:700;color:rgba(255,255,255,.55);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px}
+.rec-item{display:flex;align-items:flex-start;gap:14px;padding:14px 0;border-bottom:1px solid rgba(255,255,255,.05);transition:all .3s;animation:sIn .5s cubic-bezier(.16,1,.3,1) backwards}
+.rec-item:last-child{border-bottom:none;padding-bottom:0}
+.rec-item:hover{transform:translateX(4px)}
+.rec-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.ri-1{background:rgba(232,19,10,.12)}
+.ri-2{background:rgba(80,130,255,.12)}
+.ri-3{background:rgba(40,180,100,.12)}
+.ri-4{background:rgba(255,149,0,.12)}
+.ri-5{background:rgba(160,80,255,.12)}
+.rec-t{font-size:14px;font-weight:700;color:var(--white);margin-bottom:3px}
+.rec-d{font-size:12px;line-height:1.6;color:rgba(255,255,255,.5)}
+.rec-tag{display:inline-block;padding:2px 10px;border-radius:100px;font-size:10px;font-weight:700;margin-top:6px;background:rgba(232,19,10,.1);color:var(--red);letter-spacing:.5px}
+
+/* ISMAIL BOX */
+.ismail-box{background:linear-gradient(135deg,rgba(232,19,10,.08),rgba(232,19,10,.04));border:1px solid rgba(232,19,10,.15);border-radius:20px;padding:28px 32px;margin-bottom:20px;display:flex;align-items:center;gap:20px;text-align:left}
+.ismail-av{width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--red),var(--red2));display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:800;color:var(--white);flex-shrink:0;position:relative}
+.ismail-online{position:absolute;bottom:2px;right:2px;width:14px;height:14px;background:#28b464;border-radius:50%;border:2px solid var(--black)}
+.ismail-name{font-size:15px;font-weight:700;color:var(--white);margin-bottom:4px}
+.ismail-role{font-size:12px;color:rgba(255,255,255,.52);margin-bottom:8px}
+.ismail-msg{font-size:13px;line-height:1.65;color:rgba(255,255,255,.5)}
+.ismail-msg strong{color:var(--white)}
+
+/* ACTIONS */
+.res-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.btn-cta{background:linear-gradient(135deg,var(--red),var(--red2));color:var(--white);padding:18px 48px;border-radius:100px;font-size:15px;font-weight:700;border:none;cursor:none;transition:all .3s;text-decoration:none;display:inline-block}
+.btn-cta:hover{transform:translateY(-3px);box-shadow:0 16px 40px rgba(232,19,10,.35)}
+.btn-restart{background:transparent;color:rgba(255,255,255,.52);padding:18px 28px;border-radius:100px;font-size:14px;font-weight:600;border:1.5px solid rgba(255,255,255,.08);cursor:none;transition:all .3s}
+.btn-restart:hover{color:var(--white);border-color:rgba(255,255,255,.4)}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="bg-mesh"></div>
+<div class="bg-grid"></div>
+<div class="progress-wrap"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+<div class="quiz-logo"><span class="logo-dot"></span>RECmode</div>
+<div class="step-count" id="stepCount"></div>
+
+<div class="quiz-wrap">
+
+<!-- INTRO -->
+<div class="screen active" id="s-intro">
+  <div class="intro-tag">✦ Kostenlos · 3 Minuten · Persönliches Ergebnis</div>
+  <h1 class="intro-h1">Wie viel Marketing-<br>Potenzial verschenken<br>Sie <span class="g">gerade?</span></h1>
+  <p class="intro-sub">8 gezielte Fragen. Eine ehrliche Analyse. Konkrete Empfehlungen, speziell für Ihr Unternehmen.</p>
+  <div class="intro-stats">
+    <div class="istat"><div class="istat-n">8<em>×</em></div><div class="istat-l">Fragen</div></div>
+    <div class="istat"><div class="istat-n">3<em>min</em></div><div class="istat-l">Dauer</div></div>
+    <div class="istat"><div class="istat-n">100<em>%</em></div><div class="istat-l">Kostenlos</div></div>
+  </div>
+  <button class="btn-start" onclick="start()">Analyse starten →</button>
+</div>
+
+<!-- Q1: Problem -->
+<div class="screen" id="s-1">
+  <div class="q-step">Frage 1 von 8</div>
+  <h2 class="q-h">Was ist Ihr größtes<br>Marketing-Problem?</h2>
+  <p class="q-sub">Wählen Sie die Aussage die am besten auf Sie zutrifft</p>
+  <div class="opts" id="o-1">
+    <div class="opt" onclick="pick(this,'1','invisible',3)">
+      <span class="opt-ico">👻</span>
+      <div class="opt-t">Niemand kennt uns</div>
+      <div class="opt-d">Wir sind online kaum sichtbar und bekommen zu wenige Anfragen</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'1','presentation',2)">
+      <span class="opt-ico">📸</span>
+      <div class="opt-t">Schwache Präsentation</div>
+      <div class="opt-d">Unser Angebot ist gut, aber wir wirken nicht professionell genug</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'1','time',2)">
+      <span class="opt-ico">⏰</span>
+      <div class="opt-t">Keine Zeit für Marketing</div>
+      <div class="opt-d">Wir wissen was wir brauchen, aber haben keine Kapazitäten</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'1','audience',2)">
+      <span class="opt-ico">🎯</span>
+      <div class="opt-t">Falsche Zielgruppe</div>
+      <div class="opt-d">Wir erreichen Menschen, aber nicht unsere Wunschkunden</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+  </div>
+  <div class="q-nav">
+    <button class="btn-back" onclick="back()">← Zurück</button>
+    <button class="btn-next" id="n-1" onclick="go(2)">Weiter →</button>
+  </div>
+</div>
+
+<!-- Q2: Agentur -->
+<div class="screen" id="s-2">
+  <div class="q-step">Frage 2 von 8</div>
+  <h2 class="q-h">Arbeiten Sie aktuell<br>mit einer Agentur?</h2>
+  <p class="q-sub">Das hilft uns Ihr aktuelles Setup besser einzuschätzen</p>
+  <div class="opts cols-1" id="o-2">
+    <div class="opt" onclick="pick(this,'2','no_agency',0); document.getElementById('agency-detail').style.display='none'">
+      <span class="opt-ico">🚫</span>
+      <div class="opt-t">Nein, wir arbeiten mit keiner Agentur</div>
+      <div class="opt-d">Wir machen alles selbst oder haben bisher noch nichts gebucht</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'2','agency_yes',1); document.getElementById('agency-detail').style.display='flex'">
+      <span class="opt-ico">🏢</span>
+      <div class="opt-t">Ja, wir haben eine Agentur</div>
+      <div class="opt-d">Wir zahlen monatlich und sind nicht 100% zufrieden mit dem Ergebnis</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+  </div>
+  <div id="agency-detail" style="display:none;flex-direction:column;gap:10px;width:100%;margin-bottom:16px;">
+    <input class="budget-field" id="agency-cost" placeholder="Was zahlen Sie monatlich? z.B. 1.500€" oninput="updateAgency()">
+    <input class="budget-field" id="agency-what" placeholder="Was bekommen Sie dafür? z.B. Social Media Posts" oninput="updateAgency()">
+  </div>
+  <div class="q-nav">
+    <button class="btn-back" onclick="back()">← Zurück</button>
+    <button class="btn-next" id="n-2" onclick="go(3)">Weiter →</button>
+  </div>
+</div>
+
+<!-- Q3: Platforms -->
+<div class="screen" id="s-3">
+  <div class="q-step">Frage 3 von 8</div>
+  <h2 class="q-h">Auf welchen Plattformen<br>sind Sie aktiv?</h2>
+  <p class="q-sub">Mehrfachauswahl möglich, wählen Sie alles was Sie bereits nutzen</p>
+  <div class="multi-hint">Mehrere Antworten möglich</div>
+  <div class="opts" id="o-3">
+    <div class="opt multi" onclick="toggleMulti(this,'3','instagram')">
+      <span class="opt-ico">📸</span>
+      <div class="opt-t">Instagram</div>
+      <div class="opt-d">Fotos, Reels, Stories</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt multi" onclick="toggleMulti(this,'3','tiktok')">
+      <span class="opt-ico">🎵</span>
+      <div class="opt-t">TikTok</div>
+      <div class="opt-d">Kurzvideos, Trends</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt multi" onclick="toggleMulti(this,'3','linkedin')">
+      <span class="opt-ico">💼</span>
+      <div class="opt-t">LinkedIn</div>
+      <div class="opt-d">B2B, Netzwerk</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt multi" onclick="toggleMulti(this,'3','facebook')">
+      <span class="opt-ico">👥</span>
+      <div class="opt-t">Facebook</div>
+      <div class="opt-d">Community, Werbung</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt multi" onclick="toggleMulti(this,'3','youtube')">
+      <span class="opt-ico">▶️</span>
+      <div class="opt-t">YouTube</div>
+      <div class="opt-d">Videos, Tutorials</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt multi" onclick="toggleMulti(this,'3','website')">
+      <span class="opt-ico">🌐</span>
+      <div class="opt-t">Website</div>
+      <div class="opt-d">Eigene Unternehmensseite</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+  </div>
+  <div class="q-nav">
+    <button class="btn-back" onclick="back()">← Zurück</button>
+    <button class="btn-next on" id="n-3" onclick="go(4)">Weiter →</button>
+  </div>
+</div>
+
+<!-- Q4: Material -->
+<div class="screen" id="s-4">
+  <div class="q-step">Frage 4 von 8</div>
+  <h2 class="q-h">Haben Sie bereits<br>Marketing-Material?</h2>
+  <p class="q-sub">Was ist aktuell vorhanden, ehrlich ist am hilfreichsten</p>
+  <div class="opts" id="o-4">
+    <div class="opt" onclick="pick(this,'4','nothing',3)">
+      <span class="opt-ico">📭</span>
+      <div class="opt-t">Noch gar nichts</div>
+      <div class="opt-d">Wir starten von null, kein professionelles Material vorhanden</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'4','phone',2)">
+      <span class="opt-ico">📱</span>
+      <div class="opt-t">Nur Smartphone-Aufnahmen</div>
+      <div class="opt-d">Selbst gemachte Fotos und Videos, nicht professionell</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'4','some',1)">
+      <span class="opt-ico">🎬</span>
+      <div class="opt-t">Einige professionelle Inhalte</div>
+      <div class="opt-d">Wir haben ein paar gute Fotos, ein Video oder Flyer</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'4','good',0)">
+      <span class="opt-ico">✅</span>
+      <div class="opt-t">Gutes Material vorhanden</div>
+      <div class="opt-d">Wir haben professionelle Fotos, Videos und Designmaterial</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+  </div>
+  <div class="q-nav">
+    <button class="btn-back" onclick="back()">← Zurück</button>
+    <button class="btn-next" id="n-4" onclick="go(5)">Weiter →</button>
+  </div>
+</div>
+
+<!-- Q5: Übernahme -->
+<div class="screen" id="s-5">
+  <div class="q-step">Frage 5 von 8</div>
+  <h2 class="q-h">Was sollen wir<br>für Sie übernehmen?</h2>
+  <p class="q-sub">Wählen Sie was am besten zu Ihren Kapazitäten und Zielen passt</p>
+  <div class="opts cols-1" id="o-5">
+    <div class="opt" onclick="pick(this,'5','full',3)">
+      <span class="opt-ico">🚀</span>
+      <div class="opt-t">Alles, Erstellen & Veröffentlichen</div>
+      <div class="opt-d">Wir übernehmen die komplette Produktion und das Posting. Sie müssen sich um nichts kümmern.</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'5','create_only',2)">
+      <span class="opt-ico">🎨</span>
+      <div class="opt-t">Nur Erstellen, Sie posten selbst</div>
+      <div class="opt-d">Wir produzieren das Material (Reels, Fotos, Texte), Sie haben die Kapazitäten zum Posten selbst.</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'5','coaching',1)">
+      <span class="opt-ico">🎓</span>
+      <div class="opt-t">Crash-Kurs, Ich will es selbst lernen</div>
+      <div class="opt-d">Sie haben Kapazitäten, brauchen aber das Know-how. Wir beraten und schulen Sie, damit Sie Geld sparen und selbst effizient posten können.</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+  </div>
+  <div class="q-nav">
+    <button class="btn-back" onclick="back()">← Zurück</button>
+    <button class="btn-next" id="n-5" onclick="go(6)">Weiter →</button>
+  </div>
+</div>
+
+<!-- Q6: Einmalig/Abo -->
+<div class="screen" id="s-6">
+  <div class="q-step">Frage 6 von 8</div>
+  <h2 class="q-h">Wie stellen Sie sich<br>die Zusammenarbeit vor?</h2>
+  <p class="q-sub">Beide Modelle sind bei uns möglich</p>
+  <div class="opts cols-1" id="o-6">
+    <div class="opt" onclick="pick(this,'6','subscription',2)">
+      <span class="opt-ico">📅</span>
+      <div class="opt-t">Monatliches Abo, Langfristige Partnerschaft</div>
+      <div class="opt-d">Regelmäßiger Content, kontinuierliches Wachstum. Wir werden ein fester Teil Ihres Marketing-Teams.</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'6','project',1)">
+      <span class="opt-ico">⚡</span>
+      <div class="opt-t">Einmaliges Projekt, Klares Ergebnis</div>
+      <div class="opt-d">Ein konkretes Projekt mit definiertem Ergebnis, z.B. ein Imagefilm, ein Fotoshooting oder eine Website.</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'6','unsure',0)">
+      <span class="opt-ico">🤔</span>
+      <div class="opt-t">Noch nicht sicher</div>
+      <div class="opt-d">Ich möchte erst die Möglichkeiten kennenlernen und dann entscheiden</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+  </div>
+  <div class="q-nav">
+    <button class="btn-back" onclick="back()">← Zurück</button>
+    <button class="btn-next" id="n-6" onclick="go(7)">Weiter →</button>
+  </div>
+</div>
+
+<!-- Q7: Budget -->
+<div class="screen" id="s-7">
+  <div class="q-step">Frage 7 von 8</div>
+  <h2 class="q-h">Möchten Sie ein<br>Budget angeben?</h2>
+  <p class="q-sub">Völlig optional, hilft uns aber die passende Lösung zu empfehlen</p>
+  <div class="opts cols-1" id="o-7">
+    <div class="opt" onclick="pick(this,'7','no_budget',0); document.getElementById('budget-field-wrap').style.display='none'">
+      <span class="opt-ico">🤐</span>
+      <div class="opt-t">Nein, lieber im Gespräch besprechen</div>
+      <div class="opt-d">Ich möchte erst die Möglichkeiten kennenlernen</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'7','yes_budget',1); document.getElementById('budget-field-wrap').style.display='block'">
+      <span class="opt-ico">💰</span>
+      <div class="opt-t">Ja, ich gebe ein Budget an</div>
+      <div class="opt-d">So können wir direkt das beste Paket für Sie zusammenstellen</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+  </div>
+  <div id="budget-field-wrap" style="display:none;width:100%;margin-bottom:16px;">
+    <input class="budget-field" id="budget-input" placeholder="Ihr monatliches Budget z.B. 500€ – 1.500€" oninput="saveBudget()">
+  </div>
+  <div class="q-nav">
+    <button class="btn-back" onclick="back()">← Zurück</button>
+    <button class="btn-next" id="n-7" onclick="go(8)">Weiter →</button>
+  </div>
+</div>
+
+<!-- Q8: Branche -->
+<div class="screen" id="s-8">
+  <div class="q-step">Frage 8 von 8</div>
+  <h2 class="q-h">In welcher Branche<br>sind Sie tätig?</h2>
+  <p class="q-sub">Damit wir die Strategie auf Ihren Markt zuschneiden können</p>
+  <div class="opts" id="o-8">
+    <div class="opt" onclick="pick(this,'8','b2b',2)">
+      <span class="opt-ico">🏢</span>
+      <div class="opt-t">Dienstleistung / B2B</div>
+      <div class="opt-d">Beratung, Handwerk, IT, Recruiting, Agenturen</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'8','ecommerce',2)">
+      <span class="opt-ico">🛍️</span>
+      <div class="opt-t">Produkte / E-Commerce</div>
+      <div class="opt-d">Physische oder digitale Produkte, Online-Shop</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'8','creative',3)">
+      <span class="opt-ico">🎨</span>
+      <div class="opt-t">Kreativ / Kunst / Kultur</div>
+      <div class="opt-d">Musik, Film, Design, Theater, Events</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+    <div class="opt" onclick="pick(this,'8','health',2)">
+      <span class="opt-ico">🏥</span>
+      <div class="opt-t">Gesundheit / Wellness</div>
+      <div class="opt-d">Medizin, Fitness, Ernährung, Beauty</div>
+      <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
+    </div>
+  </div>
+  <div class="q-nav">
+    <button class="btn-back" onclick="back()">← Zurück</button>
+    <button class="btn-next" id="n-8" onclick="showResult()">Ergebnis ansehen →</button>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="screen" id="s-result">
+  <div class="res-wrap">
+
+    <!-- Top card: ring + summary -->
+    <div class="res-top">
+      <div class="res-ring-wrap">
+        <svg class="res-ring" width="160" height="160" viewBox="0 0 160 160">
+          <defs>
+            <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#E8130A"/>
+              <stop offset="100%" stop-color="#FF6B6B"/>
+            </linearGradient>
+          </defs>
+          <circle class="res-ring-bg" cx="80" cy="80" r="68" stroke-width="10" fill="none"/>
+          <circle class="res-ring-fill" id="ringFill" cx="80" cy="80" r="68" stroke-width="10" fill="none" stroke="url(#rg)"/>
+        </svg>
+        <div class="res-score-inner">
+          <div class="res-score-n" id="scoreNum">0%</div>
+          <div class="res-score-l">Potenzial</div>
+        </div>
+      </div>
+      <div>
+        <div id="resBadge"></div>
+        <h2 class="res-title" id="resTitle"></h2>
+        <p class="res-desc" id="resDesc"></p>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="statsGrid"></div>
+
+    <!-- Platform chart -->
+    <div class="platform-section" id="platformSection">
+      <div class="platform-title">Ihre Plattform-Analyse</div>
+      <div class="platform-rows" id="platformRows"></div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="recs-section">
+      <div class="recs-title">Unsere Empfehlungen für Sie</div>
+      <div id="recsList"></div>
+    </div>
+
+    <!-- Ismail box -->
+    <div class="ismail-box">
+      <div class="ismail-av">
+        IK
+        <div class="ismail-online"></div>
+      </div>
+      <div>
+        <div class="ismail-name">Ismail Khudida · RECmode</div>
+        <div class="ismail-role">Gründer & Kreativdirektor</div>
+        <div class="ismail-msg" id="ismailMsg"></div>
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="res-actions">
+      <button class="btn-cta" onclick="sendEmail()">Jetzt persönliches Gespräch vereinbaren →</button>
+      <button class="btn-restart" onclick="restart()">Quiz wiederholen</button>
+    </div>
+
+  </div>
+</div>
+
+</div><!-- quiz-wrap -->
+
+<script>
+// CURSOR
+const cur=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+document.querySelectorAll('button,.opt,a,input').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cur.classList.add('big'));
+  el.addEventListener('mouseleave',()=>cur.classList.remove('big'));
+});
+(function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(anim);})();
+
+// STATE
+const answers={};
+const multiAnswers={3:[]};
+let hist=[];
+let curQ=0;
+
+const allPlatforms=['instagram','tiktok','linkedin','facebook','youtube','website'];
+const platformLabels={instagram:'Instagram',tiktok:'TikTok',linkedin:'LinkedIn',facebook:'Facebook',youtube:'YouTube',website:'Website'};
+
+function setProg(q){
+  document.getElementById('prog').style.width=(q/8*100)+'%';
+  document.getElementById('stepCount').innerHTML=q>0&&q<=8?`<em>${q}</em> / 8`:'';
+}
+
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo(0,0);
+}
+
+function start(){hist=['s-intro'];curQ=1;setProg(1);showScreen('s-1');}
+
+function pick(el,q,val,score){
+  document.querySelectorAll(`#o-${q} .opt`).forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+  answers[q]={val,score};
+  document.getElementById(`n-${q}`).classList.add('on');
+}
+
+function toggleMulti(el,q,val){
+  el.classList.toggle('sel');
+  if(!multiAnswers[q])multiAnswers[q]=[];
+  if(multiAnswers[q].includes(val)){
+    multiAnswers[q]=multiAnswers[q].filter(v=>v!==val);
+  } else {
+    multiAnswers[q].push(val);
+  }
+}
+
+function updateAgency(){
+  const cost=document.getElementById('agency-cost').value;
+  const what=document.getElementById('agency-what').value;
+  answers['2_detail']={cost,what};
+}
+
+function saveBudget(){
+  answers['budget']=document.getElementById('budget-input').value;
+}
+
+function go(next){
+  hist.push(`s-${next-1}`);
+  curQ=next;
+  setProg(next);
+  showScreen(`s-${next}`);
+}
+
+function back(){
+  if(hist.length>0){
+    const prev=hist.pop();
+    const match=prev.match(/s-(\d+)/);
+    if(match){curQ=parseInt(match[1]);setProg(curQ);}
+    else{curQ=0;setProg(0);}
+    showScreen(prev);
+  }
+}
+
+function countScore(){
+  let s=0;
+  [1,2,4,5,6,7,8].forEach(q=>{if(answers[q])s+=answers[q].score;});
+  return s;
+}
+
+function animCounter(el,target,dur=1200){
+  let v=0;const step=target/(dur/16);
+  const t=setInterval(()=>{
+    v+=step;
+    if(v>=target){el.textContent=target+'%';clearInterval(t);return;}
+    el.textContent=Math.round(v)+'%';
+  },16);
+}
+
+function showResult(){
+  const score=countScore();
+  const maxScore=18;
+  const pct=Math.min(100,Math.round((score/maxScore)*100));
+  const hasPlatforms=multiAnswers[3];
+  const missingPlatforms=allPlatforms.filter(p=>!hasPlatforms.includes(p));
+
+  setProg(8);
+  showScreen('s-result');
+
+  // Ring animation
+  const circ=2*Math.PI*68;
+  const offset=circ-(pct/100)*circ;
+  setTimeout(()=>{ document.getElementById('ringFill').style.strokeDashoffset=offset; },100);
+  setTimeout(()=>animCounter(document.getElementById('scoreNum'),pct),300);
+
+  // Badge + title + desc
+  let badge,title,desc,ismailMsg;
+  if(pct>=70){
+    badge='<div class="res-badge rb-high">✦ Hohes Potenzial</div>';
+    title='Sie sind <span style="background:linear-gradient(135deg,#E8130A,#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">einen Schritt entfernt.</span>';
+    desc='Ihre Basis ist solide, aber Sie verschenken noch erhebliches Potenzial. Mit gezieltem Marketing können Sie Ihre Sichtbarkeit und Anfragen deutlich steigern.';
+    ismailMsg='<strong>Ich habe Ihre Angaben bereits erhalten</strong> und freue mich auf unser persönliches Gespräch. Gemeinsam entwickeln wir eine Strategie die zu Ihrem Unternehmen passt.';
+  } else if(pct>=40){
+    badge='<div class="res-badge rb-mid">◈ Großes Aufholpotenzial</div>';
+    title='Jetzt ist der richtige <span style="background:linear-gradient(135deg,#E8130A,#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Zeitpunkt zu handeln.</span>';
+    desc='Erste Schritte sind gemacht, aber ohne klare Strategie und professionelles Material bleibt viel Potenzial ungenutzt.';
+    ismailMsg='<strong>Ihre Analyse ist bei mir angekommen.</strong> Ich sehe klare Hebel die wir gemeinsam aktivieren können. Lassen Sie uns das persönlich besprechen.';
+  } else {
+    badge='<div class="res-badge rb-low">◉ Maximales Potenzial</div>';
+    title='Ihre Mitbewerber sind schon <span style="background:linear-gradient(135deg,#E8130A,#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">einen Schritt voraus.</span>';
+    desc='Wer jetzt in professionelles Marketing investiert, sichert sich einen entscheidenden Vorsprung. Starten Sie bevor Ihre Mitbewerber es tun.';
+    ismailMsg='<strong>Ich habe Ihre Situation analysiert.</strong> Es gibt großes Potenzial das wir gemeinsam heben können. Ich freue mich auf ein persönliches Gespräch mit Ihnen.';
+  }
+
+  document.getElementById('resBadge').innerHTML=badge;
+  document.getElementById('resTitle').innerHTML=title;
+  document.getElementById('resDesc').textContent=desc;
+  document.getElementById('ismailMsg').innerHTML=ismailMsg;
+
+  // Stats
+  const materialScore={nothing:'Produktion komplett',phone:'Aufwertung nötig',some:'Ausbau empfohlen',good:'Optimierung möglich'};
+  const overnahmeScore={full:'Komplettpaket',create_only:'Content-Paket',coaching:'Coaching-Paket'};
+  const statsHtml=`
+    <div class="stat-box" style="animation-delay:.1s">
+      <div class="stat-box-n" style="color:#E8130A">${hasPlatforms.length}<span style="font-size:18px;color:rgba(255,255,255,.5)">/${allPlatforms.length}</span></div>
+      <div class="stat-box-l">Plattformen aktiv</div>
+    </div>
+    <div class="stat-box" style="animation-delay:.2s">
+      <div class="stat-box-n" style="color:#ff9500">${missingPlatforms.length}</div>
+      <div class="stat-box-l">Plattformen ungenutzt</div>
+    </div>
+    <div class="stat-box" style="animation-delay:.3s">
+      <div class="stat-box-n" style="color:#28b464">${pct}<span style="font-size:18px">%</span></div>
+      <div class="stat-box-l">Potenzial erkannt</div>
+    </div>
+  `;
+  document.getElementById('statsGrid').innerHTML=statsHtml;
+
+  // Platform chart
+  const platHtml=allPlatforms.map((p,i)=>{
+    const has=hasPlatforms.includes(p);
+    return `<div class="platform-row" style="animation:sIn .5s cubic-bezier(.16,1,.3,1) ${i*.08+.2}s backwards">
+      <span class="platform-name">${platformLabels[p]}</span>
+      <div class="platform-bar-track"><div class="platform-bar-fill ${has?'pf-has':'pf-miss'}" style="width:${has?100:30}%;transform-origin:left;animation-delay:${i*.1+.4}s"></div></div>
+      <span class="platform-status ${has?'ps-has':'ps-miss'}">${has?'✓ Aktiv':'Potenzial'}</span>
+    </div>`;
+  }).join('');
+  document.getElementById('platformRows').innerHTML=platHtml;
+
+  // Recommendations
+  const recs=[];
+  const mat=answers[4]?.val;
+  const overnahme=answers[5]?.val;
+  const coop=answers[6]?.val;
+
+  if(mat==='nothing'||mat==='phone'){
+    recs.push({icon:'🎬',cls:'ri-1',t:'Professionelle Medienproduktion',d:'Imagefilme, Produktfotos und Reels die Ihr Angebot professionell präsentieren.',tag:'Dringend empfohlen'});
+  }
+  if(overnahme==='full'){
+    recs.push({icon:'📱',cls:'ri-2',t:'Social Media Komplettpaket',d:'Wir erstellen und veröffentlichen regelmäßigen Content auf all Ihren Kanälen. Sie konzentrieren sich auf Ihr Kerngeschäft.',tag:'Passend zu Ihrer Wahl'});
+  }
+  if(overnahme==='create_only'){
+    recs.push({icon:'🎨',cls:'ri-2',t:'Content-Produktion & Lieferpaket',d:'Wir produzieren professionelle Reels, Fotos und Texte, Sie haben die Kapazitäten zum Posten selbst.',tag:'Passend zu Ihrer Wahl'});
+  }
+  if(overnahme==='coaching'){
+    recs.push({icon:'🎓',cls:'ri-3',t:'Marketing Crash-Kurs',d:'Wir schulen Sie damit Sie selbst effizient posten können. So sparen Sie langfristig Geld bei maximaler Wirkung.',tag:'Passend zu Ihrer Wahl'});
+  }
+  if(missingPlatforms.includes('website')){
+    recs.push({icon:'🌐',cls:'ri-4',t:'Website erstellen',d:'Keine Website? Das ist Ihre wichtigste Verkaufsseite. Wir erstellen sie in wenigen Tagen professionell und suchmaschinenoptimiert.',tag:'Fehlende Basis'});
+  }
+  if(missingPlatforms.length>=3){
+    recs.push({icon:'🚀',cls:'ri-5',t:'Plattform-Aufbau',d:`Sie sind auf ${missingPlatforms.length} Plattformen noch nicht aktiv. Jede fehlende Plattform ist verlorene Reichweite und Kunden.`,tag:`${missingPlatforms.length} Plattformen ungenutzt`});
+  }
+  if(answers[2]?.val==='agency_yes'){
+    recs.push({icon:'💡',cls:'ri-1',t:'Agentur-Vergleich',d:'Sie zahlen bereits für eine Agentur. Lassen Sie uns vergleichen was Sie bekommen und was RECmode stattdessen für Sie leisten kann.',tag:'Kostenvorteil möglich'});
+  }
+  if(coop==='subscription'){
+    recs.push({icon:'📅',cls:'ri-3',t:'Monatliches Marketing-Abo',d:'Kontinuierlicher Content, wachsende Reichweite, planbare Kosten. Ihre Marke wird Monat für Monat stärker.',tag:'Langfristiger Aufbau'});
+  }
+
+  const recsHtml=recs.slice(0,4).map((r,i)=>`
+    <div class="rec-item" style="animation-delay:${i*.12+.2}s">
+      <div class="rec-icon ${r.cls}">${r.icon}</div>
+      <div>
+        <div class="rec-t">${r.t}</div>
+        <div class="rec-d">${r.d}</div>
+        <span class="rec-tag">${r.tag}</span>
+      </div>
+    </div>
+  `).join('');
+  document.getElementById('recsList').innerHTML=recsHtml;
+}
+
+function sendEmail(){
+  const q1=answers[1]?.val||'–';
+  const q2=answers[2]?.val==='agency_yes'?`Ja – ${answers['2_detail']?.cost||'–'} monatlich für: ${answers['2_detail']?.what||'–'}`:'Nein';
+  const q3=multiAnswers[3].length>0?multiAnswers[3].join(', '):'Keine';
+  const q4=answers[4]?.val||'–';
+  const q5=answers[5]?.val||'–';
+  const q6=answers[6]?.val||'–';
+  const q7=answers['budget']||'Nicht angegeben';
+  const q8=answers[8]?.val||'–';
+
+  const subject=encodeURIComponent('RECmode Marketing-Check – Neue Anfrage');
+  const body=encodeURIComponent(`Neue Quiz-Auswertung von der Website:\n\n` +
+    `Problem: ${q1}\n` +
+    `Aktuelle Agentur: ${q2}\n` +
+    `Aktive Plattformen: ${q3}\n` +
+    `Vorhandenes Material: ${q4}\n` +
+    `Gewünschte Übernahme: ${q5}\n` +
+    `Zusammenarbeit: ${q6}\n` +
+    `Budget: ${q7}\n` +
+    `Branche: ${q8}\n\n` +
+    `Bitte melden Sie sich für ein persönliches Gespräch.`
+  );
+  window.location.href=`mailto:info@recmo.de?subject=${subject}&body=${body}`;
+}
+
+function restart(){
+  Object.keys(answers).forEach(k=>delete answers[k]);
+  multiAnswers[3]=[];
+  hist=[];curQ=0;
+  document.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel'));
+  document.querySelectorAll('.btn-next').forEach(b=>b.classList.remove('on'));
+  document.getElementById('agency-detail').style.display='none';
+  document.getElementById('budget-field-wrap').style.display='none';
+  document.getElementById('prog').style.width='0%';
+  document.getElementById('stepCount').textContent='';
+  showScreen('s-intro');
+}
+</script>
+</body>
+</html>
