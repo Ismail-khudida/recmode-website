@@ -1,41 +1,24 @@
-# RECmode – robots.txt
-# recmo.de | recmode.de
-
-# Alle Suchmaschinen erlauben
 User-agent: *
 Allow: /
-Allow: /quiz.html
-Allow: /impressum.html
-Allow: /datenschutz.html
-
-# Sitemap
 Sitemap: https://recmo.de/sitemap.xml
 
-# KI-Crawler erlauben (für AEO – Answer Engine Optimization)
-# ChatGPT / OpenAI
 User-agent: GPTBot
 Allow: /
 
-# Perplexity
 User-agent: PerplexityBot
 Allow: /
 
-# Anthropic / Claude
 User-agent: anthropic-ai
 Allow: /
 
-# Google AI
 User-agent: Google-Extended
 Allow: /
 
-# Bing / Microsoft
 User-agent: bingbot
 Allow: /
 
-# Meta AI
 User-agent: Meta-ExternalAgent
 Allow: /
 
-# Common Crawl (wird von vielen KI-Modellen genutzt)
 User-agent: CCBot
 Allow: /

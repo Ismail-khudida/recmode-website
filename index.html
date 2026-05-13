@@ -205,7 +205,8 @@
 <!-- Preconnect for performance -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet"></noscript>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
@@ -607,8 +608,10 @@ body.en [data-lang="en"]{display:unset}
 <div class="cursor-ring" id="cursorRing"></div>
 
 <!-- NAV - BLACK -->
+<!-- Skip link for accessibility -->
+<a href="#hero" style="position:absolute;left:-9999px;top:4px;z-index:9999;padding:8px 16px;background:#E8130A;color:white;font-weight:700;border-radius:4px;text-decoration:none;" onfocus="this.style.left='4px'" onblur="this.style.left='-9999px'">Zum Hauptinhalt springen</a>
 <nav>
-  <a href="./index.html" style="display:flex;align-items:center;"><img src="./Recmode_weiß.PNG" alt="RECmode" class="nav-logo" onerror="this.src='https://i.imgur.com/Zvg0YSW.png'"></a>
+  <a href="./index.html" style="display:flex;align-items:center;"><img src="./Recmode_weiß.PNG" alt="RECmode" class="nav-logo" width="140" height="28" onerror="this.src='https://i.imgur.com/Zvg0YSW.png'" loading="eager"></a>
   <ul class="nav-links">
     <li><a href="#how"><span data-lang="de">Wie es funktioniert</span><span data-lang="en">How it works</span></a></li>
     <li><a href="#leistungen"><span data-lang="de">Leistungen</span><span data-lang="en">Services</span></a></li>
@@ -788,6 +791,7 @@ body.en [data-lang="en"]{display:unset}
   </div>
 </section>
 
+<main id="main-content">
 <!-- LOGOS -->
 <div class="logos-strip reveal">
   <p class="logos-label"><span data-lang="de">Vertrauen von Unternehmen aus verschiedenen Branchen</span><span data-lang="en">Trusted by companies across various industries</span></p>
@@ -801,7 +805,7 @@ body.en [data-lang="en"]{display:unset}
 </div>
 
 <!-- HOW IT WORKS -->
-<section id="how" class="section">
+<section id="how" class="section" aria-label="Wie es funktioniert">
   <div class="how-header reveal">
     <p class="section-tag"><span data-lang="de">Wie es funktioniert</span><span data-lang="en">How it works</span></p>
     <h2 class="section-title"><span data-lang="de">Ihr Marketing. <span class="g">Unser Job.</span></span><span data-lang="en">Your marketing. <span class="g">Our job.</span></span></h2>
@@ -891,7 +895,7 @@ body.en [data-lang="en"]{display:unset}
 </section>
 
 <!-- SERVICES - 2x2 -->
-<section id="leistungen" class="section">
+<section id="leistungen" class="section" aria-label="Leistungen">
   <div class="reveal" style="text-align:center;margin-bottom:48px;">
     <p class="section-tag" style="display:inline-flex;"><span data-lang="de">Leistungen</span><span data-lang="en">Services</span></p>
     <h2 class="section-title" style="text-align:center;"><span data-lang="de">Alles aus <span class="g">einer Hand.</span></span><span data-lang="en">Everything from <span class="g">one source.</span></span></h2>
@@ -951,7 +955,7 @@ body.en [data-lang="en"]{display:unset}
 </section>
 
 <!-- KI - 2x2 -->
-<section id="ki" class="section">
+<section id="ki" class="section" aria-label="KI und Innovation">
   <div class="ki-glow"></div>
   <div class="ki-header reveal">
     <p class="section-tag"><span data-lang="de">KI & Innovation</span><span data-lang="en">AI & Innovation</span></p>
@@ -1020,10 +1024,10 @@ body.en [data-lang="en"]{display:unset}
 </section>
 
 <!-- ABOUT -->
-<section id="ueber-uns" class="section">
+<section id="ueber-uns" class="section" aria-label="Über uns">
   <div class="about-grid">
     <div class="about-img reveal" style="display:block;">
-      <img src="./ismail.jpg" alt="Ismail Khudida" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+      <img src="./ismail.jpg" alt="Ismail Khudida" width="280" height="373" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
       <div class="about-badge-float">
         <div class="about-badge-icon">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
@@ -1097,7 +1101,7 @@ body.en [data-lang="en"]{display:unset}
             <span class="team-badge tb-human" data-lang="de">Mensch</span>
             <span class="team-badge tb-human" data-lang="en">Human</span>
             <div class="team-avatar">
-              <img src="./ismail.jpg" alt="Ismail Khudida" onerror="this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#E8130A,#ff9999);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;&quot;>IK</div>'">
+              <img src="./ismail.jpg" alt="Ismail Khudida" width="280" height="373" loading="lazy" onerror="this.parentElement.innerHTML='<div style=&quot;width:100%;height:100%;background:linear-gradient(135deg,#E8130A,#ff9999);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;color:white;&quot;>IK</div>'">
             </div>
             <div class="team-name">Ismail Khudida</div>
             <div class="team-role" data-lang="de">Gründer & Kreativdirektor</div>
@@ -1232,7 +1236,7 @@ body.en [data-lang="en"]{display:unset}
 </section>
 
 <!-- CONTACT -->
-<section id="kontakt" class="section">
+<section id="kontakt" class="section" aria-label="Kontakt">
   <div style="margin-bottom:48px;text-align:center;" class="reveal">
     <p class="section-tag" style="display:inline-flex;"><span data-lang="de">Kontakt</span><span data-lang="en">Contact</span></p>
     <h2 class="section-title" style="text-align:center;"><span data-lang="de">Bereit für mehr <span class="g">Sichtbarkeit?</span></span><span data-lang="en">Ready for more <span class="g">visibility?</span></span></h2>
@@ -1317,6 +1321,7 @@ body.en [data-lang="en"]{display:unset}
   </div>
 </section>
 
+</main>
 <!-- FOOTER - BLACK with full nav -->
 <footer>
   <div class="footer-top">
