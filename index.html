@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="de" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -542,30 +542,52 @@ body.en [data-lang="en"]{display:unset}
   .about-points-h{grid-template-columns:repeat(3,1fr)}
 }
 @media(max-width:768px){
-  nav,.section,#hero,footer{padding-left:24px;padding-right:24px}
+  nav,.section,#hero,footer{padding-left:20px;padding-right:20px}
+  .section{padding-top:64px;padding-bottom:64px}
   .nav-links{display:none}
-  .process-grid{grid-template-columns:1fr}
-  .services-grid-2x2{grid-template-columns:1fr}
-  .ki-grid-2x2{grid-template-columns:1fr}
-  .how-features-h{grid-template-columns:1fr}
-  .about-points-h{grid-template-columns:1fr}
+  .process-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .process-box{padding:24px 20px}
+  .pb-icon{width:48px;height:48px}
+  .pb-title{font-size:16px}
+  .pb-desc{font-size:12px}
+  .services-grid-2x2{grid-template-columns:1fr 1fr;gap:12px}
+  .service-card-h{padding:24px 20px}
+  .sc-title{font-size:16px}
+  .sc-text{font-size:12px}
+  .ki-grid-2x2{grid-template-columns:1fr 1fr;gap:12px}
+  .ki-card-h{padding:24px 20px}
+  .kch-title{font-size:15px}
+  .kch-desc{font-size:12px}
+  .kch-tags{gap:4px}
+  .kch-tag{font-size:9px;padding:3px 8px}
+  .how-features-h{grid-template-columns:1fr;gap:10px}
+  .about-points-h{grid-template-columns:1fr;gap:10px}
   .team-grid{grid-template-columns:1fr 1fr;gap:12px}
   .team-card{padding:20px 16px}
   .team-name{font-size:14px}
-  .team-role{font-size:10px}
-  .team-desc{font-size:12px}
+  .team-role{font-size:9px;letter-spacing:.5px}
+  .team-desc{font-size:11px;line-height:1.6}
+  .team-tags{gap:4px}
+  .team-tag{font-size:9px;padding:2px 8px}
   .team-avatar,.team-avatar-ai{width:56px;height:56px}
+  .team-badge{font-size:8px;padding:2px 6px;top:10px;right:10px}
   .about-grid{grid-template-columns:1fr}
   .contact-grid{grid-template-columns:1fr}
-  .footer-top{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr}
   .footer-bottom{flex-direction:column;gap:12px;text-align:center}
   .footer-legal{justify-content:center}
-  .ki-banner{flex-direction:column;gap:20px;text-align:center}
+  .ki-banner{flex-direction:column;gap:20px;text-align:center;padding:24px 20px}
   .ki-banner-btn{margin-left:0}
+  .ki-banner-left h4{font-size:18px}
+  .ki-banner-left p{font-size:13px}
   .dash-body{grid-template-columns:1fr}
   .dash-sidebar{display:none}
   .dash-right{border-left:none;border-top:1px solid rgba(0,0,0,.05)}
   .form-row{grid-template-columns:1fr}
+  .quiz-preview-grid{grid-template-columns:1fr 1fr}
+  .hero-title{font-size:clamp(32px,8vw,44px)}
+  .hero-desc{font-size:15px}
+  .section-title{font-size:clamp(26px,6vw,36px)}
 }
 /* TEAM SECTION */
 .team-section{margin-top:56px}
@@ -973,8 +995,8 @@ body.en [data-lang="en"]{display:unset}
         <div class="kch-icon kci-1">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#E8130A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
         </div>
-        <div class="kch-title" data-lang="de">KI-Texte & SEO</div>
-        <div class="kch-title" data-lang="en">AI Texts & SEO</div>
+        <div class="kch-title" data-lang="de">Texte & SEO</div>
+        <div class="kch-title" data-lang="en">Texts & SEO</div>
       </div>
       <p class="kch-desc" data-lang="de">Website-Texte, Social Media Captions, Newsletter und SEO-optimierte Inhalte in Ihrem Ton, sofort einsetzbar.</p>
       <p class="kch-desc" data-lang="en">Website texts, social media captions, newsletters and SEO-optimized content in your tone, ready to use.</p>
@@ -985,8 +1007,8 @@ body.en [data-lang="en"]{display:unset}
         <div class="kch-icon kci-2">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#5080ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
         </div>
-        <div class="kch-title" data-lang="de">KI-Bilder & Grafiken</div>
-        <div class="kch-title" data-lang="en">AI Images & Graphics</div>
+        <div class="kch-title" data-lang="de">Bilder & Grafiken</div>
+        <div class="kch-title" data-lang="en">Images & Graphics</div>
       </div>
       <p class="kch-desc" data-lang="de">Produktvisualisierungen, Marketinggrafiken und Konzeptbilder mit vollständiger kommerzieller Lizenz.</p>
       <p class="kch-desc" data-lang="en">Product visualizations, marketing graphics and concept images with full commercial license.</p>
@@ -997,8 +1019,8 @@ body.en [data-lang="en"]{display:unset}
         <div class="kch-icon kci-3">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#28b464" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
         </div>
-        <div class="kch-title" data-lang="de">KI-Video & Konzepte</div>
-        <div class="kch-title" data-lang="en">AI Video & Concepts</div>
+        <div class="kch-title" data-lang="de">Werbefilme & Konzepte</div>
+        <div class="kch-title" data-lang="en">Commercials & Concepts</div>
       </div>
       <p class="kch-desc" data-lang="de">Automatische Untertitel, Übersetzungen, Videoskripte und KI-gestützte Videokonzepte für mehr Reichweite.</p>
       <p class="kch-desc" data-lang="en">Automatic subtitles, translations, video scripts and AI-powered video concepts for more reach.</p>
@@ -1009,8 +1031,8 @@ body.en [data-lang="en"]{display:unset}
         <div class="kch-icon kci-4">
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c850ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
         </div>
-        <div class="kch-title" data-lang="de">KI-Strategie</div>
-        <div class="kch-title" data-lang="en">AI Strategy</div>
+        <div class="kch-title" data-lang="de">Strategie</div>
+        <div class="kch-title" data-lang="en">Strategy</div>
       </div>
       <p class="kch-desc" data-lang="de">Datenbasierte Zielgruppenanalyse und Content-Planung präzise auf Ihr Unternehmen und Ihren Markt zugeschnitten.</p>
       <p class="kch-desc" data-lang="en">Data-based target group analysis and content planning precisely tailored to your company and your market.</p>
@@ -1355,7 +1377,7 @@ body.en [data-lang="en"]{display:unset}
       <ul>
         <li><a href="#leistungen" data-lang="de">Medienproduktion</a><a href="#leistungen" data-lang="en">Media Production</a></li>
         <li><a href="#leistungen">Social Media</a></li>
-        <li><a href="#ki">KI-Marketing</a></li>
+        <li><a href="#ki">KI & Marketing</a></li>
         <li><a href="#leistungen" data-lang="de">Website-Optimierung</a><a href="#leistungen" data-lang="en">Website Optimization</a></li>
       </ul>
     </div>
