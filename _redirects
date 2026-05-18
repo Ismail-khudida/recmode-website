@@ -1,5 +1,10 @@
+# Alte Seiten → Homepage
 /work           /       301
 /work/          /       301
 /about          /       301
 /about/         /       301
+
+# Saubere URLs → HTML-Dateien
 /privacy        /datenschutz.html   301
+/datenschutz    /datenschutz.html   200
+/impressum      /impressum.html     200
