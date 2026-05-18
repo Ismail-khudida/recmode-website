@@ -4,7 +4,5 @@
 /about          /       301
 /about/         /       301
 
-# Saubere URLs → HTML-Dateien
-/privacy        /datenschutz.html   301
-/datenschutz    /datenschutz.html   200
-/impressum      /impressum.html     200
+# Englische URL → Deutsche Datenschutz-Seite
+/privacy        /datenschutz        301
