@@ -1462,7 +1462,7 @@ async function sendForm(){
     });
     const data=await res.json();
     if(data.success){
-      document.querySelector('.contact-form').innerHTML='<div class="form-success"><div class="form-success-icon">✅</div><h3>'+(isEN?'Inquiry sent!':'Anfrage gesendet!')+'</h3><p>'+(isEN?'Thank you, '+name+'! We will get back to you as soon as possible. A confirmation email has been sent to you.':'Danke, '+name+'! Wir melden uns so schnell wie möglich bei Ihnen. Eine Bestätigungsmail wurde an Sie gesendet.')+'</p></div>';
+      document.querySelector('.contact-form').innerHTML='<div class="form-success"><div class="form-success-icon">✅</div><h3>'+(isEN?'Inquiry sent!':'Anfrage gesendet!')+'</h3><p>'+(isEN?'Thank you, '+name+'! We will get back to you as soon as possible. A confirmation email has been sent to you.':'Danke, '+name+'! Wir melden uns so schnell wie möglich bei dir. Eine Bestätigungsmail wurde an dich gesendet.')+'</p></div>';
     }else{throw new Error(data.error||'failed');}
   }catch(e){
     btn.disabled=false;
