@@ -1455,24 +1455,15 @@ async function sendForm(){
   btn.disabled=true;
   btn.innerHTML='<span>'+(isEN?'Sending...':'Wird gesendet…')+'</span>';
   try{
-    const res=await fetch('https://api.web3forms.com/submit',{
+    const res=await fetch('/contact',{
       method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({
-        access_key:'41d750b1-f09b-4107-a335-d19de2e13163',
-        subject:'Neue Anfrage von '+name+(company?' – '+company:''),
-        from_name:'RECmode Website',
-        name:name,
-        email:email,
-        message:'Name: '+name+'\nUnternehmen: '+(company||'—')+'\nE-Mail: '+email+'\n\nNachricht:\n'+message,
-        replyto:email,
-        botcheck:false
-      })
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name,email,company,message})
     });
     const data=await res.json();
     if(data.success){
       document.querySelector('.contact-form').innerHTML='<div class="form-success"><div class="form-success-icon">✅</div><h3>'+(isEN?'Inquiry sent!':'Anfrage gesendet!')+'</h3><p>'+(isEN?'Thank you, '+name+'! We will get back to you as soon as possible. A confirmation email has been sent to you.':'Danke, '+name+'! Wir melden uns so schnell wie möglich bei Ihnen. Eine Bestätigungsmail wurde an Sie gesendet.')+'</p></div>';
-    }else{throw new Error('failed');}
+    }else{throw new Error(data.error||'failed');}
   }catch(e){
     btn.disabled=false;
     btn.innerHTML='<span data-lang="de">Anfrage senden</span><span data-lang="en">Send inquiry</span>';
