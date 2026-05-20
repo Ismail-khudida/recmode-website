@@ -1448,7 +1448,9 @@ async function sendForm(){
   const email=document.getElementById('f-email').value.trim();
   const message=document.getElementById('f-message').value.trim();
   const isEN=document.body.classList.contains('en');
+  const emailOk=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
   if(!name||!email||!message){alert(isEN?'Please fill in all required fields.':'Bitte alle Pflichtfelder ausfüllen.');return;}
+  if(!emailOk){alert(isEN?'Please enter a valid email address.':'Bitte eine gültige E-Mail-Adresse eingeben.');return;}
   const btn=document.querySelector('.form-btn');
   btn.disabled=true;
   btn.innerHTML='<span>'+(isEN?'Sending...':'Wird gesendet…')+'</span>';
