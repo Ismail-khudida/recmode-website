@@ -142,7 +142,7 @@
       "@id": "https://recmo.de/#webpage",
       "url": "https://recmo.de",
       "name": "RECmode – Digitales Marketing, Video & KI-Content für Unternehmen",
-      "description": "RECmode produziert Ihren digitalen Auftritt und platziert Sie gezielt dort, wo Ihre Kunden suchen, scrollen und entscheiden.",
+      "description": "RECmode produziert Deinen digitalen Auftritt und platziert Dich gezielt dort, wo Deine Kunden suchen, scrollen und entscheiden.",
       "isPartOf": {"@id": "https://recmo.de/#website"},
       "about": {"@id": "https://recmo.de/#business"},
       "inLanguage": "de"
@@ -490,6 +490,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;ali
 .contact-link-item:hover{color:#E8130A}
 .cl-dot{width:4px;height:4px;background:#E8130A;border-radius:50%;flex-shrink:0}
 .contact-form{display:flex;flex-direction:column;gap:14px}
+.callback-label{display:flex;align-items:center;gap:10px;cursor:pointer;font-size:14px;color:#555;user-select:none;padding:4px 0;}
+.callback-label input[type="checkbox"]{width:18px;height:18px;accent-color:#E8130A;cursor:pointer;flex-shrink:0;border-radius:4px;}
 .form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .form-field{background:#fafafc;border:1.5px solid rgba(0,0,0,.08);border-radius:12px;padding:16px 20px;font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;color:#1a1a2e;outline:none;width:100%;transition:all .3s}
 .form-field:focus{border-color:#E8130A;background:#fff;box-shadow:0 0 0 4px rgba(232,19,10,.06)}
@@ -1295,9 +1297,18 @@ body.en [data-lang="en"]{display:unset}
       </div>
       <input type="email" class="form-field" id="f-email" placeholder="E-Mail">
       <textarea class="form-field" id="f-message" data-placeholder-de="Beschreibe kurz Dein Projekt..." data-placeholder-en="Briefly describe your project..." placeholder="Beschreibe kurz Dein Projekt..."></textarea>
+      <label class="callback-label">
+        <input type="checkbox" id="f-callback" onchange="toggleCallback()">
+        <span class="callback-check"></span>
+        <span data-lang="de">📞 Ich wünsche einen Rückruf</span><span data-lang="en">📞 I'd like a callback</span>
+      </label>
+      <div id="f-phone-wrap" style="display:none;margin-top:-4px;">
+        <input type="tel" class="form-field" id="f-phone" data-placeholder-de="Telefonnummer (Pflichtfeld)" data-placeholder-en="Phone number (required)" placeholder="Telefonnummer (Pflichtfeld)">
+      </div>
       <button class="form-btn" onclick="sendForm()"><span data-lang="de">Anfrage senden</span><span data-lang="en">Send inquiry</span></button>
     </div>
   </div>
+  <!-- TERMIN - volle Breite unter dem Grid -->
   <div class="termin-card reveal" style="margin-top:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;">
     <div style="display:flex;align-items:center;gap:20px;flex:1;min-width:280px;">
       <div class="termin-icon" style="flex-shrink:0;">📅</div>
@@ -1441,32 +1452,41 @@ function setLang(lang){
   document.querySelectorAll('[data-placeholder-'+lang+']').forEach(el=>{el.placeholder=el.getAttribute('data-placeholder-'+lang);});
 }
 
+function toggleCallback(){
+  const cb=document.getElementById('f-callback');
+  const wrap=document.getElementById('f-phone-wrap');
+  wrap.style.display=cb.checked?'block':'none';
+  if(!cb.checked)document.getElementById('f-phone').value='';
+}
 async function sendForm(){
   const name=document.getElementById('f-name').value.trim();
   const company=document.getElementById('f-company').value.trim();
   const email=document.getElementById('f-email').value.trim();
   const message=document.getElementById('f-message').value.trim();
+  const callback=document.getElementById('f-callback').checked;
+  const phone=document.getElementById('f-phone').value.trim();
   const isEN=document.body.classList.contains('en');
   const emailOk=/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email);
   if(!name||!email||!message){alert(isEN?'Please fill in all required fields.':'Bitte alle Pflichtfelder ausfüllen.');return;}
   if(!emailOk){alert(isEN?'Please enter a valid email address.':'Bitte eine gültige E-Mail-Adresse eingeben.');return;}
+  if(callback&&!phone){alert(isEN?'Please enter your phone number for the callback.':'Bitte Telefonnummer für den Rückruf eingeben.');return;}
   const btn=document.querySelector('.form-btn');
   btn.disabled=true;
-  btn.innerHTML='<span>'+(isEN?'Sending...':'Wird gesendet…')+'</span>';
+  btn.innerHTML='<span>'+(isEN?'Sending...':'Wird gesendet\u2026')+'</span>';
   try{
     const res=await fetch('/contact',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({name,email,company,message})
+      body:JSON.stringify({name,email,company,message,callback,phone})
     });
     const data=await res.json();
     if(data.success){
-      document.querySelector('.contact-form').innerHTML='<div class="form-success"><div class="form-success-icon">✅</div><h3>'+(isEN?'Inquiry sent!':'Anfrage gesendet!')+'</h3><p>'+(isEN?'Thank you, '+name+'! I will get back to you as soon as possible. A confirmation email has been sent to you.':'Danke, '+name+'! Ich melde mich so schnell wie möglich bei dir. Eine Bestätigungsmail wurde an dich gesendet.')+'</p></div>';
+      document.querySelector('.contact-form').innerHTML='<div class="form-success"><div class="form-success-icon">\u2705</div><h3>'+(isEN?'Inquiry sent!':'Anfrage gesendet!')+'</h3><p>'+(isEN?'Thank you, '+name+'! We will get back to you as soon as possible. A confirmation email has been sent to you.':'Danke, '+name+'! Wir melden uns so schnell wie m\u00f6glich. Eine Best\u00e4tigungsmail wurde an dich gesendet.')+'</p></div>';
     }else{throw new Error(data.error||'failed');}
   }catch(e){
     btn.disabled=false;
     btn.innerHTML='<span data-lang="de">Anfrage senden</span><span data-lang="en">Send inquiry</span>';
-    alert(isEN?'Something went wrong. Please email us directly at info@recmo.de':'Etwas ist schiefgelaufen. Bitte schreiben Sie uns direkt an info@recmo.de');
+    alert(isEN?'Something went wrong. Please email us at info@recmo.de':'Etwas ist schiefgelaufen. Bitte schreib uns direkt an info@recmo.de');
   }
 }
 </script>

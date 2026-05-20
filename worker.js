@@ -116,7 +116,7 @@ async function handleContact(request, env, ctx) {
         vielen Dank für Deine Nachricht. Ich melde mich in der Regel innerhalb von 24 Stunden per Mail zurück.
       </p>
       <p style="margin:0 0 24px;font-size:15px;color:#444;line-height:1.7;">
-        Du kannst auch direkt einen Termin sum Videomeeting buchen:
+        Du kannst auch direkt einen Termin zum Videomeeting buchen:
       </p>
       <a href="https://calendar.app.google/4TkMZH2iNK17EMWPA"
          style="display:inline-block;background:#E8130A;color:#ffffff;padding:12px 24px;border-radius:6px;text-decoration:none;font-size:14px;font-weight:700;">
