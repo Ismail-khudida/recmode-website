@@ -9,7 +9,7 @@
 <meta property="og:title" content="RECmode – Kostenloser Marketing-Check">
 <meta property="og:url" content="https://recmo.de/quiz.html">
 <meta property="og:type" content="website">
-<title>RECmode – Ihr kostenloser Marketing-Check</title>
+<title>RECmode – Dein kostenloser Marketing-Check</title>
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -251,8 +251,8 @@ body.en [data-lang="en"]{display:unset}
 <!-- INTRO -->
 <div class="screen active" id="s-intro">
   <div class="intro-tag"><span data-lang="de">✦ Kostenlos · 3 Minuten · Persönliches Ergebnis</span><span data-lang="en">✦ Free · 3 Minutes · Personal Result</span></div>
-  <h1 class="intro-h1"><span data-lang="de">Wie viel Marketing-<br>Potenzial verschenken<br>Sie <span class="g">gerade?</span></span><span data-lang="en">How much marketing<br>potential are you<br><span class="g">giving away?</span></span></h1>
-  <p class="intro-sub"><span data-lang="de">8 gezielte Fragen. Eine ehrliche Analyse. Konkrete Empfehlungen, speziell für Ihr Unternehmen.</span><span data-lang="en">8 targeted questions. An honest analysis. Concrete recommendations, specifically for your company.</span></p>
+  <h1 class="intro-h1"><span data-lang="de">Wie viel Marketing-<br>Potenzial verschenkst<br>Du <span class="g">gerade?</span></span><span data-lang="en">How much marketing<br>potential are you<br><span class="g">giving away?</span></span></h1>
+  <p class="intro-sub"><span data-lang="de">8 gezielte Fragen. Eine ehrliche Analyse. Konkrete Empfehlungen, speziell für Dein Unternehmen.</span><span data-lang="en">8 targeted questions. An honest analysis. Concrete recommendations, specifically for your company.</span></p>
   <div class="intro-stats">
     <div class="istat"><div class="istat-n">8<em>×</em></div><div class="istat-l"><span data-lang="de">Fragen</span><span data-lang="en">Questions</span></div></div>
     <div class="istat"><div class="istat-n">3<em>min</em></div><div class="istat-l"><span data-lang="de">Dauer</span><span data-lang="en">Duration</span></div></div>
@@ -264,8 +264,8 @@ body.en [data-lang="en"]{display:unset}
 <!-- Q1: Problem -->
 <div class="screen" id="s-1">
   <div class="q-step"><span data-lang="de">Frage 1 von 8</span><span data-lang="en">Question 1 of 8</span></div>
-  <h2 class="q-h">Was ist Ihr größtes<br>Marketing-Problem?</h2>
-  <p class="q-sub">Wählen Sie die Aussage die am besten auf Sie zutrifft</p>
+  <h2 class="q-h">Was ist Dein größtes<br>Marketing-Problem?</h2>
+  <p class="q-sub">Wähle die Aussage die am besten auf Dich zutrifft</p>
   <div class="opts" id="o-1">
     <div class="opt" onclick="pick(this,'1','invisible',3)">
       <span class="opt-ico">👻</span>
@@ -301,8 +301,8 @@ body.en [data-lang="en"]{display:unset}
 <!-- Q2: Agentur -->
 <div class="screen" id="s-2">
   <div class="q-step"><span data-lang="de">Frage 2 von 8</span><span data-lang="en">Question 2 of 8</span></div>
-  <h2 class="q-h">Arbeiten Sie aktuell<br>mit einer Agentur?</h2>
-  <p class="q-sub">Das hilft uns Ihr aktuelles Setup besser einzuschätzen</p>
+  <h2 class="q-h">Arbeitest Du aktuell<br>mit einer Agentur?</h2>
+  <p class="q-sub">Das hilft uns Dein aktuelles Setup besser einzuschätzen</p>
   <div class="opts cols-1" id="o-2">
     <div class="opt" onclick="pick(this,'2','no_agency',0); document.getElementById('agency-detail').style.display='none'">
       <span class="opt-ico">🚫</span>
@@ -318,8 +318,8 @@ body.en [data-lang="en"]{display:unset}
     </div>
   </div>
   <div id="agency-detail" style="display:none;flex-direction:column;gap:10px;width:100%;margin-bottom:16px;">
-    <input class="budget-field" id="agency-cost" placeholder="Was zahlen Sie monatlich? z.B. 1.500€" oninput="updateAgency()">
-    <input class="budget-field" id="agency-what" placeholder="Was bekommen Sie dafür? z.B. Social Media Posts" oninput="updateAgency()">
+    <input class="budget-field" id="agency-cost" placeholder="Was zahlst Du monatlich? z.B. 1.500€" oninput="updateAgency()">
+    <input class="budget-field" id="agency-what" placeholder="Was bekommst Du dafür? z.B. Social Media Posts" oninput="updateAgency()">
   </div>
   <div class="q-nav">
     <button class="btn-back" onclick="back()"><span data-lang="de">← Zurück</span><span data-lang="en">← Back</span></button>
@@ -330,8 +330,8 @@ body.en [data-lang="en"]{display:unset}
 <!-- Q3: Platforms -->
 <div class="screen" id="s-3">
   <div class="q-step"><span data-lang="de">Frage 3 von 8</span><span data-lang="en">Question 3 of 8</span></div>
-  <h2 class="q-h">Auf welchen Plattformen<br>sind Sie aktiv?</h2>
-  <p class="q-sub">Mehrfachauswahl möglich, wählen Sie alles was Sie bereits nutzen</p>
+  <h2 class="q-h">Auf welchen Plattformen<br>bist Du aktiv?</h2>
+  <p class="q-sub">Mehrfachauswahl möglich, wähle alles was Du bereits nutzt</p>
   <div class="multi-hint"><span data-lang="de">Mehrere Antworten möglich</span><span data-lang="en">Multiple answers possible</span></div>
   <div class="opts" id="o-3">
     <div class="opt multi" onclick="toggleMulti(this,'3','instagram')">
@@ -404,7 +404,7 @@ body.en [data-lang="en"]{display:unset}
 <!-- Q4: Material -->
 <div class="screen" id="s-4">
   <div class="q-step"><span data-lang="de">Frage 4 von 8</span><span data-lang="en">Question 4 of 8</span></div>
-  <h2 class="q-h">Haben Sie bereits<br>Marketing-Material?</h2>
+  <h2 class="q-h">Hast Du bereits<br>Marketing-Material?</h2>
   <p class="q-sub">Was ist aktuell vorhanden, ehrlich ist am hilfreichsten</p>
   <div class="opts" id="o-4">
     <div class="opt" onclick="pick(this,'4','nothing',3)">
@@ -441,25 +441,25 @@ body.en [data-lang="en"]{display:unset}
 <!-- Q5: Übernahme -->
 <div class="screen" id="s-5">
   <div class="q-step"><span data-lang="de">Frage 5 von 8</span><span data-lang="en">Question 5 of 8</span></div>
-  <h2 class="q-h">Was sollen wir<br>für Sie übernehmen?</h2>
-  <p class="q-sub">Wählen Sie was am besten zu Ihren Kapazitäten und Zielen passt</p>
+  <h2 class="q-h">Was sollen wir<br>für Dich übernehmen?</h2>
+  <p class="q-sub">Wähle was am besten zu Deinen Kapazitäten und Zielen passt</p>
   <div class="opts cols-1" id="o-5">
     <div class="opt" onclick="pick(this,'5','full',3)">
       <span class="opt-ico">🚀</span>
       <div class="opt-t">Alles, Erstellen & Veröffentlichen</div>
-      <div class="opt-d">Wir übernehmen die komplette Produktion und das Posting. Sie müssen sich um nichts kümmern.</div>
+      <div class="opt-d">Wir übernehmen die komplette Produktion und das Posting. Du musst Dich um nichts kümmern.</div>
       <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
     </div>
     <div class="opt" onclick="pick(this,'5','create_only',2)">
       <span class="opt-ico">🎨</span>
-      <div class="opt-t">Nur Erstellen, Sie posten selbst</div>
-      <div class="opt-d">Wir produzieren das Material (Reels, Fotos, Texte), Sie haben die Kapazitäten zum Posten selbst.</div>
+      <div class="opt-t">Nur Erstellen, Du postest selbst</div>
+      <div class="opt-d">Wir produzieren das Material (Reels, Fotos, Texte), Du hast die Kapazitäten zum Posten selbst.</div>
       <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
     </div>
     <div class="opt" onclick="pick(this,'5','coaching',1)">
       <span class="opt-ico">🎓</span>
       <div class="opt-t">Crash-Kurs, Ich will es selbst lernen</div>
-      <div class="opt-d">Sie haben Kapazitäten, brauchen aber das Know-how. Wir beraten und schulen Sie, damit Sie Geld sparen und selbst effizient posten können.</div>
+      <div class="opt-d">Du hast Kapazitäten, brauchst aber das Know-how. Wir beraten und schulen Dich, damit Du Geld sparst und selbst effizient posten kannst.</div>
       <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
     </div>
   </div>
@@ -472,7 +472,7 @@ body.en [data-lang="en"]{display:unset}
 <!-- Q6: Einmalig/Abo -->
 <div class="screen" id="s-6">
   <div class="q-step"><span data-lang="de">Frage 6 von 8</span><span data-lang="en">Question 6 of 8</span></div>
-  <h2 class="q-h">Wie stellen Sie sich<br>die Zusammenarbeit vor?</h2>
+  <h2 class="q-h">Wie stellst Du Dir<br>die Zusammenarbeit vor?</h2>
   <p class="q-sub">Beide Modelle sind bei uns möglich</p>
   <div class="opts cols-1" id="o-6">
     <div class="opt" onclick="pick(this,'6','subscription',2)">
@@ -503,7 +503,7 @@ body.en [data-lang="en"]{display:unset}
 <!-- Q7: Budget -->
 <div class="screen" id="s-7">
   <div class="q-step"><span data-lang="de">Frage 7 von 8</span><span data-lang="en">Question 7 of 8</span></div>
-  <h2 class="q-h">Möchten Sie ein<br>Budget angeben?</h2>
+  <h2 class="q-h">Möchtest Du ein<br>Budget angeben?</h2>
   <p class="q-sub">Völlig optional, hilft uns aber die passende Lösung zu empfehlen</p>
   <div class="opts cols-1" id="o-7">
     <div class="opt" onclick="pick(this,'7','no_budget',0); document.getElementById('budget-field-wrap').style.display='none'">
@@ -515,12 +515,12 @@ body.en [data-lang="en"]{display:unset}
     <div class="opt" onclick="pick(this,'7','yes_budget',1); document.getElementById('budget-field-wrap').style.display='block'">
       <span class="opt-ico">💰</span>
       <div class="opt-t">Ja, ich gebe ein Budget an</div>
-      <div class="opt-d">So können wir direkt das beste Paket für Sie zusammenstellen</div>
+      <div class="opt-d">So können wir direkt das beste Paket für Dich zusammenstellen</div>
       <div class="opt-chk"><svg width="11" height="9" viewBox="0 0 11 9" fill="none"><path d="M1 4.5L4 7.5L10 1" stroke="white" stroke-width="2" stroke-linecap="round"/></svg></div>
     </div>
   </div>
   <div id="budget-field-wrap" style="display:none;width:100%;margin-bottom:16px;">
-    <input class="budget-field" id="budget-input" placeholder="Ihr monatliches Budget z.B. 500€ – 1.500€" oninput="saveBudget()">
+    <input class="budget-field" id="budget-input" placeholder="Dein monatliches Budget z.B. 500€ – 1.500€" oninput="saveBudget()">
   </div>
   <div class="q-nav">
     <button class="btn-back" onclick="back()"><span data-lang="de">← Zurück</span><span data-lang="en">← Back</span></button>
@@ -531,8 +531,8 @@ body.en [data-lang="en"]{display:unset}
 <!-- Q8: Branche -->
 <div class="screen" id="s-8">
   <div class="q-step"><span data-lang="de">Frage 8 von 8</span><span data-lang="en">Question 8 of 8</span></div>
-  <h2 class="q-h">In welcher Branche<br>sind Sie tätig?</h2>
-  <p class="q-sub">Damit wir die Strategie auf Ihren Markt zuschneiden können</p>
+  <h2 class="q-h">In welcher Branche<br>bist Du tätig?</h2>
+  <p class="q-sub">Damit wir die Strategie auf Deinen Markt zuschneiden können</p>
   <div class="opts" id="o-8">
     <div class="opt" onclick="pick(this,'8','b2b',2)">
       <span class="opt-ico">🏢</span>
@@ -599,13 +599,13 @@ body.en [data-lang="en"]{display:unset}
 
     <!-- Platform chart -->
     <div class="platform-section" id="platformSection">
-      <div class="platform-title">Ihre Plattform-Analyse</div>
+      <div class="platform-title">Deine Plattform-Analyse</div>
       <div class="platform-rows" id="platformRows"></div>
     </div>
 
     <!-- Recommendations -->
     <div class="recs-section">
-      <div class="recs-title">Unsere Empfehlungen für Sie</div>
+      <div class="recs-title">Unsere Empfehlungen für Dich</div>
       <div id="recsList"></div>
     </div>
 
@@ -752,19 +752,19 @@ function showResult(){
   let badge,title,desc,ismailMsg;
   if(pct>=70){
     badge='<div class="res-badge rb-high">✦ Hohes Potenzial</div>';
-    title='Sie sind <span style="background:linear-gradient(135deg,#E8130A,#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">einen Schritt entfernt.</span>';
-    desc='Ihre Basis ist solide, aber Sie verschenken noch erhebliches Potenzial. Mit gezieltem Marketing können Sie Ihre Sichtbarkeit und Anfragen deutlich steigern.';
-    ismailMsg='<strong>Ich habe Ihre Angaben bereits erhalten</strong> und freue mich auf unser persönliches Gespräch. Gemeinsam entwickeln wir eine Strategie die zu Ihrem Unternehmen passt.';
+    title='Du bist <span style="background:linear-gradient(135deg,#E8130A,#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">einen Schritt entfernt.</span>';
+    desc='Deine Basis ist solide, aber Du verschenkst noch erhebliches Potenzial. Mit gezieltem Marketing kannst Du Deine Sichtbarkeit und Anfragen deutlich steigern.';
+    ismailMsg='<strong>Ich habe Deine Angaben bereits erhalten</strong> und freue mich auf unser persönliches Gespräch. Gemeinsam entwickeln wir eine Strategie die zu Deinem Unternehmen passt.';
   } else if(pct>=40){
     badge='<div class="res-badge rb-mid">◈ Großes Aufholpotenzial</div>';
     title='Jetzt ist der richtige <span style="background:linear-gradient(135deg,#E8130A,#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Zeitpunkt zu handeln.</span>';
     desc='Erste Schritte sind gemacht, aber ohne klare Strategie und professionelles Material bleibt viel Potenzial ungenutzt.';
-    ismailMsg='<strong>Ihre Analyse ist bei mir angekommen.</strong> Ich sehe klare Hebel die wir gemeinsam aktivieren können. Lassen Sie uns das persönlich besprechen.';
+    ismailMsg='<strong>Deine Analyse ist bei mir angekommen.</strong> Ich sehe klare Hebel die wir gemeinsam aktivieren können. Lass uns das persönlich besprechen.';
   } else {
     badge='<div class="res-badge rb-low">◉ Maximales Potenzial</div>';
-    title='Ihre Mitbewerber sind schon <span style="background:linear-gradient(135deg,#E8130A,#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">einen Schritt voraus.</span>';
-    desc='Wer jetzt in professionelles Marketing investiert, sichert sich einen entscheidenden Vorsprung. Starten Sie bevor Ihre Mitbewerber es tun.';
-    ismailMsg='<strong>Ich habe Ihre Situation analysiert.</strong> Es gibt großes Potenzial das wir gemeinsam heben können. Ich freue mich auf ein persönliches Gespräch mit Ihnen.';
+    title='Deine Mitbewerber sind schon <span style="background:linear-gradient(135deg,#E8130A,#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">einen Schritt voraus.</span>';
+    desc='Wer jetzt in professionelles Marketing investiert, sichert sich einen entscheidenden Vorsprung. Starte, bevor Deine Mitbewerber es tun.';
+    ismailMsg='<strong>Ich habe Deine Situation analysiert.</strong> Es gibt großes Potenzial das wir gemeinsam heben können. Ich freue mich auf ein persönliches Gespräch mit Dir.';
   }
 
   document.getElementById('resBadge').innerHTML=badge;
@@ -809,28 +809,28 @@ function showResult(){
   const coop=answers[6]?.val;
 
   if(mat==='nothing'||mat==='phone'){
-    recs.push({icon:'🎬',cls:'ri-1',t:'Professionelle Medienproduktion',d:'Imagefilme, Produktfotos und Reels die Ihr Angebot professionell präsentieren.',tag:'Dringend empfohlen'});
+    recs.push({icon:'🎬',cls:'ri-1',t:'Professionelle Medienproduktion',d:'Imagefilme, Produktfotos und Reels die Dein Angebot professionell präsentieren.',tag:'Dringend empfohlen'});
   }
   if(overnahme==='full'){
-    recs.push({icon:'📱',cls:'ri-2',t:'Social Media Komplettpaket',d:'Wir erstellen und veröffentlichen regelmäßigen Content auf all Ihren Kanälen. Sie konzentrieren sich auf Ihr Kerngeschäft.',tag:'Passend zu Ihrer Wahl'});
+    recs.push({icon:'📱',cls:'ri-2',t:'Social Media Komplettpaket',d:'Wir erstellen und veröffentlichen regelmäßigen Content auf all Deinen Kanälen. Du konzentrierst Dich auf Dein Kerngeschäft.',tag:'Passend zu Deiner Wahl'});
   }
   if(overnahme==='create_only'){
-    recs.push({icon:'🎨',cls:'ri-2',t:'Content-Produktion & Lieferpaket',d:'Wir produzieren professionelle Reels, Fotos und Texte, Sie haben die Kapazitäten zum Posten selbst.',tag:'Passend zu Ihrer Wahl'});
+    recs.push({icon:'🎨',cls:'ri-2',t:'Content-Produktion & Lieferpaket',d:'Wir produzieren professionelle Reels, Fotos und Texte, Du hast die Kapazitäten zum Posten selbst.',tag:'Passend zu Deiner Wahl'});
   }
   if(overnahme==='coaching'){
-    recs.push({icon:'🎓',cls:'ri-3',t:'Marketing Crash-Kurs',d:'Wir schulen Sie damit Sie selbst effizient posten können. So sparen Sie langfristig Geld bei maximaler Wirkung.',tag:'Passend zu Ihrer Wahl'});
+    recs.push({icon:'🎓',cls:'ri-3',t:'Marketing Crash-Kurs',d:'Wir schulen Dich damit Du selbst effizient posten kannst. So sparst Du langfristig Geld bei maximaler Wirkung.',tag:'Passend zu Deiner Wahl'});
   }
   if(missingPlatforms.includes('website')){
-    recs.push({icon:'🌐',cls:'ri-4',t:'Website erstellen',d:'Keine Website? Das ist Ihre wichtigste Verkaufsseite. Wir erstellen sie in wenigen Tagen professionell und suchmaschinenoptimiert.',tag:'Fehlende Basis'});
+    recs.push({icon:'🌐',cls:'ri-4',t:'Website erstellen',d:'Keine Website? Das ist Deine wichtigste Verkaufsseite. Wir erstellen sie in wenigen Tagen professionell und suchmaschinenoptimiert.',tag:'Fehlende Basis'});
   }
   if(missingPlatforms.length>=3){
-    recs.push({icon:'🚀',cls:'ri-5',t:'Plattform-Aufbau',d:`Sie sind auf ${missingPlatforms.length} Plattformen noch nicht aktiv. Jede fehlende Plattform ist verlorene Reichweite und Kunden.`,tag:`${missingPlatforms.length} Plattformen ungenutzt`});
+    recs.push({icon:'🚀',cls:'ri-5',t:'Plattform-Aufbau',d:`Du bist auf ${missingPlatforms.length} Plattformen noch nicht aktiv. Jede fehlende Plattform ist verlorene Reichweite und Kunden.`,tag:`${missingPlatforms.length} Plattformen ungenutzt`});
   }
   if(answers[2]?.val==='agency_yes'){
-    recs.push({icon:'💡',cls:'ri-1',t:'Agentur-Vergleich',d:'Sie zahlen bereits für eine Agentur. Lassen Sie uns vergleichen was Sie bekommen und was RECmode stattdessen für Sie leisten kann.',tag:'Kostenvorteil möglich'});
+    recs.push({icon:'💡',cls:'ri-1',t:'Agentur-Vergleich',d:'Du zahlst bereits für eine Agentur. Lass uns vergleichen was Du bekommst und was RECmode stattdessen für Dich leisten kann.',tag:'Kostenvorteil möglich'});
   }
   if(coop==='subscription'){
-    recs.push({icon:'📅',cls:'ri-3',t:'Monatliches Marketing-Abo',d:'Kontinuierlicher Content, wachsende Reichweite, planbare Kosten. Ihre Marke wird Monat für Monat stärker.',tag:'Langfristiger Aufbau'});
+    recs.push({icon:'📅',cls:'ri-3',t:'Monatliches Marketing-Abo',d:'Kontinuierlicher Content, wachsende Reichweite, planbare Kosten. Deine Marke wird Monat für Monat stärker.',tag:'Langfristiger Aufbau'});
   }
 
   const recsHtml=recs.slice(0,4).map((r,i)=>`
