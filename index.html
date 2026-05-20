@@ -1267,15 +1267,13 @@ body.en [data-lang="en"]{display:unset}
   <div style="margin-bottom:48px;text-align:center;" class="reveal">
     <p class="section-tag" style="display:inline-flex;"><span data-lang="de">Kontakt</span><span data-lang="en">Contact</span></p>
     <h2 class="section-title" style="text-align:center;"><span data-lang="de">Bereit für mehr <span class="g">Sichtbarkeit?</span></span><span data-lang="en">Ready for more <span class="g">visibility?</span></span></h2>
-    <p style="font-size:17px;line-height:1.75;color:#8888a8;margin:16px auto 0;max-width:500px;text-align:center;"><span data-lang="de">Lassen Sie uns gemeinsam herausfinden, wie wir Ihr Unternehmen voranbringen können. Kostenlos und unverbindlich.</span><span data-lang="en">Let's find out together how we can advance your company. Free and non-binding.</span></p>
+    <p style="font-size:17px;line-height:1.75;color:#8888a8;margin:16px auto 0;max-width:520px;text-align:center;"><span data-lang="de">Lass uns gemeinsam herausfinden, wie wir dein Unternehmen voranbringen können. Kostenlos und unverbindlich.</span><span data-lang="en">Let's find out together how we can advance your company. Free and non-binding.</span></p>
   </div>
   <div class="contact-grid">
     <div class="reveal">
-      <h3 data-lang="de">Persönliche Zusammenarbeit</h3>
-      <h3 data-lang="en">Personal collaboration</h3>
-      <p data-lang="de" style="margin-top:16px;">Sie arbeiten direkt mit mir. Kein Ticketsystem, kein anonymes Team. Wir besprechen Ihr Projekt persönlich und finden gemeinsam die beste Lösung für Ihr Unternehmen.</p>
-      <p data-lang="en" style="margin-top:16px;">You work directly with me. No ticket system, no anonymous team. We discuss your project personally and find the best solution for your company together.</p>
-      <div class="contact-personal" style="margin-top:32px;">
+      <p data-lang="de" style="font-size:16px;line-height:1.8;color:#8888a8;">Du arbeitest direkt mit mir. Kein Ticketsystem, kein anonymes Team. Wir besprechen dein Projekt persönlich und finden gemeinsam die beste Lösung.</p>
+      <p data-lang="en" style="font-size:16px;line-height:1.8;color:#8888a8;">You work directly with me. No ticket system, no anonymous team. We discuss your project personally and find the best solution together.</p>
+      <div class="contact-personal" style="margin-top:28px;">
         <div class="contact-personal-head">
           <div class="contact-av">IK</div>
           <div>
@@ -1289,29 +1287,6 @@ body.en [data-lang="en"]{display:unset}
           <a href="tel:+4917832489043" class="contact-link-item"><span class="cl-dot"></span>0178 3248904</a>
         </div>
       </div>
-      <div class="termin-card reveal">
-        <div class="termin-card-head">
-          <div class="termin-icon">📅</div>
-          <div>
-            <h4 data-lang="de">Persönliches Gespräch vereinbaren</h4>
-            <h4 data-lang="en">Schedule a personal call</h4>
-          </div>
-        </div>
-        <div class="termin-meta">
-          <span class="termin-tag">☕ 30 Min</span>
-          <span class="termin-tag" data-lang="de">✅ Kostenlos</span>
-          <span class="termin-tag" data-lang="en">✅ Free</span>
-          <span class="termin-tag" data-lang="de">📍 Google Meet</span>
-          <span class="termin-tag" data-lang="en">📍 Google Meet</span>
-        </div>
-        <p data-lang="de">Buchen Sie direkt einen Termin – kein Hin-und-Her per Mail. Wählen Sie einfach einen freien Slot.</p>
-        <p data-lang="en">Book a call directly – no back and forth via email. Simply pick a free slot.</p>
-        <a href="https://calendar.app.google/4TkMZH2iNK17EMWPA" target="_blank" class="termin-btn">
-          <span data-lang="de">Termin buchen</span>
-          <span data-lang="en">Book appointment</span>
-          <span>→</span>
-        </a>
-      </div>
     </div>
     <div class="contact-form reveal d1">
       <div class="form-row">
@@ -1319,8 +1294,32 @@ body.en [data-lang="en"]{display:unset}
         <input type="text" class="form-field" id="f-company" data-placeholder-de="Unternehmen" data-placeholder-en="Company" placeholder="Unternehmen">
       </div>
       <input type="email" class="form-field" id="f-email" placeholder="E-Mail">
-      <textarea class="form-field" id="f-message" data-placeholder-de="Beschreiben Sie kurz Ihr Projekt..." data-placeholder-en="Briefly describe your project..." placeholder="Beschreiben Sie kurz Ihr Projekt..."></textarea>
+      <textarea class="form-field" id="f-message" data-placeholder-de="Beschreibe kurz dein Projekt..." data-placeholder-en="Briefly describe your project..." placeholder="Beschreibe kurz dein Projekt..."></textarea>
       <button class="form-btn" onclick="sendForm()"><span data-lang="de">Anfrage senden</span><span data-lang="en">Send inquiry</span></button>
+    </div>
+  </div>
+  <div class="termin-card reveal" style="margin-top:40px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:24px;">
+    <div style="display:flex;align-items:center;gap:20px;flex:1;min-width:280px;">
+      <div class="termin-icon" style="flex-shrink:0;">📅</div>
+      <div>
+        <h4 style="margin-bottom:8px;" data-lang="de">Persönliches Gespräch vereinbaren</h4>
+        <h4 style="margin-bottom:8px;" data-lang="en">Schedule a personal call</h4>
+        <div class="termin-meta" style="margin-bottom:0;">
+          <span class="termin-tag">☕ 30 Min</span>
+          <span class="termin-tag" data-lang="de">✅ Kostenlos</span>
+          <span class="termin-tag" data-lang="en">✅ Free</span>
+          <span class="termin-tag">📍 Google Meet</span>
+        </div>
+      </div>
+    </div>
+    <div style="flex-shrink:0;">
+      <p data-lang="de" style="font-size:13px;color:rgba(255,255,255,.45);margin-bottom:14px;">Buch direkt einen freien Slot. Kein Hin und Her per Mail.</p>
+      <p data-lang="en" style="font-size:13px;color:rgba(255,255,255,.45);margin-bottom:14px;">Book a free slot directly. No back and forth via email.</p>
+      <a href="https://calendar.app.google/4TkMZH2iNK17EMWPA" target="_blank" class="termin-btn">
+        <span data-lang="de">Termin buchen</span>
+        <span data-lang="en">Book appointment</span>
+        <span>→</span>
+      </a>
     </div>
   </div>
 </section>
