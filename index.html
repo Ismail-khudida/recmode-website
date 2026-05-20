@@ -497,6 +497,20 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;ali
 textarea.form-field{resize:none;height:130px}
 .form-btn{background:linear-gradient(135deg,#E8130A,#FF4B4B);color:#fff;border:none;border-radius:100px;padding:18px 48px;font-family:'Plus Jakarta Sans',sans-serif;font-size:15px;font-weight:700;cursor:none;align-self:flex-start;transition:all .3s;box-shadow:0 8px 24px rgba(232,19,10,.25)}
 .form-btn:hover{transform:translateY(-2px);box-shadow:0 16px 40px rgba(232,19,10,.35)}
+.form-btn:disabled{opacity:.7;transform:none;cursor:not-allowed}
+.form-success{text-align:center;padding:48px 24px;animation:fadeUp .5s ease}
+.form-success-icon{font-size:52px;margin-bottom:16px}
+.form-success h3{font-size:22px;font-weight:700;color:#1a1a2e;margin-bottom:12px}
+.form-success p{color:#8888a8;line-height:1.7;font-size:15px}
+.termin-card{background:linear-gradient(135deg,#0d0d0d,#1a1a2e);border-radius:16px;padding:24px;margin-top:20px;border:1px solid rgba(255,255,255,.06)}
+.termin-card-head{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.termin-icon{width:42px;height:42px;border-radius:12px;background:rgba(232,19,10,.15);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:20px}
+.termin-card h4{font-size:15px;font-weight:700;color:#fff;margin-bottom:2px}
+.termin-card p{font-size:13px;color:rgba(255,255,255,.5);margin-bottom:16px;line-height:1.6}
+.termin-btn{display:inline-flex;align-items:center;gap:8px;background:#E8130A;color:#fff;padding:12px 24px;border-radius:100px;font-size:14px;font-weight:700;text-decoration:none;transition:all .3s;font-family:'Plus Jakarta Sans',sans-serif}
+.termin-btn:hover{background:#c8100a;transform:translateY(-2px);box-shadow:0 8px 24px rgba(232,19,10,.35)}
+.termin-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.termin-tag{font-size:12px;color:rgba(255,255,255,.45);background:rgba(255,255,255,.06);padding:4px 10px;border-radius:100px}
 
 /* FOOTER - BLACK */
 footer{background:#0d0d0d;padding:64px 64px 32px}
@@ -1275,6 +1289,29 @@ body.en [data-lang="en"]{display:unset}
           <a href="tel:+4917832489043" class="contact-link-item"><span class="cl-dot"></span>0178 3248904</a>
         </div>
       </div>
+      <div class="termin-card reveal">
+        <div class="termin-card-head">
+          <div class="termin-icon">📅</div>
+          <div>
+            <h4 data-lang="de">Persönliches Gespräch vereinbaren</h4>
+            <h4 data-lang="en">Schedule a personal call</h4>
+          </div>
+        </div>
+        <div class="termin-meta">
+          <span class="termin-tag">☕ 30 Min</span>
+          <span class="termin-tag" data-lang="de">✅ Kostenlos</span>
+          <span class="termin-tag" data-lang="en">✅ Free</span>
+          <span class="termin-tag" data-lang="de">📍 Google Meet</span>
+          <span class="termin-tag" data-lang="en">📍 Google Meet</span>
+        </div>
+        <p data-lang="de">Buchen Sie direkt einen Termin – kein Hin-und-Her per Mail. Wählen Sie einfach einen freien Slot.</p>
+        <p data-lang="en">Book a call directly – no back and forth via email. Simply pick a free slot.</p>
+        <a href="DEIN_GOOGLE_CALENDAR_LINK" target="_blank" class="termin-btn">
+          <span data-lang="de">Termin buchen</span>
+          <span data-lang="en">Book appointment</span>
+          <span>→</span>
+        </a>
+      </div>
     </div>
     <div class="contact-form reveal d1">
       <div class="form-row">
@@ -1405,15 +1442,40 @@ function setLang(lang){
   document.querySelectorAll('[data-placeholder-'+lang+']').forEach(el=>{el.placeholder=el.getAttribute('data-placeholder-'+lang);});
 }
 
-function sendForm(){
-  const name=document.getElementById('f-name').value;
-  const company=document.getElementById('f-company').value;
-  const email=document.getElementById('f-email').value;
-  const message=document.getElementById('f-message').value;
-  if(!name||!email||!message){alert(document.body.classList.contains('en')?'Please fill in all required fields.':'Bitte alle Pflichtfelder ausfüllen.');return;}
-  const sub=encodeURIComponent('Neue Anfrage von '+name+(company?' – '+company:''));
-  const body=encodeURIComponent('Name: '+name+'\nUnternehmen: '+company+'\nE-Mail: '+email+'\n\nNachricht:\n'+message);
-  window.location.href='mailto:info@recmo.de?subject='+sub+'&body='+body;
+async function sendForm(){
+  const name=document.getElementById('f-name').value.trim();
+  const company=document.getElementById('f-company').value.trim();
+  const email=document.getElementById('f-email').value.trim();
+  const message=document.getElementById('f-message').value.trim();
+  const isEN=document.body.classList.contains('en');
+  if(!name||!email||!message){alert(isEN?'Please fill in all required fields.':'Bitte alle Pflichtfelder ausfüllen.');return;}
+  const btn=document.querySelector('.form-btn');
+  btn.disabled=true;
+  btn.innerHTML='<span>'+(isEN?'Sending...':'Wird gesendet…')+'</span>';
+  try{
+    const res=await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        access_key:'41d750b1-f09b-4107-a335-d19de2e13163',
+        subject:'Neue Anfrage von '+name+(company?' – '+company:''),
+        from_name:'RECmode Website',
+        name:name,
+        email:email,
+        message:'Name: '+name+'\nUnternehmen: '+(company||'—')+'\nE-Mail: '+email+'\n\nNachricht:\n'+message,
+        replyto:email,
+        botcheck:false
+      })
+    });
+    const data=await res.json();
+    if(data.success){
+      document.querySelector('.contact-form').innerHTML='<div class="form-success"><div class="form-success-icon">✅</div><h3>'+(isEN?'Inquiry sent!':'Anfrage gesendet!')+'</h3><p>'+(isEN?'Thank you, '+name+'! We will get back to you as soon as possible. A confirmation email has been sent to you.':'Danke, '+name+'! Wir melden uns so schnell wie möglich bei Ihnen. Eine Bestätigungsmail wurde an Sie gesendet.')+'</p></div>';
+    }else{throw new Error('failed');}
+  }catch(e){
+    btn.disabled=false;
+    btn.innerHTML='<span data-lang="de">Anfrage senden</span><span data-lang="en">Send inquiry</span>';
+    alert(isEN?'Something went wrong. Please email us directly at info@recmo.de':'Etwas ist schiefgelaufen. Bitte schreiben Sie uns direkt an info@recmo.de');
+  }
 }
 </script>
 </body>
