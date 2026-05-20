@@ -856,23 +856,21 @@ async function sendEmail(){
   const q7=answers['budget']||'Nicht angegeben';
   const q8=answers[8]?.val||'–';
 
-  // Quiz-Ergebnisse per Web3Forms senden
-  try{
-    await fetch('https://api.web3forms.com/submit',{
-      method:'POST',
-      headers:{'Content-Type':'application/json','Accept':'application/json'},
-      body:JSON.stringify({
-        access_key:'41d750b1-f09b-4107-a335-d19de2e13163',
-        subject:'RECmode Marketing-Check – Neue Quiz-Anfrage',
-        from_name:'RECmode Quiz',
-        message:`Neue Quiz-Auswertung von der Website:\n\nProblem: ${q1}\nAktuelle Agentur: ${q2}\nAktive Plattformen: ${q3}\nVorhandenes Material: ${q4}\nGewünschte Übernahme: ${q5}\nZusammenarbeit: ${q6}\nBudget: ${q7}\nBranche: ${q8}`,
-        botcheck:false
-      })
-    });
-  }catch(e){console.warn('Web3Forms Fehler:',e);}
-
-  // Direkt zum Google Calendar Booking öffnen
+  // Kalender SOFORT öffnen (muss vor await sein, sonst Popup-Blocker)
   window.open('https://calendar.app.google/4TkMZH2iNK17EMWPA','_blank');
+
+  // Quiz-Ergebnisse per Web3Forms im Hintergrund senden
+  fetch('https://api.web3forms.com/submit',{
+    method:'POST',
+    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    body:JSON.stringify({
+      access_key:'41d750b1-f09b-4107-a335-d19de2e13163',
+      subject:'RECmode Marketing-Check – Neue Quiz-Anfrage',
+      from_name:'RECmode Quiz',
+      message:`Neue Quiz-Auswertung von der Website:\n\nProblem: ${q1}\nAktuelle Agentur: ${q2}\nAktive Plattformen: ${q3}\nVorhandenes Material: ${q4}\nGewünschte Übernahme: ${q5}\nZusammenarbeit: ${q6}\nBudget: ${q7}\nBranche: ${q8}`,
+      botcheck:false
+    })
+  }).catch(e=>console.warn('Web3Forms Fehler:',e));
 }
 
 function restart(){
