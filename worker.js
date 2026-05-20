@@ -59,13 +59,39 @@ async function handleContact(request, env, ctx) {
       </div>
     `;
 
+    const signature = `
+      <div style="margin-top:32px;padding-top:20px;border-top:1px solid #e0e0e0;font-family:sans-serif;font-size:14px;color:#555">
+        <p style="margin:0 0 4px 0"><strong style="color:#0d0d0d">Ismail Khudida</strong></p>
+        <p style="margin:0 0 4px 0;color:#E8130A;font-weight:600">Gründer & Kreativdirektor</p>
+        <p style="margin:0 0 4px 0"><strong>RECmode</strong> — Digitales Marketing, Video & KI-Content</p>
+        <p style="margin:0 0 4px 0">
+          <a href="mailto:info@recmo.de" style="color:#E8130A;text-decoration:none">info@recmo.de</a>
+          &nbsp;|&nbsp;
+          <a href="tel:+4917832489043" style="color:#555;text-decoration:none">+49 178 32489043</a>
+        </p>
+        <p style="margin:0">
+          <a href="https://recmo.de" style="color:#E8130A;text-decoration:none;font-weight:600">recmo.de</a>
+        </p>
+      </div>
+    `;
+
     const confirmHtml = `
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0d0d0d;color:#fafafa;padding:32px;border-radius:12px">
         <h2 style="color:#E8130A;margin-bottom:16px">Deine Anfrage ist angekommen!</h2>
         <p style="margin-bottom:16px">Hey ${escHtml(name)},</p>
-        <p style="margin-bottom:16px">vielen Dank für deine Nachricht – ich melde mich in der Regel innerhalb von 24 Stunden bei dir.</p>
-        <p style="margin-bottom:24px">Bis gleich,<br><strong>Ismail von RECmode</strong></p>
-        <a href="https://recmo.de" style="background:#E8130A;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;display:inline-block">recmo.de besuchen</a>
+        <p style="margin-bottom:16px">vielen Dank für deine Nachricht. Ich melde mich in der Regel innerhalb von 24 Stunden bei dir.</p>
+        <a href="https://recmo.de" style="display:inline-block;background:#E8130A;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;margin-bottom:32px">recmo.de besuchen</a>
+        <div style="margin-top:0;padding-top:20px;border-top:1px solid #333;font-size:13px;color:#aaa">
+          <p style="margin:0 0 4px 0"><strong style="color:#fafafa">Ismail Khudida</strong></p>
+          <p style="margin:0 0 4px 0;color:#E8130A;font-weight:600">Gründer & Kreativdirektor</p>
+          <p style="margin:0 0 4px 0;color:#ccc">RECmode — Digitales Marketing, Video & KI-Content</p>
+          <p style="margin:0 0 4px 0">
+            <a href="mailto:info@recmo.de" style="color:#E8130A;text-decoration:none">info@recmo.de</a>
+            &nbsp;|&nbsp;
+            <a href="tel:+4917832489043" style="color:#aaa;text-decoration:none">+49 178 32489043</a>
+          </p>
+          <a href="https://recmo.de" style="color:#E8130A;text-decoration:none;font-weight:600">recmo.de</a>
+        </div>
       </div>
     `;
 
@@ -81,7 +107,7 @@ async function handleContact(request, env, ctx) {
         to: ['info@recmo.de'],
         reply_to: email,
         subject: subject,
-        html: notifyHtml
+        html: notifyHtml + signature
       })
     });
 
@@ -91,7 +117,7 @@ async function handleContact(request, env, ctx) {
       return Response.json({ success: false, error: 'Email Fehler: ' + err }, { status: 500, headers: cors });
     }
 
-    // 2. Bestätigung an Kunde – mit ctx.waitUntil damit der Worker nicht vorzeitig beendet wird
+    // 2. Bestätigung an Kunde via ctx.waitUntil
     ctx.waitUntil(
       fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -102,7 +128,7 @@ async function handleContact(request, env, ctx) {
         body: JSON.stringify({
           from: 'Ismail von RECmode <info@recmo.de>',
           to: [email],
-          subject: 'Deine Anfrage bei RECmode – Ich melde mich bald!',
+          subject: 'Deine Anfrage bei RECmode. Ich melde mich bald!',
           html: confirmHtml
         })
       }).then(r => {
