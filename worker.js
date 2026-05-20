@@ -79,7 +79,8 @@ async function handleContact(request, env, ctx) {
       <div style="font-family:sans-serif;max-width:600px;margin:0 auto;background:#0d0d0d;color:#fafafa;padding:32px;border-radius:12px">
         <h2 style="color:#E8130A;margin-bottom:16px">Deine Anfrage ist angekommen!</h2>
         <p style="margin-bottom:16px">Hey ${escHtml(name)},</p>
-        <p style="margin-bottom:16px">vielen Dank für deine Nachricht. Ich melde mich in der Regel innerhalb von 24 Stunden bei dir.</p>
+        <p style="margin-bottom:8px">vielen Dank für Deine Nachricht. Ich melde mich in der Regel innerhalb von 24 Stunden zurück.</p>
+        <p style="margin-bottom:24px">Herzliche Grüße,</p>
         <a href="https://recmo.de" style="display:inline-block;background:#E8130A;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;margin-bottom:32px">recmo.de besuchen</a>
         <div style="margin-top:0;padding-top:20px;border-top:1px solid #333;font-size:13px;color:#aaa">
           <p style="margin:0 0 4px 0"><strong style="color:#fafafa">Ismail Khudida</strong></p>
