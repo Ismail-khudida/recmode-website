@@ -857,7 +857,7 @@ async function sendEmail(){
   const q8=answers[8]?.val||'–';
 
   // Kalender SOFORT öffnen (muss vor await sein, sonst Popup-Blocker)
-  window.open('https://calendar.app.google/4TkMZH2iNK17EMWPA','_blank');
+  window.location.href='https://calendar.app.google/4TkMZH2iNK17EMWPA';
 
   // Quiz-Ergebnisse per Web3Forms im Hintergrund senden
   fetch('https://api.web3forms.com/submit',{
