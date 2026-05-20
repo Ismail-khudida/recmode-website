@@ -846,7 +846,7 @@ function showResult(){
   document.getElementById('recsList').innerHTML=recsHtml;
 }
 
-function sendEmail(){
+async function sendEmail(){
   const q1=answers[1]?.val||'–';
   const q2=answers[2]?.val==='agency_yes'?`Ja – ${answers['2_detail']?.cost||'–'} monatlich für: ${answers['2_detail']?.what||'–'}`:'Nein';
   const q3=multiAnswers[3].length>0?multiAnswers[3].join(', '):'Keine';
@@ -856,19 +856,23 @@ function sendEmail(){
   const q7=answers['budget']||'Nicht angegeben';
   const q8=answers[8]?.val||'–';
 
-  const subject=encodeURIComponent('RECmode Marketing-Check – Neue Anfrage');
-  const body=encodeURIComponent(`Neue Quiz-Auswertung von der Website:\n\n` +
-    `Problem: ${q1}\n` +
-    `Aktuelle Agentur: ${q2}\n` +
-    `Aktive Plattformen: ${q3}\n` +
-    `Vorhandenes Material: ${q4}\n` +
-    `Gewünschte Übernahme: ${q5}\n` +
-    `Zusammenarbeit: ${q6}\n` +
-    `Budget: ${q7}\n` +
-    `Branche: ${q8}\n\n` +
-    `Bitte melden Sie sich für ein persönliches Gespräch.`
-  );
-  window.location.href=`mailto:info@recmo.de?subject=${subject}&body=${body}`;
+  // Quiz-Ergebnisse per Web3Forms senden
+  try{
+    await fetch('https://api.web3forms.com/submit',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','Accept':'application/json'},
+      body:JSON.stringify({
+        access_key:'41d750b1-f09b-4107-a335-d19de2e13163',
+        subject:'RECmode Marketing-Check – Neue Quiz-Anfrage',
+        from_name:'RECmode Quiz',
+        message:`Neue Quiz-Auswertung von der Website:\n\nProblem: ${q1}\nAktuelle Agentur: ${q2}\nAktive Plattformen: ${q3}\nVorhandenes Material: ${q4}\nGewünschte Übernahme: ${q5}\nZusammenarbeit: ${q6}\nBudget: ${q7}\nBranche: ${q8}`,
+        botcheck:false
+      })
+    });
+  }catch(e){console.warn('Web3Forms Fehler:',e);}
+
+  // Direkt zum Google Calendar Booking öffnen
+  window.open('https://calendar.app.google/4TkMZH2iNK17EMWPA','_blank');
 }
 
 function restart(){
