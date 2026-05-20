@@ -859,18 +859,18 @@ async function sendEmail(){
   // Kalender SOFORT öffnen (muss vor await sein, sonst Popup-Blocker)
   window.location.href='https://calendar.app.google/4TkMZH2iNK17EMWPA';
 
-  // Quiz-Ergebnisse per Web3Forms im Hintergrund senden
-  fetch('https://api.web3forms.com/submit',{
+  // Quiz-Ergebnisse per /contact im Hintergrund senden
+  const quizMessage=`Neue Quiz-Auswertung von der Website:\n\nProblem: ${q1}\nAktuelle Agentur: ${q2}\nAktive Plattformen: ${q3}\nVorhandenes Material: ${q4}\nGewünschte Übernahme: ${q5}\nZusammenarbeit: ${q6}\nBudget: ${q7}\nBranche: ${q8}`;
+  fetch('/contact',{
     method:'POST',
-    headers:{'Content-Type':'application/json','Accept':'application/json'},
+    headers:{'Content-Type':'application/json'},
     body:JSON.stringify({
-      access_key:'41d750b1-f09b-4107-a335-d19de2e13163',
-      subject:'RECmode Marketing-Check – Neue Quiz-Anfrage',
-      from_name:'RECmode Quiz',
-      message:`Neue Quiz-Auswertung von der Website:\n\nProblem: ${q1}\nAktuelle Agentur: ${q2}\nAktive Plattformen: ${q3}\nVorhandenes Material: ${q4}\nGewünschte Übernahme: ${q5}\nZusammenarbeit: ${q6}\nBudget: ${q7}\nBranche: ${q8}`,
-      botcheck:false
+      name:'Quiz-Anfrage (anonym)',
+      email:'quiz@recmo.de',
+      message:quizMessage,
+      type:'quiz'
     })
-  }).catch(e=>console.warn('Web3Forms Fehler:',e));
+  }).catch(e=>console.warn('Resend Quiz Fehler:',e));
 }
 
 function restart(){
