@@ -141,7 +141,7 @@ async function handleContact(request, env, ctx) {
             </a>
           </td>
           <td style="text-align:right;vertical-align:middle;">
-            <a href="https://recmo.de/quiz.html"
+            <a href="https://recmo.de/quiz"
                style="background:#E8130A;color:#ffffff;padding:8px 16px;border-radius:4px;text-decoration:none;font-size:11px;font-weight:700;white-space:nowrap;display:inline-block;">
               ✨ Marketing-Check →
             </a>
