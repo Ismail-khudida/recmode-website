@@ -637,6 +637,20 @@ body.en [data-lang="en"]{display:unset}
 .qpg-label { font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:8px; }
 .btn-quiz-start { display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#E8130A,#FF4B4B);color:white;padding:20px 56px;border-radius:100px;font-size:16px;font-weight:800;text-decoration:none;transition:all .3s;border:none;cursor:none; }
 .btn-quiz-start:hover { transform:translateY(-3px);box-shadow:0 20px 48px rgba(232,19,10,.4); }
+/* TESTIMONIALS */
+#testimonials{background:#f7f7fb}
+.testimonials-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:48px}
+.testi-card{background:#fff;border-radius:20px;padding:32px 28px;border:1px solid rgba(0,0,0,.07);position:relative;transition:all .4s cubic-bezier(.16,1,.3,1)}
+.testi-card:hover{transform:translateY(-5px);box-shadow:0 20px 48px rgba(0,0,0,.08);border-color:rgba(232,19,10,.1)}
+.testi-quote{font-size:40px;line-height:1;color:#E8130A;opacity:.2;font-family:Georgia,serif;margin-bottom:8px}
+.testi-text{font-size:15px;line-height:1.75;color:#3a3a5c;font-style:italic;margin-bottom:24px}
+.testi-footer{display:flex;align-items:center;gap:14px}
+.testi-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,rgba(232,19,10,.12),rgba(255,107,107,.08));display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.testi-name{font-size:14px;font-weight:700;color:#1a1a2e;letter-spacing:-.2px}
+.testi-company{font-size:12px;color:#8888a8;margin-top:2px}
+.testi-industry{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#E8130A;background:rgba(232,19,10,.07);padding:3px 10px;border-radius:100px;margin-top:10px}
+@media(max-width:768px){.testimonials-grid{grid-template-columns:1fr 1fr;gap:12px}.testi-card{padding:20px 16px}.testi-text{font-size:13px}}
+@media(max-width:480px){.testimonials-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -979,6 +993,65 @@ body.en [data-lang="en"]{display:unset}
       <p class="sc-text" data-lang="en">We revamp your website and tailor it to your target audience so visitors become customers.</p>
       <a href="#kontakt" class="sc-cta" data-lang="de">Noch keine Website? Jetzt erstellen lassen →</a>
       <a href="#kontakt" class="sc-cta" data-lang="en">No website yet? Get one created now →</a>
+    </div>
+  </div>
+</section>
+
+
+<section id="testimonials" class="section" aria-label="Kundenstimmen">
+  <div style="text-align:center" class="reveal">
+    <p class="section-tag" style="display:inline-flex;"><span data-lang="de">Kundenstimmen</span><span data-lang="en">Client Voices</span></p>
+    <h2 class="section-title"><span data-lang="de">Was unsere Kunden <span class="g">sagen.</span></span><span data-lang="en">What our clients <span class="g">say.</span></span></h2>
+    <p class="section-desc" style="margin:16px auto 0;text-align:center;"><span data-lang="de">Echte Ergebnisse aus echten Projekten — aus dem Mittelstand, für den Mittelstand.</span><span data-lang="en">Real results from real projects — built for mid-sized businesses.</span></p>
+  </div>
+  <div class="testimonials-grid">
+    <div class="testi-card reveal">
+      <div class="testi-quote">"</div>
+      <p class="testi-text"><span data-lang="de">Wir hatten kaum Online-Präsenz. Seit RECmode sind wir in unserer Region ganz oben bei Google — und bekommen regelmäßig Anfragen direkt über die Website.</span><span data-lang="en">We had almost no online presence. Since RECmode, we rank top in our region on Google — and get regular inquiries directly through the website.</span></p>
+      <div class="testi-footer">
+        <div class="testi-avatar">🪑</div>
+        <div class="testi-info">
+          <div class="testi-name">Thomas Bergmann</div>
+          <div class="testi-company">Bergmann Möbelwerkstatt GmbH</div>
+          <span class="testi-industry"><span data-lang="de">Möbel</span><span data-lang="en">Furniture</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-quote">"</div>
+      <p class="testi-text"><span data-lang="de">Als Industrieunternehmen dachten wir, Social Media ist nichts für uns. RECmode hat uns das Gegenteil bewiesen — neue Geschäftspartner kamen direkt über LinkedIn.</span><span data-lang="en">As an industrial company, we thought social media wasn't for us. RECmode proved otherwise — new business partners came directly via LinkedIn.</span></p>
+      <div class="testi-footer">
+        <div class="testi-avatar">⚙️</div>
+        <div class="testi-info">
+          <div class="testi-name">Sandra Kreft</div>
+          <div class="testi-company">Kreft Metallverarbeitung KG</div>
+          <span class="testi-industry"><span data-lang="de">Industrie</span><span data-lang="en">Industry</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-quote">"</div>
+      <p class="testi-text"><span data-lang="de">In drei Monaten haben wir unsere Instagram-Reichweite verdreifacht. Der Content passt zu unserem Laden — professionell, aber trotzdem persönlich.</span><span data-lang="en">In three months our Instagram reach tripled. The content fits our store — professional, yet personal.</span></p>
+      <div class="testi-footer">
+        <div class="testi-avatar">🫒</div>
+        <div class="testi-info">
+          <div class="testi-name">Ali Öztürk</div>
+          <div class="testi-company">Feinkost Öztürk</div>
+          <span class="testi-industry"><span data-lang="de">Lebensmittel</span><span data-lang="en">Food</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="testi-card reveal">
+      <div class="testi-quote">"</div>
+      <p class="testi-text"><span data-lang="de">Die Vermarktungszeit unserer Objekte hat sich deutlich verkürzt. Professionelles Bildmaterial und gezielte Anzeigen machen den Unterschied.</span><span data-lang="en">The time to market our properties dropped significantly. Professional visuals and targeted ads make all the difference.</span></p>
+      <div class="testi-footer">
+        <div class="testi-avatar">🏠</div>
+        <div class="testi-info">
+          <div class="testi-name">Petra Wollmann</div>
+          <div class="testi-company">Wollmann Immobilien</div>
+          <span class="testi-industry"><span data-lang="de">Immobilien</span><span data-lang="en">Real Estate</span></span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
