@@ -674,6 +674,29 @@ body.en [data-lang="en"]{display:unset}
 .qpg-label { font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:8px; }
 .btn-quiz-start { display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#E8130A,#FF4B4B);color:white;padding:20px 56px;border-radius:100px;font-size:16px;font-weight:800;text-decoration:none;transition:all .3s;border:none;cursor:none; }
 .btn-quiz-start:hover { transform:translateY(-3px);box-shadow:0 20px 48px rgba(232,19,10,.4); }
+
+/* ── REFERENZEN ── */
+#referenzen { background:#f8f8fa; }
+#referenzen .ref-header { text-align:center;margin-bottom:56px; }
+.ref-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:28px; }
+.ref-card { background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,.06);transition:all .35s;border:1px solid rgba(0,0,0,.06); }
+.ref-card:hover { transform:translateY(-6px);box-shadow:0 16px 48px rgba(0,0,0,.12); }
+.ref-thumb { height:200px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden; }
+.ref-thumb-1 { background:linear-gradient(135deg,#0d0d0d 0%,#1a1a2e 50%,#E8130A 100%); }
+.ref-thumb-2 { background:linear-gradient(135deg,#1a1a2e 0%,#5080ff 100%); }
+.ref-thumb-3 { background:linear-gradient(135deg,#0d0d0d 0%,#28b464 100%); }
+.ref-thumb-icon { width:64px;height:64px;background:rgba(255,255,255,.12);border-radius:16px;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2); }
+.ref-tag { position:absolute;top:14px;left:14px;background:rgba(0,0,0,.5);backdrop-filter:blur(8px);color:#fff;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;padding:5px 12px;border-radius:100px;border:1px solid rgba(255,255,255,.12); }
+.ref-body { padding:24px; }
+.ref-title { font-size:18px;font-weight:800;color:#1a1a2e;letter-spacing:-.4px;margin-bottom:8px; }
+.ref-desc { font-size:14px;line-height:1.65;color:#8888a8;margin-bottom:16px; }
+.ref-result { display:flex;align-items:center;gap:8px;padding:10px 14px;background:rgba(232,19,10,.05);border:1px solid rgba(232,19,10,.1);border-radius:10px; }
+.ref-result-val { font-size:20px;font-weight:900;color:#E8130A;letter-spacing:-.5px; }
+.ref-result-label { font-size:12px;color:#8888a8;line-height:1.3; }
+.ref-cta-row { text-align:center;margin-top:48px; }
+@media(max-width:900px){
+  .ref-grid { grid-template-columns:1fr;max-width:480px;margin:0 auto; }
+}
 </style>
 </head>
 <body>
@@ -691,6 +714,7 @@ body.en [data-lang="en"]{display:unset}
     <li><a href="#how"><span data-lang="de">Wie es funktioniert</span><span data-lang="en">How it works</span></a></li>
     <li><a href="#leistungen"><span data-lang="de">Leistungen</span><span data-lang="en">Services</span></a></li>
     <li><a href="#ki"><span data-lang="de">KI & Innovation</span><span data-lang="en">AI & Innovation</span></a></li>
+    <li><a href="#referenzen"><span data-lang="de">Referenzen</span><span data-lang="en">Portfolio</span></a></li>
     <li><a href="#ueber-uns"><span data-lang="de">Über uns</span><span data-lang="en">About</span></a></li>
     <li><a href="#kontakt"><span data-lang="de">Kontakt</span><span data-lang="en">Contact</span></a></li>
   </ul>
@@ -1090,6 +1114,76 @@ body.en [data-lang="en"]{display:unset}
   </div>
 </section>
 
+
+<!-- REFERENZEN / PORTFOLIO -->
+<section id="referenzen" class="section" aria-label="Referenzen">
+  <div class="ref-header reveal">
+    <p class="section-tag" style="display:inline-flex;"><span data-lang="de">Referenzen</span><span data-lang="en">Portfolio</span></p>
+    <h2 class="section-title"><span data-lang="de">Ergebnisse, <span class="g">die sprechen.</span></span><span data-lang="en">Results that <span class="g">speak for themselves.</span></span></h2>
+    <p class="section-desc" style="margin:16px auto 0;text-align:center;"><span data-lang="de">Ausgewählte Projekte – von der Strategie bis zum fertigen Content.</span><span data-lang="en">Selected projects – from strategy to finished content.</span></p>
+  </div>
+  <div class="ref-grid">
+
+    <!-- Karte 1 -->
+    <div class="ref-card reveal">
+      <div class="ref-thumb ref-thumb-1">
+        <span class="ref-tag"><span data-lang="de">Imagefilm</span><span data-lang="en">Brand Film</span></span>
+        <div class="ref-thumb-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+      </div>
+      <div class="ref-body">
+        <div class="ref-title"><span data-lang="de">Unternehmensfilm – Handwerksbetrieb</span><span data-lang="en">Corporate Film – Craft Business</span></div>
+        <p class="ref-desc"><span data-lang="de">2-minütiger Imagefilm mit Unternehmensporträt, Mitarbeiter-Interviews und professionellem Schnitt. Eingesetzt auf Website & Social Media.</span><span data-lang="en">2-minute brand film with company portrait, employee interviews and professional edit. Used on website & social media.</span></p>
+        <div class="ref-result">
+          <span class="ref-result-val">+340%</span>
+          <span class="ref-result-label"><span data-lang="de">mehr Website-Aufrufe<br>nach Veröffentlichung</span><span data-lang="en">more website visits<br>after publication</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Karte 2 -->
+    <div class="ref-card reveal d1">
+      <div class="ref-thumb ref-thumb-2">
+        <span class="ref-tag">Social Media</span>
+        <div class="ref-thumb-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+        </div>
+      </div>
+      <div class="ref-body">
+        <div class="ref-title"><span data-lang="de">Social Media Betreuung – Gastronomie</span><span data-lang="en">Social Media Management – Gastronomy</span></div>
+        <p class="ref-desc"><span data-lang="de">Monatlicher Content-Plan mit wöchentlichen Reels, Stories und Werbeanzeigen. Strategie, Produktion und Posting aus einer Hand.</span><span data-lang="en">Monthly content plan with weekly reels, stories and ads. Strategy, production and posting from one source.</span></p>
+        <div class="ref-result">
+          <span class="ref-result-val">+2.800</span>
+          <span class="ref-result-label"><span data-lang="de">neue Follower<br>in 3 Monaten</span><span data-lang="en">new followers<br>in 3 months</span></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Karte 3 -->
+    <div class="ref-card reveal d2">
+      <div class="ref-thumb ref-thumb-3">
+        <span class="ref-tag"><span data-lang="de">KI-Content</span><span data-lang="en">AI Content</span></span>
+        <div class="ref-thumb-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+        </div>
+      </div>
+      <div class="ref-body">
+        <div class="ref-title"><span data-lang="de">KI-Produktfotos – E-Commerce</span><span data-lang="en">AI Product Photos – E-Commerce</span></div>
+        <p class="ref-desc"><span data-lang="de">50+ professionelle Produktbilder mit KI-Compositing erstellt – in verschiedenen Szenarien und Formaten. Vollständige kommerzielle Lizenz.</span><span data-lang="en">50+ professional product images created with AI compositing – in various scenarios and formats. Full commercial license.</span></p>
+        <div class="ref-result">
+          <span class="ref-result-val">-75%</span>
+          <span class="ref-result-label"><span data-lang="de">Produktionskosten<br>vs. klassischem Shooting</span><span data-lang="en">production costs<br>vs. classic photoshoot</span></span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="ref-cta-row reveal">
+    <a href="#kontakt" class="btn-dark"><span data-lang="de">Jetzt Projekt anfragen</span><span data-lang="en">Request a project now</span></a>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section id="ueber-uns" class="section" aria-label="Über uns">
   <div class="about-grid">
@@ -1439,6 +1533,7 @@ body.en [data-lang="en"]{display:unset}
         <li><a href="#how" data-lang="de">Wie es funktioniert</a><a href="#how" data-lang="en">How it works</a></li>
         <li><a href="#leistungen" data-lang="de">Leistungen</a><a href="#leistungen" data-lang="en">Services</a></li>
         <li><a href="#ki"><span data-lang="de">KI & Innovation</span><span data-lang="en">AI & Innovation</span></a></li>
+        <li><a href="#referenzen" data-lang="de">Referenzen</a><a href="#referenzen" data-lang="en">Portfolio</a></li>
         <li><a href="#ueber-uns" data-lang="de">Über uns</a><a href="#ueber-uns" data-lang="en">About us</a></li>
         <li><a href="#kontakt"><span data-lang="de">Kontakt</span><span data-lang="en">Contact</span></a></li>
       </ul>
