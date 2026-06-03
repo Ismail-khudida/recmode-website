@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECmode Chord Generator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d0d0d;--red:#E8130A;--white:#fff;--panel:#161616;--panel2:#1a1a1a;--border:#222;--muted:#555}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px;user-select:none}
+header{width:100%;max-width:680px;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px}
+.header-title{font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.wrap{width:100%;max-width:680px;display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:20px}
+.panel-title{font-size:10px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+.chord-display{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:28px 24px 24px;text-align:center;position:relative;overflow:hidden}
+.chord-display::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(232,19,10,.07) 0%,transparent 65%);pointer-events:none}
+.chord-name-big{font-size:64px;font-weight:900;line-height:1;letter-spacing:-.02em;color:var(--white);margin-bottom:6px}
+.chord-formula{font-size:13px;color:var(--muted);letter-spacing:.06em;margin-bottom:4px}
+.chord-notes-row{display:flex;justify-content:center;gap:8px;margin-top:16px;flex-wrap:wrap}
+.chord-note-chip{padding:7px 14px;border-radius:20px;border:1px solid var(--border);background:#1e1e1e;font-size:14px;font-weight:700;color:var(--white);transition:all .2s}
+.chord-note-chip.playing{border-color:var(--red);background:rgba(232,19,10,.18);color:var(--red);box-shadow:0 0 14px rgba(232,19,10,.25)}
+.interval-wrap{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.interval-badge{padding:4px 9px;border-radius:20px;background:#1e1e1e;border:1px solid var(--border);font-size:11px;font-weight:600;color:var(--muted)}
+.sel-grid{display:flex;gap:6px;flex-wrap:wrap}
+.note-btn,.type-btn{padding:9px 14px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;min-width:38px;text-align:center}
+.note-btn:hover,.type-btn:hover{border-color:#444;color:var(--white)}
+.note-btn.active,.type-btn.active{border-color:var(--red);background:rgba(232,19,10,.12);color:var(--red)}
+.piano-wrap{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:20px;overflow:hidden}
+.piano-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.oct-btn{width:28px;height:28px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--white);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s;font-family:'Inter',sans-serif}
+.oct-btn:hover{border-color:var(--red)}.oct-label{font-size:12px;font-weight:700;color:var(--muted);min-width:50px;text-align:center}
+.piano-container{position:relative;height:110px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
+.piano-container::-webkit-scrollbar{display:none}
+.piano-keys{position:relative;height:110px;display:inline-flex}
+.white-key{width:40px;height:110px;background:#e8e8e8;border:1px solid #aaa;border-radius:0 0 6px 6px;position:relative;cursor:pointer;transition:background .08s;flex-shrink:0;display:flex;align-items:flex-end;justify-content:center;padding-bottom:6px}
+.white-key .key-label{font-size:9px;font-weight:700;color:#888;letter-spacing:.04em}
+.white-key:hover{background:#d0d0d0}.white-key.active{background:#E8130A !important;box-shadow:0 0 16px rgba(232,19,10,.35)}.white-key.active .key-label{color:rgba(255,255,255,.8)}
+.black-key{width:26px;height:66px;background:#111;border:1px solid #000;border-radius:0 0 4px 4px;position:absolute;top:0;z-index:2;cursor:pointer;transition:background .08s;display:flex;align-items:flex-end;justify-content:center;padding-bottom:4px}
+.black-key .key-label{font-size:8px;font-weight:700;color:#555}
+.black-key:hover{background:#222}.black-key.active{background:#E8130A !important;box-shadow:0 0 14px rgba(232,19,10,.35)}
+.play-btn{flex:1;min-width:100px;padding:14px 20px;border-radius:12px;border:1px solid var(--border);background:var(--panel2);color:var(--white);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;letter-spacing:.06em;text-transform:uppercase;transition:all .15s;display:flex;align-items:center;justify-content:center;gap:8px}
+.play-btn:hover{border-color:var(--red)}.play-btn.primary{background:var(--red);border-color:var(--red);color:var(--white)}.play-btn.primary:hover{background:#c8100a}
+.speed-btn{padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--muted);font-family:'Inter',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s}
+.speed-btn:hover{border-color:#444;color:var(--white)}.speed-btn.active{border-color:var(--red);color:var(--red);background:rgba(232,19,10,.1)}
+.prog-row{display:flex;gap:6px;align-items:center;margin-bottom:8px}
+.prog-name{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.06em;min-width:80px;text-transform:uppercase}
+.prog-chords{display:flex;gap:6px;flex:1;flex-wrap:wrap}
+.prog-chord-btn{padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--white);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.prog-chord-btn:hover{border-color:var(--red);color:var(--red)}
+.prog-play-btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);color:var(--muted);font-family:'Inter',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .15s;text-transform:uppercase}
+.prog-play-btn:hover{border-color:var(--red);color:var(--red)}
+footer{margin-top:32px;font-size:11px;color:#333;text-align:center;letter-spacing:.06em}
+</style>
+</head>
+<body>
+<header>
+  <a href="https://recmo.de" style="text-decoration:none;display:flex;flex-direction:column;gap:3px">
+    <div style="font-family:'Inter',sans-serif;line-height:1;letter-spacing:.04em"><span style="font-size:18px;font-weight:900;color:#E8130A">REC</span><span style="font-size:14px;font-weight:600;color:#fff">mode</span></div>
+    <span style="font-size:9px;font-weight:600;letter-spacing:.18em;color:#fff;font-family:'Inter',sans-serif">recmo.de</span>
+  </a>
+  <div class="header-title">Chord Generator</div>
+</header>
+<div class="wrap">
+  <div class="chord-display">
+    <div class="chord-name-big" id="chordNameBig">Cmaj</div>
+    <div class="chord-formula" id="chordFormula">1 – 3 – 5</div>
+    <div class="interval-wrap" id="intervalWrap"></div>
+    <div class="chord-notes-row" id="chordNotesRow"></div>
+  </div>
+  <div class="panel"><div class="panel-title">Root Note</div><div class="sel-grid" id="noteGrid"></div></div>
+  <div class="panel"><div class="panel-title">Chord Type</div><div class="sel-grid" id="typeGrid"></div></div>
+  <div class="piano-wrap">
+    <div class="piano-header">
+      <div class="panel-title" style="margin:0">Piano</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <button class="oct-btn" onclick="changeOctave(-1)">−</button>
+        <span class="oct-label" id="octLabel">Oct 4</span>
+        <button class="oct-btn" onclick="changeOctave(+1)">+</button>
+      </div>
+    </div>
+    <div class="piano-container"><div class="piano-keys" id="pianoKeys"></div></div>
+  </div>
+  <div class="panel">
+    <div class="panel-title">Play</div>
+    <div style="display:flex;gap:10px;margin-bottom:12px">
+      <button class="play-btn primary" onclick="playChord()">▶ Together</button>
+      <button class="play-btn" onclick="playArpUp()">↑ Arp Up</button>
+      <button class="play-btn" onclick="playArpDown()">↓ Arp Down</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:10px;font-weight:600;letter-spacing:.12em;color:var(--muted);text-transform:uppercase">Speed</span>
+      <button class="speed-btn" onclick="setSpeed(0.5)" id="sp-slow">Slow</button>
+      <button class="speed-btn active" onclick="setSpeed(0.25)" id="sp-med">Med</button>
+      <button class="speed-btn" onclick="setSpeed(0.12)" id="sp-fast">Fast</button>
+    </div>
+  </div>
+  <div class="panel"><div class="panel-title">Common Progressions</div><div id="progGrid"></div></div>
+</div>
+<footer>RECmode Chord Generator · recmo.de</footer>
+<script>
+const ALL_NOTES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const EH={'C#':'Db','D#':'Eb','F#':'Gb','G#':'Ab','A#':'Bb'};
+const CHORD_TYPES=[
+  {id:'maj',name:'Major',suffix:'',intervals:[0,4,7],formula:'1–3–5',intNames:['R','M3','P5']},
+  {id:'min',name:'Minor',suffix:'m',intervals:[0,3,7],formula:'1–♭3–5',intNames:['R','m3','P5']},
+  {id:'dim',name:'Diminished',suffix:'°',intervals:[0,3,6],formula:'1–♭3–♭5',intNames:['R','m3','d5']},
+  {id:'aug',name:'Augmented',suffix:'+',intervals:[0,4,8],formula:'1–3–♯5',intNames:['R','M3','A5']},
+  {id:'sus2',name:'Sus2',suffix:'sus2',intervals:[0,2,7],formula:'1–2–5',intNames:['R','M2','P5']},
+  {id:'sus4',name:'Sus4',suffix:'sus4',intervals:[0,5,7],formula:'1–4–5',intNames:['R','P4','P5']},
+  {id:'dom7',name:'Dom 7',suffix:'7',intervals:[0,4,7,10],formula:'1–3–5–♭7',intNames:['R','M3','P5','m7']},
+  {id:'maj7',name:'Maj 7',suffix:'maj7',intervals:[0,4,7,11],formula:'1–3–5–7',intNames:['R','M3','P5','M7']},
+  {id:'min7',name:'Min 7',suffix:'m7',intervals:[0,3,7,10],formula:'1–♭3–5–♭7',intNames:['R','m3','P5','m7']},
+  {id:'dim7',name:'Dim 7',suffix:'°7',intervals:[0,3,6,9],formula:'1–♭3–♭5–♭♭7',intNames:['R','m3','d5','d7']},
+  {id:'add9',name:'Add9',suffix:'add9',intervals:[0,4,7,14],formula:'1–3–5–9',intNames:['R','M3','P5','M9']},
+  {id:'6',name:'Major 6',suffix:'6',intervals:[0,4,7,9],formula:'1–3–5–6',intNames:['R','M3','P5','M6']},
+  {id:'9',name:'9th',suffix:'9',intervals:[0,4,7,10,14],formula:'1–3–5–♭7–9',intNames:['R','M3','P5','m7','M9']},
+  {id:'maj9',name:'Maj 9',suffix:'maj9',intervals:[0,4,7,11,14],formula:'1–3–5–7–9',intNames:['R','M3','P5','M7','M9']},
+  {id:'min9',name:'Min 9',suffix:'m9',intervals:[0,3,7,10,14],formula:'1–♭3–5–♭7–9',intNames:['R','m3','P5','m7','M9']},
+];
+const PROGRESSIONS=[
+  {name:'Pop I–V–vi–IV',chords:[{r:'C',t:'maj'},{r:'G',t:'maj'},{r:'A',t:'min'},{r:'F',t:'maj'}]},
+  {name:'Jazz II–V–I',chords:[{r:'D',t:'min7'},{r:'G',t:'dom7'},{r:'C',t:'maj7'}]},
+  {name:'Blues I–IV–V',chords:[{r:'A',t:'dom7'},{r:'D',t:'dom7'},{r:'E',t:'dom7'}]},
+  {name:'50s I–vi–IV–V',chords:[{r:'C',t:'maj'},{r:'A',t:'min'},{r:'F',t:'maj'},{r:'G',t:'maj'}]},
+  {name:'Andalusian',chords:[{r:'A',t:'min'},{r:'G',t:'maj'},{r:'F',t:'maj'},{r:'E',t:'maj'}]},
+];
+const BLACK_OFFSETS={'C#':.6,'D#':1.6,'F#':3.6,'G#':4.6,'A#':5.6};
+const WHITE_NOTES=['C','D','E','F','G','A','B'];
+let selectedRoot='C',selectedType='maj',baseOctave=4,arpSpeed=.25,audioCtx=null;
+function getCtx(){if(!audioCtx||audioCtx.state==='closed')audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
+function noteFreq(n,oct){return 440*Math.pow(2,((oct+1)*12+ALL_NOTES.indexOf(n)-69)/12)}
+function playNote(freq,t,dur=1.2){
+  const ctx=getCtx(),now=t||ctx.currentTime;
+  const o1=ctx.createOscillator(),o2=ctx.createOscillator(),o3=ctx.createOscillator(),gain=ctx.createGain(),filter=ctx.createBiquadFilter();
+  o1.type='triangle';o1.frequency.value=freq;o2.type='sine';o2.frequency.value=freq*2;o3.type='sine';o3.frequency.value=freq*3;
+  filter.type='lowpass';filter.frequency.value=freq*8;filter.Q.value=.5;
+  const g1=ctx.createGain(),g2=ctx.createGain(),g3=ctx.createGain();g1.gain.value=.6;g2.gain.value=.25;g3.gain.value=.1;
+  o1.connect(g1);g1.connect(filter);o2.connect(g2);g2.connect(filter);o3.connect(g3);g3.connect(filter);filter.connect(gain);gain.connect(ctx.destination);
+  gain.gain.setValueAtTime(0,now);gain.gain.linearRampToValueAtTime(.5,now+.008);gain.gain.exponentialRampToValueAtTime(.15,now+.3);gain.gain.exponentialRampToValueAtTime(.05,now+dur);gain.gain.linearRampToValueAtTime(0,now+dur+.1);
+  [o1,o2,o3].forEach(o=>{o.start(now);o.stop(now+dur+.2)});
+}
+function getChordNotes(){const type=CHORD_TYPES.find(t=>t.id===selectedType),rootIdx=ALL_NOTES.indexOf(selectedRoot);return type.intervals.map(interval=>{const ni=(rootIdx+interval)%12,oct=baseOctave+Math.floor((rootIdx+interval)/12);return{name:ALL_NOTES[ni],octave:oct,freq:noteFreq(ALL_NOTES[ni],oct)}})}
+function playChord(){const notes=getChordNotes(),ctx=getCtx(),t=ctx.currentTime+.01;notes.forEach(n=>playNote(n.freq,t,2));animateChips(notes.map(n=>n.name));highlightPianoKeys(notes)}
+function playArpUp(){const notes=getChordNotes(),ctx=getCtx();let t=ctx.currentTime+.01;notes.forEach((n,i)=>{setTimeout(()=>{highlightChip(n.name);highlightPianoKeys([n])},i*arpSpeed*1000);playNote(n.freq,t,arpSpeed*1.5);t+=arpSpeed});setTimeout(()=>playChord(),notes.length*arpSpeed*1000+100)}
+function playArpDown(){const notes=[...getChordNotes()].reverse(),ctx=getCtx();let t=ctx.currentTime+.01;notes.forEach((n,i)=>{setTimeout(()=>{highlightChip(n.name);highlightPianoKeys([n])},i*arpSpeed*1000);playNote(n.freq,t,arpSpeed*1.5);t+=arpSpeed});setTimeout(()=>playChord(),notes.length*arpSpeed*1000+100)}
+function setSpeed(s){arpSpeed=s;['slow','med','fast'].forEach(id=>document.getElementById('sp-'+id).classList.remove('active'));const map={.5:'slow',.25:'med',.12:'fast'};if(map[s])document.getElementById('sp-'+map[s]).classList.add('active')}
+function animateChips(ns){ns.forEach((n,i)=>setTimeout(()=>highlightChip(n),i*80))}
+function highlightChip(n){document.querySelectorAll('.chord-note-chip').forEach(c=>{if(c.dataset.note===n){c.classList.add('playing');setTimeout(()=>c.classList.remove('playing'),600)}})}
+function highlightPianoKeys(notes){document.querySelectorAll('.white-key,.black-key').forEach(k=>k.classList.remove('active'));notes.forEach(n=>{const key=document.querySelector('[data-note="'+n.name+'"][data-octave="'+n.octave+'"]');if(key){key.classList.add('active');setTimeout(()=>key.classList.remove('active'),800)}})}
+function updateChordDisplay(){
+  const type=CHORD_TYPES.find(t=>t.id===selectedType),rootIdx=ALL_NOTES.indexOf(selectedRoot);
+  const noteNames=type.intervals.map(interval=>{const idx=(rootIdx+interval)%12,n=ALL_NOTES[idx];return EH[n]?n+'/'+EH[n]:n});
+  const dr=EH[selectedRoot]?selectedRoot+'/'+EH[selectedRoot]:selectedRoot;
+  document.getElementById('chordNameBig').textContent=dr+type.suffix;
+  document.getElementById('chordFormula').textContent=type.formula;
+  document.getElementById('intervalWrap').innerHTML=type.intNames.map(n=>'<div class="interval-badge">'+n+'</div>').join('');
+  document.getElementById('chordNotesRow').innerHTML=noteNames.map(n=>'<div class="chord-note-chip" data-note="'+n.split('/')[0]+'">'+n+'</div>').join('');
+  buildPiano();
+  setTimeout(()=>{document.querySelectorAll('.white-key,.black-key').forEach(k=>k.classList.remove('active'));getChordNotes().forEach(n=>{const key=document.querySelector('[data-note="'+n.name+'"][data-octave="'+n.octave+'"]');if(key)key.classList.add('active')})},10);
+}
+function buildPiano(){
+  const container=document.getElementById('pianoKeys');container.innerHTML='';
+  const octs=[baseOctave,baseOctave+1],ww=40,wg=1,tow=WHITE_NOTES.length*(ww+wg);
+  container.style.width=octs.length*tow+'px';
+  octs.forEach((oct,oi)=>{
+    const ox=oi*tow;
+    WHITE_NOTES.forEach((note,wi)=>{const key=document.createElement('div');key.className='white-key';key.dataset.note=note;key.dataset.octave=oct;key.style.position='absolute';key.style.left=ox+wi*(ww+wg)+'px';key.innerHTML='<span class="key-label">'+note+oct+'</span>';key.addEventListener('click',()=>{playNote(noteFreq(note,oct),null,1.2);key.classList.add('active');setTimeout(()=>key.classList.remove('active'),500)});container.appendChild(key)});
+    Object.entries(BLACK_OFFSETS).forEach(([note,pos])=>{const key=document.createElement('div');key.className='black-key';key.dataset.note=note;key.dataset.octave=oct;key.style.left=ox+pos*(ww+wg)-1+'px';key.innerHTML='<span class="key-label">'+note+'</span>';key.addEventListener('click',()=>{playNote(noteFreq(note,oct),null,1.2);key.classList.add('active');setTimeout(()=>key.classList.remove('active'),500)});container.appendChild(key)});
+  });
+}
+function changeOctave(d){baseOctave=Math.max(2,Math.min(6,baseOctave+d));document.getElementById('octLabel').textContent='Oct '+baseOctave;updateChordDisplay()}
+// Build note grid
+const ng=document.getElementById('noteGrid');ALL_NOTES.forEach(n=>{const btn=document.createElement('button');btn.className='note-btn'+(n===selectedRoot?' active':'');btn.textContent=EH[n]?n+'/'+EH[n]:n;btn.addEventListener('click',()=>{selectedRoot=n;document.querySelectorAll('.note-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateChordDisplay()});ng.appendChild(btn)});
+// Build type grid
+const tg=document.getElementById('typeGrid');CHORD_TYPES.forEach(t=>{const btn=document.createElement('button');btn.className='type-btn'+(t.id===selectedType?' active':'');btn.textContent=t.name;btn.addEventListener('click',()=>{selectedType=t.id;document.querySelectorAll('.type-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');updateChordDisplay()});tg.appendChild(btn)});
+// Build progressions
+const pg=document.getElementById('progGrid');PROGRESSIONS.forEach(prog=>{const row=document.createElement('div');row.className='prog-row';const name=document.createElement('span');name.className='prog-name';name.textContent=prog.name;const chords=document.createElement('div');chords.className='prog-chords';prog.chords.forEach(c=>{const type=CHORD_TYPES.find(t=>t.id===c.t);const btn=document.createElement('button');btn.className='prog-chord-btn';btn.textContent=c.r+type.suffix;btn.addEventListener('click',()=>{selectedRoot=c.r;selectedType=c.t;document.querySelectorAll('.note-btn').forEach((b,i)=>b.classList.toggle('active',ALL_NOTES[i]===c.r));document.querySelectorAll('.type-btn').forEach((b,i)=>b.classList.toggle('active',CHORD_TYPES[i].id===c.t));updateChordDisplay();setTimeout(()=>playChord(),100)});chords.appendChild(btn)});const pb=document.createElement('button');pb.className='prog-play-btn';pb.textContent='▶';pb.addEventListener('click',()=>{prog.chords.forEach((c,i)=>setTimeout(()=>{selectedRoot=c.r;selectedType=c.t;updateChordDisplay();playChord()},i*arpSpeed*6*1000))});row.appendChild(name);row.appendChild(chords);row.appendChild(pb);pg.appendChild(row)});
+updateChordDisplay();
+</script>
+</body>
+</html>

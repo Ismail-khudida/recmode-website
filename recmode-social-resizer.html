@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECmode Social Media Resizer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0d0d0d;--red:#E8130A;--white:#ffffff;--panel:#161616;--panel2:#1a1a1a;--border:#222;--muted:#555}
+  body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px}
+  header{width:100%;max-width:760px;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:28px}
+  .logo{text-decoration:none;display:flex;flex-direction:column;gap:3px}
+  .header-title{font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+  .wrap{width:100%;max-width:760px;display:flex;flex-direction:column;gap:16px}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:20px}
+  .panel-title{font-size:10px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+
+  /* UPLOAD */
+  .upload-zone{border:2px dashed var(--border);border-radius:14px;padding:48px 24px;text-align:center;cursor:pointer;transition:all .2s;position:relative}
+  .upload-zone:hover,.upload-zone.drag{border-color:var(--red);background:rgba(232,19,10,.04)}
+  .upload-icon{font-size:36px;margin-bottom:12px;opacity:.4}
+  .upload-text{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:6px}
+  .upload-sub{font-size:12px;color:#333}
+  #fileInput{display:none}
+
+  /* PLATFORM GRID */
+  .platform-categories{display:flex;flex-direction:column;gap:14px}
+  .cat-label{font-size:10px;font-weight:700;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+  .cat-label::after{content:'';flex:1;height:1px;background:var(--border)}
+  .platform-grid{display:flex;flex-wrap:wrap;gap:8px}
+  .platform-btn{padding:9px 14px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;text-align:left;display:flex;flex-direction:column;gap:3px;min-width:130px}
+  .platform-btn:hover{border-color:#444;color:var(--white)}
+  .platform-btn.active{border-color:var(--red);background:rgba(232,19,10,.1);color:var(--red)}
+  .platform-btn .p-name{font-size:12px;font-weight:700}
+  .platform-btn .p-size{font-size:10px;color:#444;font-weight:600}
+  .platform-btn.active .p-size{color:rgba(232,19,10,.6)}
+
+  /* PREVIEW + CROP */
+  .preview-area{display:flex;gap:16px;flex-wrap:wrap}
+  .canvas-wrap{flex:1;min-width:260px;background:#111;border:1px solid var(--border);border-radius:14px;overflow:hidden;display:flex;align-items:center;justify-content:center;position:relative}
+  canvas{max-width:100%;max-height:360px;cursor:crosshair;display:block}
+  .preview-info{display:flex;flex-direction:column;gap:12px;min-width:180px}
+  .info-box{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:14px}
+  .info-label{font-size:10px;font-weight:600;letter-spacing:.12em;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
+  .info-value{font-size:16px;font-weight:700;color:var(--white)}
+  .info-sub{font-size:11px;color:var(--muted);margin-top:2px}
+
+  /* CONTROLS */
+  .crop-controls{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .ctrl-btn{padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:var(--white);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.05em}
+  .ctrl-btn:hover{border-color:var(--red)}
+  .ctrl-btn.primary{background:var(--red);border-color:var(--red)}
+  .ctrl-btn.primary:hover{background:#c8100a}
+
+  .zoom-row{display:flex;align-items:center;gap:10px;margin-top:10px}
+  .zoom-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;min-width:50px}
+  input[type=range]{flex:1;accent-color:var(--red);height:4px;cursor:pointer}
+
+  /* OUTPUT PREVIEW */
+  .output-wrap{display:flex;gap:12px;flex-wrap:wrap}
+  .output-card{background:var(--panel2);border:1px solid var(--border);border-radius:12px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:10px;flex:1;min-width:180px}
+  .output-canvas-wrap{border-radius:8px;overflow:hidden;border:1px solid var(--border)}
+  .output-name{font-size:11px;font-weight:700;color:var(--muted);letter-spacing:.06em;text-align:center}
+  .dl-btn{padding:8px 16px;border-radius:8px;background:var(--red);border:none;color:var(--white);font-family:'Inter',sans-serif;font-size:11px;font-weight:700;cursor:pointer;width:100%;letter-spacing:.06em;text-transform:uppercase;transition:background .15s}
+  .dl-btn:hover{background:#c8100a}
+  .dl-btn:disabled{background:var(--border);color:var(--muted);cursor:not-allowed}
+
+  footer{margin-top:32px;font-size:11px;color:#333;text-align:center;letter-spacing:.06em}
+</style>
+</head>
+<body>
+<header>
+  <a class="logo" href="https://recmo.de" style="text-decoration:none;display:flex;flex-direction:column;gap:3px">
+    <div style="font-family:'Inter',sans-serif;line-height:1;letter-spacing:.04em">
+      <span style="font-size:18px;font-weight:900;color:#E8130A">REC</span><span style="font-size:14px;font-weight:600;color:#fff">mode</span>
+    </div>
+    <span style="font-size:9px;font-weight:600;letter-spacing:.18em;color:#fff;font-family:'Inter',sans-serif">recmo.de</span>
+  </a>
+  <div class="header-title">Social Media Resizer</div>
+</header>
+
+<div class="wrap">
+
+  <!-- UPLOAD -->
+  <div class="panel">
+    <div class="panel-title">Image</div>
+    <div class="upload-zone" id="uploadZone" onclick="document.getElementById('fileInput').click()">
+      <div class="upload-icon">🖼️</div>
+      <div class="upload-text">Drop image here or click to upload</div>
+      <div class="upload-sub">JPG, PNG, WEBP — any size</div>
+    </div>
+    <input type="file" id="fileInput" accept="image/*">
+  </div>
+
+  <!-- PLATFORM SELECTOR -->
+  <div class="panel">
+    <div class="panel-title">Platform & Format</div>
+    <div class="platform-categories" id="platformCategories"></div>
+  </div>
+
+  <!-- CROP + PREVIEW -->
+  <div class="panel" id="editorPanel" style="display:none">
+    <div class="panel-title">Crop & Position</div>
+    <div class="preview-area">
+      <div style="flex:1;min-width:260px">
+        <div class="canvas-wrap">
+          <canvas id="cropCanvas"></canvas>
+        </div>
+        <div class="zoom-row">
+          <span class="zoom-label">Zoom</span>
+          <input type="range" id="zoomSlider" min="0.1" max="4" step="0.01" value="1" oninput="onZoom()">
+        </div>
+        <div class="crop-controls">
+          <button class="ctrl-btn" onclick="fitImage()">Fit</button>
+          <button class="ctrl-btn" onclick="fillImage()">Fill</button>
+          <button class="ctrl-btn" onclick="centerImage()">Center</button>
+          <button class="ctrl-btn primary" onclick="generateOutputs()">Generate All ▶</button>
+        </div>
+      </div>
+      <div class="preview-info">
+        <div class="info-box">
+          <div class="info-label">Format</div>
+          <div class="info-value" id="infoName">—</div>
+          <div class="info-sub" id="infoSize">—</div>
+        </div>
+        <div class="info-box">
+          <div class="info-label">Image</div>
+          <div class="info-value" id="infoImgSize">—</div>
+        </div>
+        <div class="info-box">
+          <div class="info-label">Position</div>
+          <div class="info-sub" id="infoPos">x: 0 y: 0</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OUTPUT -->
+  <div class="panel" id="outputPanel" style="display:none">
+    <div class="panel-title">Export</div>
+    <div class="output-wrap" id="outputWrap"></div>
+  </div>
+
+</div>
+<footer>RECmode Social Media Resizer · recmo.de</footer>
+
+<script>
+const PLATFORMS = {
+  'Instagram': [
+    {id:'ig-sq',    name:'Square Post',   w:1080, h:1080},
+    {id:'ig-port',  name:'Portrait Post', w:1080, h:1350},
+    {id:'ig-land',  name:'Landscape Post',w:1080, h:566},
+    {id:'ig-story', name:'Story / Reels', w:1080, h:1920},
+  ],
+  'TikTok': [
+    {id:'tt-vid',   name:'Video',         w:1080, h:1920},
+    {id:'tt-cover', name:'Profile Cover', w:200,  h:200},
+  ],
+  'YouTube': [
+    {id:'yt-thumb', name:'Thumbnail',     w:1280, h:720},
+    {id:'yt-banner',name:'Channel Banner',w:2560, h:1440},
+    {id:'yt-prof',  name:'Profile Icon',  w:800,  h:800},
+  ],
+  'Twitter / X': [
+    {id:'tw-post',  name:'Post',          w:1600, h:900},
+    {id:'tw-head',  name:'Header',        w:1500, h:500},
+    {id:'tw-prof',  name:'Profile',       w:400,  h:400},
+  ],
+  'Facebook': [
+    {id:'fb-post',  name:'Post',          w:1200, h:630},
+    {id:'fb-cover', name:'Cover',         w:851,  h:315},
+    {id:'fb-prof',  name:'Profile',       w:170,  h:170},
+    {id:'fb-story', name:'Story',         w:1080, h:1920},
+  ],
+  'LinkedIn': [
+    {id:'li-post',  name:'Post',          w:1200, h:627},
+    {id:'li-cover', name:'Cover',         w:1584, h:396},
+    {id:'li-prof',  name:'Profile',       w:400,  h:400},
+  ],
+};
+
+let img = null;
+let selectedFmt = null;
+let zoom = 1;
+let offsetX = 0, offsetY = 0;
+let isDragging = false;
+let dragStartX, dragStartY, offsetStartX, offsetStartY;
+
+const canvas = document.getElementById('cropCanvas');
+const ctx = canvas.getContext('2d');
+
+// Build platform buttons
+const catWrap = document.getElementById('platformCategories');
+Object.entries(PLATFORMS).forEach(([cat, fmts]) => {
+  const block = document.createElement('div');
+  const lbl = document.createElement('div');
+  lbl.className = 'cat-label';
+  lbl.textContent = cat;
+  const grid = document.createElement('div');
+  grid.className = 'platform-grid';
+  fmts.forEach(fmt => {
+    const btn = document.createElement('button');
+    btn.className = 'platform-btn';
+    btn.dataset.id = fmt.id;
+    btn.innerHTML = `<span class="p-name">${fmt.name}</span><span class="p-size">${fmt.w} × ${fmt.h} px</span>`;
+    btn.addEventListener('click', () => selectFormat(fmt, btn));
+    grid.appendChild(btn);
+  });
+  block.appendChild(lbl);
+  block.appendChild(grid);
+  catWrap.appendChild(block);
+});
+
+function selectFormat(fmt, btn) {
+  document.querySelectorAll('.platform-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  selectedFmt = fmt;
+  document.getElementById('infoName').textContent = fmt.name;
+  document.getElementById('infoSize').textContent = `${fmt.w} × ${fmt.h} px`;
+  if (img) setupEditor();
+}
+
+// Upload
+const uploadZone = document.getElementById('uploadZone');
+const fileInput = document.getElementById('fileInput');
+
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag'));
+uploadZone.addEventListener('drop', e => { e.preventDefault(); uploadZone.classList.remove('drag'); loadFile(e.dataTransfer.files[0]); });
+fileInput.addEventListener('change', e => loadFile(e.target.files[0]));
+
+function loadFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = e => {
+    img = new Image();
+    img.onload = () => {
+      document.getElementById('infoImgSize').textContent = img.width + ' × ' + img.height;
+      if (selectedFmt) setupEditor();
+      else {
+        // Select first format by default
+        const firstBtn = document.querySelector('.platform-btn');
+        if (firstBtn) {
+          const allFmts = Object.values(PLATFORMS).flat();
+          selectFormat(allFmts[0], firstBtn);
+        }
+      }
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+function setupEditor() {
+  if (!img || !selectedFmt) return;
+  document.getElementById('editorPanel').style.display = 'block';
+  document.getElementById('outputPanel').style.display = 'none';
+
+  const MAX_DISP = 480;
+  const aspect = selectedFmt.w / selectedFmt.h;
+  let cw, ch;
+  if (aspect >= 1) { cw = MAX_DISP; ch = Math.round(MAX_DISP / aspect); }
+  else { ch = MAX_DISP; cw = Math.round(MAX_DISP * aspect); }
+
+  canvas.width = cw;
+  canvas.height = ch;
+  fitImage();
+}
+
+function fitImage() {
+  if (!img || !selectedFmt) return;
+  const sx = canvas.width / img.width;
+  const sy = canvas.height / img.height;
+  zoom = Math.min(sx, sy);
+  centerImage();
+  document.getElementById('zoomSlider').value = zoom;
+  render();
+}
+
+function fillImage() {
+  if (!img || !selectedFmt) return;
+  const sx = canvas.width / img.width;
+  const sy = canvas.height / img.height;
+  zoom = Math.max(sx, sy);
+  centerImage();
+  document.getElementById('zoomSlider').value = zoom;
+  render();
+}
+
+function centerImage() {
+  if (!img) return;
+  offsetX = (canvas.width - img.width * zoom) / 2;
+  offsetY = (canvas.height - img.height * zoom) / 2;
+  render();
+}
+
+function onZoom() {
+  zoom = parseFloat(document.getElementById('zoomSlider').value);
+  render();
+}
+
+function render() {
+  if (!img) return;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#111';
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(img, offsetX, offsetY, img.width * zoom, img.height * zoom);
+  // Overlay crop border
+  ctx.strokeStyle = 'rgba(232,19,10,.6)';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(1, 1, canvas.width - 2, canvas.height - 2);
+  // Rule-of-thirds
+  ctx.strokeStyle = 'rgba(255,255,255,.06)';
+  ctx.lineWidth = 1;
+  for (let i = 1; i < 3; i++) {
+    ctx.beginPath();
+    ctx.moveTo(canvas.width * i / 3, 0);
+    ctx.lineTo(canvas.width * i / 3, canvas.height);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, canvas.height * i / 3);
+    ctx.lineTo(canvas.width, canvas.height * i / 3);
+    ctx.stroke();
+  }
+  document.getElementById('infoPos').textContent = `x: ${Math.round(offsetX)} y: ${Math.round(offsetY)}`;
+}
+
+// Drag
+canvas.addEventListener('mousedown', e => {
+  isDragging = true;
+  dragStartX = e.clientX; dragStartY = e.clientY;
+  offsetStartX = offsetX; offsetStartY = offsetY;
+});
+window.addEventListener('mousemove', e => {
+  if (!isDragging) return;
+  offsetX = offsetStartX + (e.clientX - dragStartX);
+  offsetY = offsetStartY + (e.clientY - dragStartY);
+  render();
+});
+window.addEventListener('mouseup', () => { isDragging = false; });
+
+canvas.addEventListener('wheel', e => {
+  e.preventDefault();
+  zoom = Math.max(0.1, Math.min(4, zoom - e.deltaY * 0.001));
+  document.getElementById('zoomSlider').value = zoom;
+  render();
+}, { passive: false });
+
+// Touch drag
+canvas.addEventListener('touchstart', e => {
+  isDragging = true;
+  dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY;
+  offsetStartX = offsetX; offsetStartY = offsetY;
+});
+canvas.addEventListener('touchmove', e => {
+  e.preventDefault();
+  offsetX = offsetStartX + (e.touches[0].clientX - dragStartX);
+  offsetY = offsetStartY + (e.touches[0].clientY - dragStartY);
+  render();
+}, { passive: false });
+canvas.addEventListener('touchend', () => { isDragging = false; });
+
+function generateOutputs() {
+  if (!img || !selectedFmt) return;
+  const outputWrap = document.getElementById('outputWrap');
+  outputWrap.innerHTML = '';
+  document.getElementById('outputPanel').style.display = 'block';
+
+  // Scale from display canvas to actual format
+  const scaleX = selectedFmt.w / canvas.width;
+  const scaleY = selectedFmt.h / canvas.height;
+
+  // Generate main + 2 variants
+  const variants = [
+    { label: selectedFmt.name, w: selectedFmt.w, h: selectedFmt.h, scale: 1 },
+    { label: 'Preview (50%)', w: Math.round(selectedFmt.w / 2), h: Math.round(selectedFmt.h / 2), scale: 0.5 },
+  ];
+
+  variants.forEach(v => {
+    const offC = document.createElement('canvas');
+    offC.width = v.w;
+    offC.height = v.h;
+    const offCtx = offC.getContext('2d');
+    offCtx.fillStyle = '#111';
+    offCtx.fillRect(0, 0, v.w, v.h);
+    offCtx.drawImage(img, offsetX * scaleX * v.scale * (v.scale === 1 ? 1 : 2), offsetY * scaleY * v.scale * (v.scale === 1 ? 1 : 2), img.width * zoom * scaleX * v.scale * (v.scale === 1 ? 1 : 2), img.height * zoom * scaleY * v.scale * (v.scale === 1 ? 1 : 2));
+
+    const dispCanvas = document.createElement('canvas');
+    const maxPrev = 180;
+    const aspect = v.w / v.h;
+    if (aspect >= 1) { dispCanvas.width = maxPrev; dispCanvas.height = Math.round(maxPrev / aspect); }
+    else { dispCanvas.height = maxPrev; dispCanvas.width = Math.round(maxPrev * aspect); }
+    const dispCtx = dispCanvas.getContext('2d');
+    dispCtx.drawImage(offC, 0, 0, dispCanvas.width, dispCanvas.height);
+
+    const card = document.createElement('div');
+    card.className = 'output-card';
+    const cWrap = document.createElement('div');
+    cWrap.className = 'output-canvas-wrap';
+    cWrap.appendChild(dispCanvas);
+    const name = document.createElement('div');
+    name.className = 'output-name';
+    name.textContent = v.label + '\n' + v.w + '×' + v.h;
+    const dlBtn = document.createElement('button');
+    dlBtn.className = 'dl-btn';
+    dlBtn.textContent = '↓ Download PNG';
+    dlBtn.addEventListener('click', () => {
+      const a = document.createElement('a');
+      a.href = offC.toDataURL('image/png');
+      a.download = `recmode-${selectedFmt.id}-${v.w}x${v.h}.png`;
+      a.click();
+    });
+    card.appendChild(cWrap);
+    card.appendChild(name);
+    card.appendChild(dlBtn);
+    outputWrap.appendChild(card);
+  });
+}
+</script>
+</body>
+</html>

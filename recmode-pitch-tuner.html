@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECmode Pitch Tuner</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d0d0d;--red:#E8130A;--white:#fff;--panel:#161616;--panel2:#1a1a1a;--border:#222;--muted:#555;--in-tune:#00e676;--sharp:#ff5252;--flat:#448aff}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px;user-select:none}
+header{width:100%;max-width:560px;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px}
+.header-title{font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.wrap{width:100%;max-width:560px;display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:20px}
+.panel-title{font-size:10px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+.note-display{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:36px 24px 28px;text-align:center;position:relative;overflow:hidden}
+.note-display::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -20%,rgba(232,19,10,.08) 0%,transparent 70%);pointer-events:none}
+.note-name{font-size:100px;font-weight:900;line-height:1;letter-spacing:-.02em;transition:color .15s;color:var(--white)}
+.note-name.in-tune{color:var(--in-tune)}.note-name.sharp{color:var(--sharp)}.note-name.flat{color:var(--flat)}.note-name.idle{color:#333}
+.note-octave{font-size:28px;font-weight:300;color:var(--muted);margin-top:-8px}
+.note-info{display:flex;justify-content:center;gap:32px;margin-top:20px}
+.note-info-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+.note-info-label{font-size:10px;font-weight:600;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.note-info-value{font-size:18px;font-weight:700;color:var(--white);font-variant-numeric:tabular-nums}
+.cents-value{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums}
+.cents-value.in-tune{color:var(--in-tune)}.cents-value.sharp{color:var(--sharp)}.cents-value.flat{color:var(--flat)}
+.meter-wrap{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:28px 28px 20px}
+.meter-labels{display:flex;justify-content:space-between;font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--muted);margin-bottom:10px;padding:0 4px}
+.meter-labels .flat-lbl{color:var(--flat)}.meter-labels .sharp-lbl{color:var(--sharp)}
+.meter-gauge{position:relative;height:56px}
+.meter-arc-svg{width:100%;height:100%;display:block}
+.meter-center-line{position:absolute;left:50%;top:0;bottom:0;width:2px;background:rgba(255,255,255,.15);transform:translateX(-50%);border-radius:2px}
+.needle-track{position:absolute;inset:0;display:flex;align-items:flex-end;justify-content:center;pointer-events:none}
+.needle{width:3px;height:90%;border-radius:3px 3px 0 0;background:var(--white);transform-origin:bottom center;transform:rotate(0deg);transition:transform .08s cubic-bezier(.4,0,.2,1),background .15s;box-shadow:0 0 8px rgba(255,255,255,.6)}
+.needle.in-tune{background:var(--in-tune);box-shadow:0 0 12px var(--in-tune)}.needle.sharp{background:var(--sharp);box-shadow:0 0 12px var(--sharp)}.needle.flat{background:var(--flat);box-shadow:0 0 12px var(--flat)}
+.ticks{display:flex;justify-content:space-between;padding:6px 4px 0}
+.tick{width:1px;height:8px;background:var(--border);border-radius:1px}.tick.major{height:14px;background:#333}.tick.center{background:rgba(255,255,255,.3);height:14px}
+.controls-row{display:flex;gap:12px;align-items:stretch}
+.mic-btn{flex:1;background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:12px;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:var(--white);letter-spacing:.06em;text-transform:uppercase;transition:all .18s}
+.mic-btn:hover{border-color:var(--red)}.mic-btn.active{background:rgba(232,19,10,.1);border-color:var(--red);color:var(--red)}
+.mic-icon{width:20px;height:20px;fill:var(--muted);transition:fill .18s}.mic-btn.active .mic-icon{fill:var(--red)}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--muted);transition:background .3s;flex-shrink:0}
+.status-dot.listening{background:var(--red);animation:pulse-r 1.2s ease-in-out infinite}.status-dot.in-tune{background:var(--in-tune);animation:pulse-g .6s ease-in-out infinite}
+@keyframes pulse-r{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+@keyframes pulse-g{0%,100%{opacity:1;transform:scale(1);box-shadow:0 0 0 0 rgba(0,230,118,.4)}50%{transform:scale(1.3);box-shadow:0 0 0 6px rgba(0,230,118,0)}}
+.ref-panel{background:var(--panel);border:1px solid var(--border);border-radius:14px;padding:14px 18px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-width:100px}
+.ref-label{font-size:10px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.ref-controls{display:flex;align-items:center;gap:8px}
+.ref-btn{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);background:#1e1e1e;color:var(--white);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .15s}
+.ref-btn:hover{border-color:var(--red)}.ref-value{font-size:18px;font-weight:700;font-variant-numeric:tabular-nums;color:var(--white);min-width:36px;text-align:center}
+.keyboard{display:flex;gap:4px;justify-content:center;flex-wrap:wrap}
+.key-note{padding:8px 10px;border-radius:8px;border:1px solid var(--border);background:#1a1a1a;font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.03em;transition:all .15s;min-width:38px;text-align:center}
+.key-note.active{border-color:var(--white);background:#222;color:var(--white)}
+.key-note.in-tune{border-color:var(--in-tune);background:rgba(0,230,118,.12);color:var(--in-tune);box-shadow:0 0 12px rgba(0,230,118,.2)}
+.key-note.sharp{border-color:var(--sharp);background:rgba(255,82,82,.1);color:var(--sharp)}
+.key-note.flat{border-color:var(--flat);background:rgba(68,138,255,.1);color:var(--flat)}
+.history-list{display:flex;flex-wrap:wrap;gap:8px;min-height:36px;align-items:flex-start}
+.history-chip{padding:5px 10px;border-radius:20px;background:#1e1e1e;border:1px solid var(--border);font-size:12px;font-weight:700;color:var(--muted);display:flex;align-items:center;gap:5px}
+.history-chip .chip-dot{width:6px;height:6px;border-radius:50%}
+.history-chip.in-tune .chip-dot{background:var(--in-tune)}.history-chip.sharp .chip-dot{background:var(--sharp)}.history-chip.flat .chip-dot{background:var(--flat)}
+.history-empty{font-size:12px;color:var(--muted);font-style:italic}
+.clear-btn{font-size:10px;font-weight:600;letter-spacing:.1em;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;text-transform:uppercase;transition:color .15s}
+.clear-btn:hover{color:var(--red)}
+footer{margin-top:32px;font-size:11px;color:#333;text-align:center;letter-spacing:.06em}
+</style>
+</head>
+<body>
+<header>
+  <a href="https://recmo.de" style="text-decoration:none;display:flex;flex-direction:column;gap:3px">
+    <div style="font-family:'Inter',sans-serif;line-height:1;letter-spacing:.04em"><span style="font-size:18px;font-weight:900;color:#E8130A">REC</span><span style="font-size:14px;font-weight:600;color:#fff">mode</span></div>
+    <span style="font-size:9px;font-weight:600;letter-spacing:.18em;color:#fff;font-family:'Inter',sans-serif">recmo.de</span>
+  </a>
+  <div class="header-title">Pitch Tuner</div>
+</header>
+<div class="wrap">
+  <div class="note-display">
+    <div class="note-name idle" id="noteName">—</div>
+    <div class="note-octave" id="noteOctave"></div>
+    <div class="note-info">
+      <div class="note-info-item"><span class="note-info-label">Freq</span><span class="note-info-value" id="freqVal">— Hz</span></div>
+      <div class="note-info-item"><span class="note-info-label">Cents</span><span class="cents-value" id="centsVal">±0</span></div>
+      <div class="note-info-item"><span class="note-info-label">Target</span><span class="note-info-value" id="targetVal">— Hz</span></div>
+    </div>
+  </div>
+  <div class="meter-wrap">
+    <div class="meter-labels"><span class="flat-lbl">♭ FLAT</span><span>IN TUNE</span><span class="sharp-lbl">SHARP ♯</span></div>
+    <div class="meter-gauge">
+      <svg class="meter-arc-svg" viewBox="0 0 500 56" preserveAspectRatio="none">
+        <rect x="0" y="0" width="200" height="56" fill="rgba(68,138,255,.04)" rx="4"/>
+        <rect x="210" y="0" width="80" height="56" fill="rgba(0,230,118,.06)" rx="4"/>
+        <rect x="300" y="0" width="200" height="56" fill="rgba(255,82,82,.04)" rx="4"/>
+        <line x1="210" y1="0" x2="210" y2="56" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+        <line x1="290" y1="0" x2="290" y2="56" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+      </svg>
+      <div class="meter-center-line"></div>
+      <div class="needle-track"><div class="needle" id="needle"></div></div>
+    </div>
+    <div class="ticks" id="ticks"></div>
+  </div>
+  <div class="controls-row">
+    <button class="mic-btn" id="micBtn" onclick="toggleMic()">
+      <svg class="mic-icon" viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 1 4 4v6a4 4 0 0 1-8 0V5a4 4 0 0 1 4-4zm6.5 9a1 1 0 0 1 1 1 7.5 7.5 0 0 1-15 0 1 1 0 1 1 2 0 5.5 5.5 0 0 0 11 0 1 1 0 0 1 1-1zM12 19a1 1 0 0 1 1 1v2a1 1 0 1 1-2 0v-2a1 1 0 0 1 1-1z"/></svg>
+      <div class="status-dot" id="statusDot"></div>
+      <span id="micLabel">Start Tuner</span>
+    </button>
+    <div class="ref-panel">
+      <span class="ref-label">Ref A</span>
+      <div class="ref-controls">
+        <button class="ref-btn" onclick="changeRef(-1)">−</button>
+        <span class="ref-value" id="refVal">440</span>
+        <button class="ref-btn" onclick="changeRef(+1)">+</button>
+      </div>
+    </div>
+  </div>
+  <div class="panel"><div class="panel-title">Chromatic</div><div class="keyboard" id="keyboard"></div></div>
+  <div class="panel">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px">
+      <span style="font-size:10px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase">Detected Notes</span>
+      <button class="clear-btn" onclick="clearHistory()">Clear</button>
+    </div>
+    <div class="history-list" id="historyList"><span class="history-empty">Waiting for input…</span></div>
+  </div>
+</div>
+<footer>RECmode Pitch Tuner · recmo.de</footer>
+<script>
+const NOTE_NAMES=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+let audioCtx=null,analyser=null,micStream=null,animId=null,isListening=false,refA=440;
+let smoothedCents=0,lastNote=null,noteHoldCount=0,historyNotes=[];
+const HOLD=8,SILENCE=0.005;
+// Build keyboard
+const kb=document.getElementById('keyboard');
+NOTE_NAMES.forEach(n=>{const d=document.createElement('div');d.className='key-note';d.id='key-'+n.replace('#','s');d.textContent=n;kb.appendChild(d)});
+// Build ticks
+const te=document.getElementById('ticks');
+for(let i=-50;i<=50;i+=5){const t=document.createElement('div');t.className='tick'+(i===0?' center':i%10===0?' major':'');te.appendChild(t)}
+function autoCorrelate(buf,sR){
+  const SIZE=buf.length,rms=Math.sqrt(buf.reduce((s,v)=>s+v*v,0)/SIZE);
+  if(rms<SILENCE)return -1;
+  let r1=0,r2=SIZE-1;
+  for(let i=0;i<SIZE/2;i++){if(buf[i]<0){r1=i;break}}
+  for(let i=1;i<SIZE/2;i++){if(buf[SIZE-i]<0){r2=SIZE-i;break}}
+  const tb=buf.slice(r1,r2),TS=tb.length;
+  const corr=new Float32Array(TS);
+  for(let i=0;i<TS;i++)for(let j=0;j<TS-i;j++)corr[i]+=tb[j]*tb[j+i];
+  let d=0;while(d<TS&&corr[d]>corr[d+1])d++;
+  let maxV=-Infinity,maxP=-1;
+  for(let i=d;i<TS;i++)if(corr[i]>maxV){maxV=corr[i];maxP=i}
+  if(maxP<1)return -1;
+  const x1=corr[maxP-1],x2=corr[maxP],x3=corr[maxP+1]||x2;
+  const a=(x1+x3-2*x2)/2,b=(x3-x1)/2,off=a?-b/(2*a):0;
+  return sR/(maxP+off);
+}
+function freqToNote(freq){
+  const semi=12*Math.log2(freq/refA)+69,noteNum=Math.round(semi),cents=Math.round((semi-noteNum)*100);
+  const oct=Math.floor(noteNum/12)-1,noteName=NOTE_NAMES[((noteNum%12)+12)%12];
+  const targetFreq=refA*Math.pow(2,(noteNum-69)/12);
+  return{noteName,octave:oct,cents,targetFreq};
+}
+function getCls(cents){if(Math.abs(cents)<=5)return'in-tune';return cents>0?'sharp':'flat'}
+function updateUI(freq){
+  if(freq<0){smoothedCents*=.85;setNeedle(smoothedCents,'idle');setNote('—','',0,0,'idle');return}
+  const{noteName,octave,cents,targetFreq}=freqToNote(freq);
+  const cls=getCls(cents);
+  smoothedCents=smoothedCents*.75+cents*.25;
+  const key=noteName+octave;
+  if(key===lastNote)noteHoldCount++;else{lastNote=key;noteHoldCount=0}
+  if(noteHoldCount>=HOLD){setNote(noteName,octave,Math.round(smoothedCents),Math.round(freq*10)/10,cls);setNeedle(smoothedCents,cls);highlightKey(noteName,cls);if(noteHoldCount===HOLD)addHistory(noteName,octave,cls)}else setNeedle(smoothedCents,cls);
+  document.getElementById('freqVal').textContent=Math.round(freq*10)/10+' Hz';
+  document.getElementById('targetVal').textContent=Math.round(targetFreq*10)/10+' Hz';
+}
+function setNote(name,octave,cents,freq,cls){
+  const ne=document.getElementById('noteName'),oe=document.getElementById('noteOctave'),ce=document.getElementById('centsVal');
+  ne.textContent=name;ne.className='note-name '+cls;oe.textContent=octave!==''?octave:'';
+  const sign=cents>0?'+':'';ce.textContent=cls==='idle'?'±0':sign+cents+' ¢';ce.className='cents-value '+cls;
+  const dot=document.getElementById('statusDot');
+  if(cls==='in-tune')dot.className='status-dot in-tune';else if(isListening)dot.className='status-dot listening';
+}
+function setNeedle(cents,cls){const n=document.getElementById('needle');n.style.transform='rotate('+Math.max(-50,Math.min(50,cents))*1.1+'deg)';n.className='needle '+cls}
+function highlightKey(noteName,cls){document.querySelectorAll('.key-note').forEach(k=>k.className='key-note');const el=document.getElementById('key-'+noteName.replace('#','s'));if(el)el.className='key-note active '+cls}
+function addHistory(note,octave,cls){const key=note+octave;if(historyNotes.length>0&&historyNotes[historyNotes.length-1].key===key)return;historyNotes.push({key,note,octave,cls});if(historyNotes.length>12)historyNotes.shift();renderHistory()}
+function renderHistory(){const list=document.getElementById('historyList');if(!historyNotes.length){list.innerHTML='<span class="history-empty">Waiting for input…</span>';return}list.innerHTML=historyNotes.map(h=>'<div class="history-chip '+h.cls+'"><div class="chip-dot"></div>'+h.note+'<sub>'+h.octave+'</sub></div>').join('')}
+function clearHistory(){historyNotes=[];renderHistory()}
+async function toggleMic(){isListening?stopMic():await startMic()}
+async function startMic(){
+  try{micStream=await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:false,noiseSuppression:false,autoGainControl:false},video:false})}
+  catch(e){alert('Microphone access denied.');return}
+  audioCtx=new(window.AudioContext||window.webkitAudioContext)();
+  const source=audioCtx.createMediaStreamSource(micStream);
+  analyser=audioCtx.createAnalyser();analyser.fftSize=4096;analyser.smoothingTimeConstant=0;
+  source.connect(analyser);isListening=true;
+  document.getElementById('micBtn').classList.add('active');document.getElementById('statusDot').className='status-dot listening';document.getElementById('micLabel').textContent='Stop Tuner';
+  const buf=new Float32Array(analyser.fftSize);
+  function loop(){analyser.getFloatTimeDomainData(buf);updateUI(autoCorrelate(buf,audioCtx.sampleRate));animId=requestAnimationFrame(loop)}loop()
+}
+function stopMic(){cancelAnimationFrame(animId);micStream?.getTracks().forEach(t=>t.stop());audioCtx?.close();isListening=false;animId=null;micStream=null;audioCtx=null;analyser=null;document.getElementById('micBtn').classList.remove('active');document.getElementById('statusDot').className='status-dot';document.getElementById('micLabel').textContent='Start Tuner';document.getElementById('noteName').textContent='—';document.getElementById('noteName').className='note-name idle';document.getElementById('noteOctave').textContent='';document.getElementById('freqVal').textContent='— Hz';document.getElementById('targetVal').textContent='— Hz';document.getElementById('centsVal').textContent='±0';document.querySelectorAll('.key-note').forEach(k=>k.className='key-note');setNeedle(0,'');smoothedCents=0;lastNote=null;noteHoldCount=0}
+function changeRef(d){refA=Math.max(400,Math.min(480,refA+d));document.getElementById('refVal').textContent=refA}
+</script>
+</body>
+</html>

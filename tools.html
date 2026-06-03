@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECmode Tools – Kostenlose Kreativ-Tools</title>
+<meta name="description" content="10 kostenlose Web-Tools für Musiker, Creator und Marketer. Metronome, Drum Machine, Pitch Tuner, QR Generator und mehr – direkt im Browser.">
+<meta property="og:title" content="RECmode Tools – Kostenlose Kreativ-Tools">
+<meta property="og:description" content="10 kostenlose Web-Tools für Musiker, Creator und Marketer.">
+<meta property="og:url" content="https://recmo.de/tools">
+<link rel="canonical" href="https://recmo.de/tools">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d0d0d;--red:#E8130A;--white:#fff;--panel:#161616;--panel2:#1a1a1a;--border:#222;--muted:#555}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;min-height:100vh}
+
+/* NAV */
+nav{background:rgba(13,13,13,.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 24px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.nav-logo{text-decoration:none;display:flex;flex-direction:column;gap:2px}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.06em;transition:color .15s}
+.nav-links a:hover,.nav-links a.active{color:var(--white)}
+.nav-cta{background:var(--red);color:var(--white)!important;padding:9px 18px;border-radius:8px;letter-spacing:.06em}
+.nav-cta:hover{background:#c8100a!important}
+
+/* HERO */
+.hero{padding:80px 24px 60px;text-align:center;max-width:800px;margin:0 auto}
+.hero-tag{display:inline-block;padding:6px 14px;border-radius:20px;border:1px solid rgba(232,19,10,.3);background:rgba(232,19,10,.08);color:var(--red);font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;margin-bottom:24px}
+.hero h1{font-size:clamp(40px,6vw,72px);font-weight:900;line-height:1.05;letter-spacing:-.03em;margin-bottom:20px}
+.hero h1 span{color:var(--red)}
+.hero p{font-size:18px;color:var(--muted);line-height:1.6;max-width:560px;margin:0 auto 32px}
+.hero-stats{display:flex;justify-content:center;gap:40px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;align-items:center;gap:4px}
+.stat-num{font-size:32px;font-weight:900;color:var(--white)}
+.stat-label{font-size:11px;font-weight:600;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+
+/* FILTER */
+.filter-wrap{padding:0 24px 32px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.filter-btn{padding:8px 16px;border-radius:20px;border:1px solid var(--border);background:var(--panel2);color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.04em}
+.filter-btn:hover{border-color:#444;color:var(--white)}
+.filter-btn.active{border-color:var(--red);background:rgba(232,19,10,.1);color:var(--red)}
+
+/* TOOLS GRID */
+.tools-section{padding:0 24px 80px;max-width:1100px;margin:0 auto}
+.tools-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.tool-card{background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:28px;text-decoration:none;color:var(--white);transition:all .2s;position:relative;overflow:hidden;display:block}
+.tool-card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 70% -20%,var(--card-glow) 0%,transparent 60%);opacity:0;transition:opacity .3s;pointer-events:none}
+.tool-card:hover{border-color:rgba(232,19,10,.4);transform:translateY(-2px);box-shadow:0 8px 32px rgba(0,0,0,.4)}
+.tool-card:hover::before{opacity:1}
+.card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;flex-shrink:0}
+.card-tag{font-size:10px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;margin-bottom:8px}
+.card-name{font-size:20px;font-weight:800;margin-bottom:8px;letter-spacing:-.01em}
+.card-desc{font-size:13px;color:var(--muted);line-height:1.5;margin-bottom:16px}
+.card-features{display:flex;flex-wrap:wrap;gap:6px}
+.feature-badge{padding:4px 10px;border-radius:20px;background:#1e1e1e;border:1px solid var(--border);font-size:10px;font-weight:600;color:var(--muted)}
+.card-arrow{position:absolute;top:24px;right:24px;width:32px;height:32px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;transition:all .2s}
+.tool-card:hover .card-arrow{border-color:var(--red);background:rgba(232,19,10,.1)}
+.card-arrow svg{width:14px;height:14px;fill:var(--muted)}
+.tool-card:hover .card-arrow svg{fill:var(--red)}
+
+/* FOOTER */
+footer{background:var(--panel);border-top:1px solid var(--border);padding:40px 24px;text-align:center}
+.footer-logo{display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:16px;text-decoration:none}
+footer p{font-size:12px;color:var(--muted)}
+footer a{color:var(--muted);text-decoration:none;transition:color .15s}
+footer a:hover{color:var(--white)}
+
+@media(max-width:600px){
+  .nav-links{gap:16px}
+  .nav-links a:not(.nav-cta){display:none}
+  .hero{padding:48px 20px 40px}
+  .hero-stats{gap:24px}
+  .tools-section{padding:0 16px 60px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="https://recmo.de">
+    <div style="font-family:'Inter',sans-serif;line-height:1;letter-spacing:.04em"><span style="font-size:18px;font-weight:900;color:#E8130A">REC</span><span style="font-size:14px;font-weight:600;color:#fff">mode</span></div>
+    <span style="font-size:8px;font-weight:600;letter-spacing:.18em;color:#fff">recmo.de</span>
+  </a>
+  <div class="nav-links">
+    <a href="https://recmo.de">Home</a>
+    <a href="https://recmo.de/tools" class="active">Tools</a>
+    <a href="https://recmo.de/quiz">Quiz</a>
+    <a href="https://recmo.de/#kontakt" class="nav-cta">Kontakt</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Kostenlose Tools</div>
+  <h1>Kreativ-Tools<br>für <span>Creator</span></h1>
+  <p>10 professionelle Web-Apps für Musiker, Content Creator und Marketer — kostenlos, direkt im Browser, ohne Installation.</p>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">10</span><span class="stat-label">Tools</span></div>
+    <div class="stat"><span class="stat-num">100%</span><span class="stat-label">Kostenlos</span></div>
+    <div class="stat"><span class="stat-num">0</span><span class="stat-label">Login nötig</span></div>
+  </div>
+</div>
+
+<div class="filter-wrap">
+  <button class="filter-btn active" onclick="filterTools('all',this)">Alle</button>
+  <button class="filter-btn" onclick="filterTools('music',this)">Musik</button>
+  <button class="filter-btn" onclick="filterTools('design',this)">Design</button>
+  <button class="filter-btn" onclick="filterTools('social',this)">Social Media</button>
+</div>
+
+<div class="tools-section">
+  <div class="tools-grid" id="toolsGrid"></div>
+</div>
+
+<footer>
+  <a class="footer-logo" href="https://recmo.de">
+    <div style="font-family:'Inter',sans-serif;line-height:1;letter-spacing:.04em"><span style="font-size:20px;font-weight:900;color:#E8130A">REC</span><span style="font-size:16px;font-weight:600;color:#fff">mode</span></div>
+    <span style="font-size:9px;font-weight:600;letter-spacing:.18em;color:#555">recmo.de</span>
+  </a>
+  <p>© 2025 RECmode · <a href="/impressum">Impressum</a> · <a href="/datenschutz">Datenschutz</a></p>
+</footer>
+
+<script>
+const TOOLS = [
+  {
+    id:'metronome', name:'Metronome', tag:'Musik', cat:'music',
+    icon:'🎵', color:'#E8130A', glow:'rgba(232,19,10,.15)',
+    desc:'Professionelles Metronome mit Lookahead-Scheduler, 6 Sounds, Subdivisions, Swing und Tempo-Trainer.',
+    features:['6 Sounds','Swing','Subdivisions','Tempo Trainer','7 Taktarten'],
+    url:'/recmode-metronome'
+  },
+  {
+    id:'drum-machine', name:'Drum Machine', tag:'Musik', cat:'music',
+    icon:'🥁', color:'#ff6600', glow:'rgba(255,102,0,.15)',
+    desc:'12-Track Step Sequencer mit 8/16/32 Steps, Bass-Synthese, Melodie-Tracks und 4 Pattern-Slots.',
+    features:['12 Tracks','32 Steps','Bass Synth','Melodie','4 Pattern'],
+    url:'/recmode-drum-machine'
+  },
+  {
+    id:'noise-generator', name:'Noise Generator', tag:'Musik', cat:'music',
+    icon:'🌊', color:'#448aff', glow:'rgba(68,138,255,.15)',
+    desc:'5 Noise-Typen mit Binaural Beats, Waveform-Visualizer und Sleep Timer für Fokus und Entspannung.',
+    features:['White/Pink/Brown','Binaural Beats','Visualizer','Sleep Timer','Presets'],
+    url:'/recmode-noise-generator'
+  },
+  {
+    id:'pitch-tuner', name:'Pitch Tuner', tag:'Musik', cat:'music',
+    icon:'🎸', color:'#00e676', glow:'rgba(0,230,118,.15)',
+    desc:'Chromatischer Stimmgerät mit Mikrofon-Echtzeiterkennung, Autocorrelation und präziser Cents-Anzeige.',
+    features:['Mikrofon-Erkennung','Chromatisch','Cents-Meter','Ref A 400-480','Note History'],
+    url:'/recmode-pitch-tuner'
+  },
+  {
+    id:'chord-generator', name:'Chord Generator', tag:'Musik', cat:'music',
+    icon:'🎹', color:'#ce93d8', glow:'rgba(206,147,216,.15)',
+    desc:'19 Akkordtypen mit Piano-Visualisierung, Arpeggiator und 5 klassischen Chord-Progressionen.',
+    features:['19 Akkordtypen','Piano','Arpeggiator','Progressionen','Soundausgabe'],
+    url:'/recmode-chord-generator'
+  },
+  {
+    id:'social-resizer', name:'Social Media Resizer', tag:'Social Media', cat:'social',
+    icon:'📐', color:'#ffd600', glow:'rgba(255,214,0,.15)',
+    desc:'Bild-Resizer für 20+ Social Media Formate mit Canvas-Crop, Drag & Zoom und PNG-Download.',
+    features:['Instagram','YouTube','TikTok','LinkedIn','Facebook','PNG Export'],
+    url:'/recmode-social-resizer'
+  },
+  {
+    id:'color-palette', name:'Color Palette Generator', tag:'Design', cat:'design',
+    icon:'🎨', color:'#ff80ab', glow:'rgba(255,128,171,.15)',
+    desc:'Farbpaletten nach 6 Harmonielehre-Prinzipien mit Shades, CSS-Export und PNG-Download.',
+    features:['6 Harmonien','Shades/Tints','CSS Vars','HEX Export','PNG Download'],
+    url:'/recmode-color-palette'
+  },
+  {
+    id:'qr-generator', name:'QR Code Generator', tag:'Design', cat:'design',
+    icon:'⬛', color:'#80cbc4', glow:'rgba(128,203,196,.15)',
+    desc:'QR Codes für URL, Text, Email, WiFi und vCard — mit anpassbaren Farben, SVG & PNG Export.',
+    features:['URL/Text/WiFi/vCard','Custom Colors','SVG Export','PNG Export','Ohne Limit'],
+    url:'/recmode-qr-generator'
+  },
+  {
+    id:'moodboard', name:'Mood Board', tag:'Design', cat:'design',
+    icon:'🖼️', color:'#a1887f', glow:'rgba(161,136,127,.15)',
+    desc:'Digitales Moodboard mit Drag & Drop, Bilder, Shapes, Text, Ebenen, Undo/Redo und PNG-Export.',
+    features:['Drag & Drop','Bilder Upload','Text & Shapes','Ebenen','PNG Export'],
+    url:'/recmode-moodboard'
+  },
+  {
+    id:'studio-timer', name:'Studio Timer', tag:'Social Media', cat:'social',
+    icon:'⏱️', color:'#ff9100', glow:'rgba(255,145,0,.15)',
+    desc:'Pomodoro-Timer mit animiertem Ring, 6 Modi, Custom-Zeit, Sound-Alert und Session-Log.',
+    features:['Pomodoro','Studio 30/60','Custom Zeit','Sound Alert','Session Log'],
+    url:'/recmode-studio-timer'
+  },
+];
+
+function buildGrid(filter) {
+  const grid = document.getElementById('toolsGrid');
+  const tools = filter === 'all' ? TOOLS : TOOLS.filter(t => t.cat === filter);
+  grid.innerHTML = tools.map(t => `
+    <a class="tool-card" href="${t.url}" style="--card-glow:${t.glow}">
+      <div class="card-arrow"><svg viewBox="0 0 24 24"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6z"/></svg></div>
+      <div class="card-icon" style="background:${t.glow}">${t.icon}</div>
+      <div class="card-tag" style="color:${t.color}">${t.tag}</div>
+      <div class="card-name">${t.name}</div>
+      <div class="card-desc">${t.desc}</div>
+      <div class="card-features">${t.features.map(f=>'<span class="feature-badge">'+f+'</span>').join('')}</div>
+    </a>
+  `).join('');
+}
+
+function filterTools(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  buildGrid(cat);
+}
+
+buildGrid('all');
+</script>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECmode Metronome</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#0d0d0d;--red:#E8130A;--white:#fff;--panel:#161616;--panel2:#1a1a1a;--border:#222;--muted:#555}
+body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px;user-select:none}
+header{width:100%;max-width:560px;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px}
+.header-title{font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.wrap{width:100%;max-width:560px;display:flex;flex-direction:column;gap:16px}
+.panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:20px}
+.panel-title{font-size:10px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+.bpm-display{text-align:center;padding:20px 0 10px}
+.bpm-number{font-size:96px;font-weight:900;line-height:1;letter-spacing:-.04em;font-variant-numeric:tabular-nums;transition:color .1s}
+.bpm-number.flash{color:var(--red)}
+.bpm-label{font-size:12px;font-weight:600;letter-spacing:.18em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+.tempo-name{font-size:13px;font-weight:700;color:var(--red);letter-spacing:.08em;text-transform:uppercase;margin-top:8px;min-height:20px}
+input[type=range]{width:100%;accent-color:var(--red);height:6px;cursor:pointer}
+.bpm-btns{display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;margin-top:12px}
+.bpm-btn{padding:10px 18px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:var(--white);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s}
+.bpm-btn:hover{border-color:var(--red)}
+.pendulum-wrap{height:80px;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+.pendulum-track{width:100%;height:4px;background:#1e1e1e;border-radius:2px;position:relative}
+.pendulum-ball{width:24px;height:24px;border-radius:50%;background:var(--red);position:absolute;top:50%;transform:translate(-50%,-50%);box-shadow:0 0 16px rgba(232,19,10,.5)}
+.beat-dots{display:flex;justify-content:center;gap:10px;margin-bottom:8px}
+.beat-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);background:transparent;transition:all .08s}
+.beat-dot.active{background:var(--red);border-color:var(--red);box-shadow:0 0 10px rgba(232,19,10,.5)}
+.beat-dot.accent{border-color:#ff6600}
+.beat-dot.active.accent{background:#ff6600;border-color:#ff6600}
+.play-btn{width:72px;height:72px;border-radius:50%;background:var(--red);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;box-shadow:0 0 24px rgba(232,19,10,.3)}
+.play-btn:hover{background:#c8100a}
+.play-btn svg{width:28px;height:28px;fill:var(--white)}
+.controls-row{display:flex;justify-content:center;align-items:center;gap:16px}
+.tap-btn{padding:14px 24px;border-radius:12px;border:1px solid var(--border);background:var(--panel2);color:var(--white);font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.06em;text-transform:uppercase}
+.tap-btn:hover{border-color:var(--red)}
+.sel-grid{display:flex;gap:6px;flex-wrap:wrap}
+.sel-btn{padding:8px 14px;border-radius:9px;border:1px solid var(--border);background:var(--panel2);color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .15s}
+.sel-btn:hover{border-color:#444;color:var(--white)}
+.sel-btn.active{border-color:var(--red);background:rgba(232,19,10,.1);color:var(--red)}
+.accent-beats{display:flex;gap:6px;flex-wrap:wrap}
+.accent-beat{width:38px;height:38px;border-radius:8px;border:1px solid var(--border);background:var(--panel2);cursor:pointer;font-family:'Inter',sans-serif;font-size:11px;font-weight:700;color:var(--muted);transition:all .15s;display:flex;align-items:center;justify-content:center}
+.accent-beat.accent{background:rgba(255,102,0,.15);border-color:#ff6600;color:#ff6600}
+.swing-row{display:flex;align-items:center;gap:10px}
+.swing-label{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;min-width:50px}
+.swing-val{font-size:13px;font-weight:700;color:var(--white);min-width:35px;text-align:right}
+.trainer-row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.trainer-input{background:var(--panel2);border:1px solid var(--border);border-radius:8px;padding:8px 12px;color:var(--white);font-family:'Inter',sans-serif;font-size:13px;width:70px;outline:none;text-align:center}
+.trainer-input:focus{border-color:var(--red)}
+.trainer-btn{padding:9px 16px;border-radius:9px;border:1px solid var(--border);background:var(--panel2);color:var(--white);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+.trainer-btn:hover{border-color:var(--red)}
+.trainer-btn.active{border-color:var(--red);background:rgba(232,19,10,.1);color:var(--red)}
+.trainer-info{font-size:11px;color:var(--muted);margin-top:6px}
+footer{margin-top:32px;font-size:11px;color:#333;text-align:center;letter-spacing:.06em}
+</style>
+</head>
+<body>
+<header>
+  <a href="https://recmo.de" style="text-decoration:none;display:flex;flex-direction:column;gap:3px">
+    <div style="font-family:'Inter',sans-serif;line-height:1;letter-spacing:.04em"><span style="font-size:18px;font-weight:900;color:#E8130A">REC</span><span style="font-size:14px;font-weight:600;color:#fff">mode</span></div>
+    <span style="font-size:9px;font-weight:600;letter-spacing:.18em;color:#fff;font-family:'Inter',sans-serif">recmo.de</span>
+  </a>
+  <div class="header-title">Metronome</div>
+</header>
+<div class="wrap">
+  <div class="panel">
+    <div class="bpm-display">
+      <div class="bpm-number" id="bpmNumber">120</div>
+      <div class="bpm-label">BPM</div>
+      <div class="tempo-name" id="tempoName">Moderato</div>
+    </div>
+    <div style="padding:4px 0 8px"><input type="range" id="bpmSlider" min="20" max="300" value="120" oninput="setBpm(+this.value)"></div>
+    <div class="bpm-btns">
+      <button class="bpm-btn" onclick="setBpm(bpm-10)">−10</button>
+      <button class="bpm-btn" onclick="setBpm(bpm-1)">−1</button>
+      <button class="bpm-btn" onclick="setBpm(bpm+1)">+1</button>
+      <button class="bpm-btn" onclick="setBpm(bpm+10)">+10</button>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="pendulum-wrap"><div class="pendulum-track"><div class="pendulum-ball" id="pendulumBall" style="left:50%"></div></div></div>
+    <div class="beat-dots" id="beatDots"></div>
+  </div>
+  <div class="controls-row">
+    <button class="tap-btn" onclick="tapTempo()">Tap Tempo</button>
+    <button class="play-btn" id="playBtn" onclick="togglePlay()"><svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></button>
+    <button class="tap-btn" onclick="setBpm(120)">Reset</button>
+  </div>
+  <div class="panel"><div class="panel-title">Time Signature</div><div class="sel-grid" id="timeSigGrid"></div></div>
+  <div class="panel"><div class="panel-title">Subdivision</div><div class="sel-grid" id="subdivGrid"></div></div>
+  <div class="panel"><div class="panel-title">Sound</div><div class="sel-grid" id="soundGrid"></div></div>
+  <div class="panel">
+    <div class="panel-title">Swing</div>
+    <div class="swing-row">
+      <span class="swing-label">Swing</span>
+      <input type="range" id="swingSlider" min="0" max="50" value="0" oninput="setSwing(+this.value)" style="flex:1;accent-color:var(--red);height:4px;cursor:pointer">
+      <span class="swing-val" id="swingVal">0%</span>
+    </div>
+  </div>
+  <div class="panel"><div class="panel-title">Accent Editor</div><div class="accent-beats" id="accentBeats"></div></div>
+  <div class="panel">
+    <div class="panel-title">Tempo Trainer</div>
+    <div class="trainer-row">
+      <span style="font-size:12px;color:var(--muted);font-weight:600">+</span>
+      <input class="trainer-input" type="number" id="trainerStep" value="5" min="1" max="20">
+      <span style="font-size:12px;color:var(--muted);font-weight:600">BPM every</span>
+      <input class="trainer-input" type="number" id="trainerBars" value="8" min="1" max="64">
+      <span style="font-size:12px;color:var(--muted);font-weight:600">bars</span>
+      <button class="trainer-btn" id="trainerBtn" onclick="toggleTrainer()">Start</button>
+    </div>
+    <div class="trainer-info" id="trainerInfo"></div>
+  </div>
+</div>
+<footer>RECmode Metronome · recmo.de</footer>
+<script>
+let bpm=120,isPlaying=false,timeSig=4,subdiv=1,sound='click',swing=0;
+let accentBeats=new Set([0]),audioCtx=null,nextNoteTime=0,schedulerTimer=null;
+let noteQueue=[],currentBeat=0,currentSubBeat=0,animId=null;
+let trainerActive=false,trainerBarCount=0,trainerBeatInBar=0;
+let tapTimes=[];
+function getCtx(){if(!audioCtx)audioCtx=new(window.AudioContext||window.webkitAudioContext)();if(audioCtx.state==='suspended')audioCtx.resume();return audioCtx}
+function playClick(time,isAccent,isSub){
+  const ctx=getCtx(),osc=ctx.createOscillator(),gain=ctx.createGain();
+  osc.connect(gain);gain.connect(ctx.destination);
+  const freqs={click:[1800,900,600],clave:[2400,1200,800],marimba:[880,660,440],hihat:[8000,6000,4000],kick:[200,120,60],snare:[300,220,150]};
+  const f=freqs[sound]||freqs.click;
+  osc.type=sound==='kick'?'sine':sound==='hihat'?'square':'triangle';
+  if(sound==='kick'){osc.frequency.setValueAtTime(isAccent?f[0]:isSub?f[2]:f[1],time);osc.frequency.exponentialRampToValueAtTime(30,time+0.06);}
+  else osc.frequency.value=isAccent?f[0]:isSub?f[2]:f[1];
+  const vol=isSub?.15:isAccent?.9:.55;
+  gain.gain.setValueAtTime(0,time);gain.gain.linearRampToValueAtTime(vol,time+.005);gain.gain.exponentialRampToValueAtTime(.001,time+.08);
+  osc.start(time);osc.stop(time+.1);
+}
+function getSubCount(){return[1,2,3,4][subdiv-1]||1}
+function schedule(){
+  const ctx=getCtx();
+  while(nextNoteTime<ctx.currentTime+0.1){
+    const isMain=currentSubBeat%getSubCount()===0;
+    const beat=Math.floor(currentSubBeat/getSubCount())%timeSig;
+    const isAccent=isMain&&accentBeats.has(beat);
+    playClick(nextNoteTime,isAccent,!isMain);
+    if(isMain){noteQueue.push({beat,time:nextNoteTime});if(trainerActive){trainerBeatInBar++;if(trainerBeatInBar>=timeSig){trainerBeatInBar=0;trainerBarCount++;const bars=parseInt(document.getElementById('trainerBars').value)||8;if(trainerBarCount>=bars){trainerBarCount=0;const step=parseInt(document.getElementById('trainerStep').value)||5;setBpm(Math.min(300,bpm+step));document.getElementById('trainerInfo').textContent='↑ +'+step+' BPM → now '+bpm;}}}}
+    let interval=60/bpm/getSubCount();
+    if(swing>0&&subdiv>=2&&currentSubBeat%2===1)interval*=(1+swing/100);
+    nextNoteTime+=interval;currentSubBeat++;
+  }
+}
+function startScheduler(){const ctx=getCtx();nextNoteTime=ctx.currentTime+.05;currentSubBeat=0;currentBeat=0;noteQueue=[];schedulerTimer=setInterval(schedule,25);animLoop()}
+function stopScheduler(){clearInterval(schedulerTimer);cancelAnimationFrame(animId);currentBeat=0;noteQueue=[];renderDots(-1);document.getElementById('pendulumBall').style.left='50%'}
+function animLoop(){const ctx=getCtx(),now=ctx.currentTime;while(noteQueue.length&&noteQueue[0].time<now){const n=noteQueue.shift();currentBeat=n.beat;renderDots(currentBeat);flashBpm();animPendulum(currentBeat);}animId=requestAnimationFrame(animLoop)}
+function renderDots(active){const c=document.getElementById('beatDots');c.innerHTML='';for(let i=0;i<timeSig;i++){const d=document.createElement('div');d.className='beat-dot'+(i===active?' active':'')+(accentBeats.has(i)?' accent':'');c.appendChild(d)}}
+function flashBpm(){const el=document.getElementById('bpmNumber');el.classList.add('flash');setTimeout(()=>el.classList.remove('flash'),80)}
+function animPendulum(beat){const from=beat%2===0?.1:.9,to=beat%2===0?.9:.1,dur=60/bpm*1000;let start=null;function step(ts){if(!start)start=ts;const p=Math.min((ts-start)/dur,1),ease=.5-Math.cos(p*Math.PI)/2;document.getElementById('pendulumBall').style.left=(from+(to-from)*ease)*100+'%';if(p<1&&isPlaying)requestAnimationFrame(step)}requestAnimationFrame(step)}
+function togglePlay(){isPlaying=!isPlaying;const icon=document.getElementById('playIcon');if(isPlaying){icon.innerHTML='<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';startScheduler()}else{icon.innerHTML='<path d="M8 5v14l11-7z"/>';stopScheduler()}}
+function setBpm(v){bpm=Math.max(20,Math.min(300,Math.round(v)));document.getElementById('bpmNumber').textContent=bpm;document.getElementById('bpmSlider').value=bpm;const names=[[60,'Larghissimo'],[66,'Grave'],[76,'Largo'],[84,'Larghetto'],[96,'Adagio'],[108,'Andante'],[120,'Moderato'],[132,'Allegretto'],[168,'Allegro'],[200,'Presto'],[999,'Prestissimo']];document.getElementById('tempoName').textContent=names.find(([n])=>bpm<n)[1]}
+function setSwing(v){swing=v;document.getElementById('swingVal').textContent=v+'%'}
+function tapTempo(){const now=Date.now();tapTimes=tapTimes.filter(t=>now-t<3000);tapTimes.push(now);if(tapTimes.length>=2){const avg=(tapTimes[tapTimes.length-1]-tapTimes[0])/(tapTimes.length-1);setBpm(Math.round(60000/avg))}}
+function toggleTrainer(){trainerActive=!trainerActive;trainerBarCount=0;trainerBeatInBar=0;const btn=document.getElementById('trainerBtn');btn.textContent=trainerActive?'Stop':'Start';btn.classList.toggle('active',trainerActive);if(!trainerActive)document.getElementById('trainerInfo').textContent=''}
+function buildTimeSig(){const g=document.getElementById('timeSigGrid');[2,3,4,5,6,7,8].forEach(n=>{const b=document.createElement('button');b.className='sel-btn'+(n===timeSig?' active':'');b.textContent=n+'/4';b.addEventListener('click',()=>{timeSig=n;accentBeats=new Set([0]);document.querySelectorAll('#timeSigGrid .sel-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active');renderDots(-1);buildAccentEditor()});g.appendChild(b)})}
+function buildSubdiv(){const g=document.getElementById('subdivGrid');[{v:1,l:'♩ Quarter'},{v:2,l:'♪ 8th'},{v:3,l:'♪ Triplet'},{v:4,l:'♬ 16th'}].forEach(o=>{const b=document.createElement('button');b.className='sel-btn'+(o.v===subdiv?' active':'');b.textContent=o.l;b.addEventListener('click',()=>{subdiv=o.v;document.querySelectorAll('#subdivGrid .sel-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active')});g.appendChild(b)})}
+function buildSounds(){const g=document.getElementById('soundGrid');['click','clave','marimba','hihat','kick','snare'].forEach(s=>{const b=document.createElement('button');b.className='sel-btn'+(s===sound?' active':'');b.textContent=s.charAt(0).toUpperCase()+s.slice(1);b.addEventListener('click',()=>{sound=s;document.querySelectorAll('#soundGrid .sel-btn').forEach(x=>x.classList.remove('active'));b.classList.add('active')});g.appendChild(b)})}
+function buildAccentEditor(){const c=document.getElementById('accentBeats');c.innerHTML='';for(let i=0;i<timeSig;i++){const b=document.createElement('div');b.className='accent-beat'+(accentBeats.has(i)?' accent':'');b.textContent=i+1;b.addEventListener('click',()=>{if(i===0)return;if(accentBeats.has(i))accentBeats.delete(i);else accentBeats.add(i);b.classList.toggle('accent')});c.appendChild(b)}}
+document.addEventListener('keydown',e=>{if(e.code==='Space'&&e.target.tagName!=='INPUT'){e.preventDefault();togglePlay()}if(e.key==='ArrowUp')setBpm(bpm+1);if(e.key==='ArrowDown')setBpm(bpm-1)});
+buildTimeSig();buildSubdiv();buildSounds();buildAccentEditor();renderDots(-1);setBpm(120);
+</script>
+</body>
+</html>

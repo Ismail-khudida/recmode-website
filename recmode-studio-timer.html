@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECmode Studio Timer</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{--bg:#0d0d0d;--red:#E8130A;--white:#ffffff;--panel:#161616;--panel2:#1a1a1a;--border:#222;--muted:#555;--green:#00e676;--orange:#ff9100}
+  body{background:var(--bg);color:var(--white);font-family:'Inter',sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:24px 16px 48px}
+  header{width:100%;max-width:560px;display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:36px}
+  .header-title{font-size:11px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-top:4px}
+  .wrap{width:100%;max-width:560px;display:flex;flex-direction:column;gap:16px;align-items:center}
+  .panel{background:var(--panel);border:1px solid var(--border);border-radius:18px;padding:20px;width:100%}
+  .panel-title{font-size:10px;font-weight:600;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;margin-bottom:14px}
+
+  /* ── TIMER DISPLAY ── */
+  .timer-display{display:flex;flex-direction:column;align-items:center;gap:0;padding:8px 0 24px;position:relative}
+
+  /* SVG Ring */
+  .ring-wrap{position:relative;width:280px;height:280px;flex-shrink:0}
+  .ring-svg{width:280px;height:280px;transform:rotate(-90deg)}
+  .ring-bg{fill:none;stroke:#1e1e1e;stroke-width:10}
+  .ring-progress{fill:none;stroke:var(--red);stroke-width:10;stroke-linecap:round;transition:stroke-dashoffset .5s linear,stroke .3s}
+  .ring-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+  .timer-time{font-size:60px;font-weight:900;letter-spacing:-.03em;font-variant-numeric:tabular-nums;line-height:1}
+  .timer-label{font-size:12px;font-weight:600;letter-spacing:.16em;color:var(--muted);text-transform:uppercase}
+  .timer-session{font-size:11px;font-weight:600;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-top:12px}
+
+  /* ── MODE SELECTOR ── */
+  .mode-grid{display:flex;gap:8px;flex-wrap:wrap}
+  .mode-btn{flex:1;min-width:100px;padding:12px 10px;border-radius:12px;border:1px solid var(--border);background:var(--panel2);color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;text-align:center;display:flex;flex-direction:column;align-items:center;gap:4px}
+  .mode-btn:hover{border-color:#444;color:var(--white)}
+  .mode-btn.active{border-color:var(--red);background:rgba(232,19,10,.1);color:var(--red)}
+  .mode-btn .m-name{font-size:13px;font-weight:800}
+  .mode-btn .m-time{font-size:10px;font-weight:600;letter-spacing:.06em}
+
+  /* ── CONTROLS ── */
+  .controls{display:flex;gap:10px;justify-content:center;align-items:center;width:100%}
+  .ctrl-btn{width:56px;height:56px;border-radius:50%;border:1px solid var(--border);background:var(--panel2);color:var(--white);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s}
+  .ctrl-btn:hover{border-color:var(--red)}
+  .ctrl-btn.play{width:72px;height:72px;background:var(--red);border-color:var(--red)}
+  .ctrl-btn.play:hover{background:#c8100a}
+  .ctrl-btn svg{width:22px;height:22px;fill:currentColor}
+  .ctrl-btn.play svg{width:28px;height:28px}
+
+  /* ── CUSTOM TIME ── */
+  .custom-row{display:flex;gap:10px;align-items:center}
+  .time-input-wrap{display:flex;align-items:center;gap:6px;flex:1}
+  .time-digit{background:var(--panel2);border:1px solid var(--border);border-radius:10px;padding:10px;color:var(--white);font-family:'Inter',sans-serif;font-size:20px;font-weight:700;font-variant-numeric:tabular-nums;text-align:center;width:64px;outline:none;transition:border-color .15s}
+  .time-digit:focus{border-color:var(--red)}
+  .time-sep{font-size:24px;font-weight:700;color:var(--muted)}
+  .set-btn{padding:10px 20px;border-radius:10px;border:1px solid var(--border);background:var(--panel2);color:var(--white);font-family:'Inter',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;letter-spacing:.06em;text-transform:uppercase}
+  .set-btn:hover{border-color:var(--red);color:var(--red)}
+
+  /* ── SESSIONS ── */
+  .sessions-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .session-dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--border);background:transparent;flex-shrink:0;transition:all .3s}
+  .session-dot.done{background:var(--red);border-color:var(--red)}
+  .session-dot.current{background:transparent;border-color:var(--red);box-shadow:0 0 0 3px rgba(232,19,10,.3)}
+  .session-count{font-size:12px;color:var(--muted);font-weight:600;letter-spacing:.06em}
+
+  /* ── LOG ── */
+  .log-list{display:flex;flex-direction:column;gap:6px;max-height:200px;overflow-y:auto}
+  .log-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--panel2);border:1px solid var(--border);border-radius:10px}
+  .log-dot{width:8px;height:8px;border-radius:50%;background:var(--red);flex-shrink:0}
+  .log-dot.break{background:var(--green)}
+  .log-text{font-size:12px;font-weight:600;color:var(--white);flex:1}
+  .log-time{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+  .log-empty{font-size:12px;color:var(--muted);font-style:italic;padding:8px 0}
+
+  /* Sound toggle */
+  .sound-row{display:flex;align-items:center;gap:10px}
+  .toggle-wrap{display:flex;align-items:center;gap:8px;cursor:pointer}
+  .toggle{width:40px;height:22px;border-radius:11px;background:var(--border);position:relative;transition:background .2s;flex-shrink:0}
+  .toggle.on{background:var(--red)}
+  .toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:var(--white);top:3px;left:3px;transition:left .2s}
+  .toggle.on::after{left:21px}
+  .toggle-label{font-size:12px;font-weight:600;color:var(--muted)}
+
+  footer{margin-top:32px;font-size:11px;color:#333;text-align:center;letter-spacing:.06em}
+</style>
+</head>
+<body>
+<header>
+  <a href="https://recmo.de" style="text-decoration:none;display:flex;flex-direction:column;gap:3px">
+    <div style="font-family:'Inter',sans-serif;line-height:1;letter-spacing:.04em">
+      <span style="font-size:18px;font-weight:900;color:#E8130A">REC</span><span style="font-size:14px;font-weight:600;color:#fff">mode</span>
+    </div>
+    <span style="font-size:9px;font-weight:600;letter-spacing:.18em;color:#fff;font-family:'Inter',sans-serif">recmo.de</span>
+  </a>
+  <div class="header-title">Studio Timer</div>
+</header>
+
+<div class="wrap">
+
+  <!-- RING DISPLAY -->
+  <div class="timer-display">
+    <div class="ring-wrap">
+      <svg class="ring-svg" viewBox="0 0 280 280">
+        <circle class="ring-bg" cx="140" cy="140" r="125"/>
+        <circle class="ring-progress" id="ringProgress" cx="140" cy="140" r="125"/>
+      </svg>
+      <div class="ring-center">
+        <div class="timer-time" id="timerTime">25:00</div>
+        <div class="timer-label" id="timerLabel">Focus</div>
+      </div>
+    </div>
+    <div class="timer-session" id="sessionInfo">Session 1 of 4</div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="controls">
+    <button class="ctrl-btn" onclick="skipBack()" title="Restart">
+      <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
+    </button>
+    <button class="ctrl-btn play" id="playBtn" onclick="togglePlay()">
+      <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+    </button>
+    <button class="ctrl-btn" onclick="skipForward()" title="Skip">
+      <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zm2.5-6 5.5 4V8z"/></svg>
+    </button>
+  </div>
+
+  <!-- MODE SELECTOR -->
+  <div class="panel">
+    <div class="panel-title">Mode</div>
+    <div class="mode-grid" id="modeGrid"></div>
+  </div>
+
+  <!-- CUSTOM TIME -->
+  <div class="panel">
+    <div class="panel-title">Custom Time</div>
+    <div class="custom-row">
+      <div class="time-input-wrap">
+        <input class="time-digit" type="number" id="customH" value="0" min="0" max="23" placeholder="00">
+        <span class="time-sep">:</span>
+        <input class="time-digit" type="number" id="customM" value="25" min="0" max="59" placeholder="00">
+        <span class="time-sep">:</span>
+        <input class="time-digit" type="number" id="customS" value="0" min="0" max="59" placeholder="00">
+      </div>
+      <button class="set-btn" onclick="setCustomTime()">Set</button>
+    </div>
+  </div>
+
+  <!-- SESSIONS -->
+  <div class="panel">
+    <div class="panel-title">Pomodoro Sessions</div>
+    <div class="sessions-row" id="sessionsRow"></div>
+  </div>
+
+  <!-- SETTINGS -->
+  <div class="panel">
+    <div class="panel-title">Settings</div>
+    <div class="sound-row">
+      <div class="toggle-wrap" onclick="toggleSound()">
+        <div class="toggle on" id="soundToggle"></div>
+        <span class="toggle-label" id="soundLabel">Sound Alert On</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- LOG -->
+  <div class="panel">
+    <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center">
+      <span>Session Log</span>
+      <button style="font-size:10px;font-weight:600;color:var(--muted);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;text-transform:uppercase;letter-spacing:.1em" onclick="clearLog()">Clear</button>
+    </div>
+    <div class="log-list" id="logList"><div class="log-empty">No sessions yet…</div></div>
+  </div>
+
+</div>
+<footer>RECmode Studio Timer · recmo.de</footer>
+
+<script>
+// ─── MODES ───────────────────────────────────────────────────────────────────
+const MODES = [
+  { id:'pomodoro', name:'Pomodoro',    time:25*60, label:'Focus',        color:'#E8130A', sessions:4 },
+  { id:'short',    name:'Short Break', time:5*60,  label:'Short Break',  color:'#00e676', sessions:1 },
+  { id:'long',     name:'Long Break',  time:15*60, label:'Long Break',   color:'#448aff', sessions:1 },
+  { id:'session',  name:'Studio 60',   time:60*60, label:'Studio',       color:'#E8130A', sessions:1 },
+  { id:'session30',name:'Studio 30',   time:30*60, label:'Studio',       color:'#E8130A', sessions:1 },
+  { id:'warmup',   name:'Warm-Up',     time:10*60, label:'Warm-Up',      color:'#ff9100', sessions:1 },
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let currentMode = MODES[0];
+let totalSeconds = currentMode.time;
+let remaining = totalSeconds;
+let isRunning = false;
+let interval = null;
+let sessionsDone = 0;
+let soundOn = true;
+let log = [];
+let audioCtx = null;
+
+const RING_CIRCUMFERENCE = 2 * Math.PI * 125;
+document.getElementById('ringProgress').style.strokeDasharray = RING_CIRCUMFERENCE;
+
+// ─── BUILD UI ─────────────────────────────────────────────────────────────────
+const modeGrid = document.getElementById('modeGrid');
+MODES.forEach(m => {
+  const btn = document.createElement('button');
+  btn.className = 'mode-btn' + (m.id === currentMode.id ? ' active' : '');
+  btn.innerHTML = `<span class="m-name">${m.name}</span><span class="m-time">${formatTime(m.time)}</span>`;
+  btn.addEventListener('click', () => {
+    stop();
+    currentMode = m;
+    totalSeconds = m.time;
+    remaining = m.time;
+    document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    updateDisplay();
+  });
+  modeGrid.appendChild(btn);
+});
+
+function buildSessions() {
+  const row = document.getElementById('sessionsRow');
+  row.innerHTML = '';
+  const total = 4;
+  for (let i = 0; i < total; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'session-dot' + (i < sessionsDone ? ' done' : i === sessionsDone ? ' current' : '');
+    row.appendChild(dot);
+  }
+  const label = document.createElement('span');
+  label.className = 'session-count';
+  label.textContent = `${sessionsDone}/4 sessions · ${sessionsDone} Pomodoros`;
+  row.appendChild(label);
+  document.getElementById('sessionInfo').textContent = `Session ${Math.min(sessionsDone+1,4)} of 4`;
+}
+buildSessions();
+
+// ─── DISPLAY ─────────────────────────────────────────────────────────────────
+function formatTime(s) {
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const sec = s % 60;
+  if (h > 0) return `${pad(h)}:${pad(m)}:${pad(sec)}`;
+  return `${pad(m)}:${pad(sec)}`;
+}
+
+function pad(n) { return n.toString().padStart(2,'0'); }
+
+function updateDisplay() {
+  document.getElementById('timerTime').textContent = formatTime(remaining);
+  document.getElementById('timerLabel').textContent = currentMode.label;
+  const progress = remaining / totalSeconds;
+  const offset = RING_CIRCUMFERENCE * progress;
+  const ring = document.getElementById('ringProgress');
+  ring.style.strokeDashoffset = RING_CIRCUMFERENCE - offset;
+  ring.style.stroke = currentMode.color;
+
+  // Color when low
+  const timeEl = document.getElementById('timerTime');
+  if (remaining <= 60 && isRunning) {
+    timeEl.style.color = '#ff5252';
+  } else if (remaining <= 300 && isRunning) {
+    timeEl.style.color = '#ff9100';
+  } else {
+    timeEl.style.color = 'var(--white)';
+  }
+
+  document.title = `${formatTime(remaining)} — RECmode Timer`;
+}
+updateDisplay();
+
+// ─── CONTROLS ────────────────────────────────────────────────────────────────
+function togglePlay() {
+  isRunning ? pause() : start();
+}
+
+function start() {
+  if (remaining <= 0) { remaining = totalSeconds; }
+  isRunning = true;
+  updatePlayIcon();
+  interval = setInterval(tick, 1000);
+}
+
+function pause() {
+  isRunning = false;
+  clearInterval(interval);
+  updatePlayIcon();
+}
+
+function stop() {
+  isRunning = false;
+  clearInterval(interval);
+  remaining = totalSeconds;
+  updatePlayIcon();
+  updateDisplay();
+}
+
+function skipBack() {
+  stop();
+}
+
+function skipForward() {
+  pause();
+  if (currentMode.id === 'pomodoro') {
+    addLog(currentMode.name, currentMode.time - remaining, false);
+    sessionsDone = Math.min(4, sessionsDone + 1);
+    buildSessions();
+    if (sessionsDone >= 4) {
+      switchTo('long');
+      sessionsDone = 0;
+      buildSessions();
+    } else {
+      switchTo('short');
+    }
+  } else {
+    remaining = 0;
+    onComplete();
+  }
+}
+
+function updatePlayIcon() {
+  const icon = document.getElementById('playIcon');
+  if (isRunning) {
+    icon.innerHTML = '<path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>';
+  } else {
+    icon.innerHTML = '<path d="M8 5v14l11-7z"/>';
+  }
+}
+
+function tick() {
+  remaining--;
+  updateDisplay();
+  if (remaining <= 0) onComplete();
+}
+
+function onComplete() {
+  pause();
+  remaining = 0;
+  updateDisplay();
+  if (soundOn) playAlert();
+  addLog(currentMode.name, currentMode.time, true);
+
+  if (currentMode.id === 'pomodoro') {
+    sessionsDone = Math.min(4, sessionsDone + 1);
+    buildSessions();
+    if (sessionsDone >= 4) {
+      setTimeout(() => { switchTo('long'); sessionsDone = 0; buildSessions(); }, 800);
+    } else {
+      setTimeout(() => switchTo('short'), 800);
+    }
+  }
+}
+
+function switchTo(modeId) {
+  const m = MODES.find(x => x.id === modeId);
+  if (!m) return;
+  currentMode = m;
+  totalSeconds = m.time;
+  remaining = m.time;
+  document.querySelectorAll('.mode-btn').forEach((b, i) => b.classList.toggle('active', MODES[i].id === modeId));
+  updateDisplay();
+}
+
+// ─── CUSTOM TIME ─────────────────────────────────────────────────────────────
+function setCustomTime() {
+  const h = parseInt(document.getElementById('customH').value) || 0;
+  const m = parseInt(document.getElementById('customM').value) || 0;
+  const s = parseInt(document.getElementById('customS').value) || 0;
+  const total = h * 3600 + m * 60 + s;
+  if (total <= 0) return;
+  stop();
+  currentMode = { id:'custom', name:'Custom', time:total, label:'Custom', color:'#E8130A', sessions:1 };
+  totalSeconds = total;
+  remaining = total;
+  document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+  updateDisplay();
+}
+
+// ─── SOUND ───────────────────────────────────────────────────────────────────
+function getCtx() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+  return audioCtx;
+}
+
+function playAlert() {
+  const ctx = getCtx();
+  const t = ctx.currentTime;
+  // Three bell tones
+  [0, 0.4, 0.8].forEach((delay, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.type = 'sine';
+    osc.frequency.value = i === 0 ? 880 : i === 1 ? 1047 : 1319;
+    gain.gain.setValueAtTime(0, t + delay);
+    gain.gain.linearRampToValueAtTime(0.4, t + delay + 0.01);
+    gain.gain.exponentialRampToValueAtTime(0.001, t + delay + 0.8);
+    osc.start(t + delay);
+    osc.stop(t + delay + 0.9);
+  });
+}
+
+function toggleSound() {
+  soundOn = !soundOn;
+  document.getElementById('soundToggle').classList.toggle('on', soundOn);
+  document.getElementById('soundLabel').textContent = soundOn ? 'Sound Alert On' : 'Sound Alert Off';
+}
+
+// ─── LOG ─────────────────────────────────────────────────────────────────────
+function addLog(name, elapsed, completed) {
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('de-DE', {hour:'2-digit',minute:'2-digit'});
+  log.unshift({ name, elapsed, completed, time: timeStr });
+  renderLog();
+}
+
+function renderLog() {
+  const list = document.getElementById('logList');
+  if (log.length === 0) { list.innerHTML = '<div class="log-empty">No sessions yet…</div>'; return; }
+  list.innerHTML = log.slice(0,10).map(l => `
+    <div class="log-item">
+      <div class="log-dot ${l.name.includes('Break') ? 'break' : ''}"></div>
+      <span class="log-text">${l.completed ? '✓' : '⟩'} ${l.name} — ${formatTime(l.elapsed)}</span>
+      <span class="log-time">${l.time}</span>
+    </div>
+  `).join('');
+}
+
+function clearLog() {
+  log = [];
+  renderLog();
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'INPUT') return;
+  if (e.code === 'Space') { e.preventDefault(); togglePlay(); }
+  if (e.code === 'KeyR') stop();
+});
+</script>
+</body>
+</html>
