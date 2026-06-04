@@ -295,98 +295,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;ali
 .arr{transition:transform .3s}
 .btn-outline:hover .arr{transform:translateX(4px)}
 
-/* HERO DASHBOARD - Rich colors, success-oriented */
-.hero-mockup{margin-top:64px;width:100%;max-width:960px;opacity:0;animation:fadeUp .9s .8s forwards}
-.mockup-window{background:#fff;border-radius:20px;border:1px solid rgba(0,0,0,.08);box-shadow:0 4px 6px rgba(0,0,0,.04),0 20px 60px rgba(0,0,0,.08),0 40px 100px rgba(0,0,0,.05);overflow:hidden}
-.mockup-bar{background:#f5f5f7;padding:12px 18px;display:flex;align-items:center;gap:7px;border-bottom:1px solid rgba(0,0,0,.06)}
-.dot{width:11px;height:11px;border-radius:50%}
-.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
-.mockup-url{flex:1;background:#fff;border-radius:6px;height:22px;margin-left:8px;display:flex;align-items:center;padding:0 12px;font-size:11px;color:#999;border:1px solid rgba(0,0,0,.07)}
-
-.dash-body{display:grid;grid-template-columns:200px 1fr 1fr;gap:0;background:#f8f8fc;min-height:280px}
-
-/* Sidebar */
-.dash-sidebar{background:#0d0d0d;padding:20px 16px;display:flex;flex-direction:column;gap:4px}
-.dash-sidebar-logo{font-size:13px;font-weight:800;color:#fff;letter-spacing:-0.3px;padding:8px 12px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.dash-logo-dot{width:8px;height:8px;background:#E8130A;border-radius:50%}
-.dash-nav-item{padding:9px 12px;border-radius:8px;display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:rgba(255,255,255,.6);transition:all .2s;cursor:default}
-.dash-nav-item.active{background:rgba(232,19,10,.15);color:#E8130A}
-.dash-nav-item svg{flex-shrink:0}
-.dash-nav-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
-.dnd-red{background:#E8130A}
-.dnd-green{background:#28c840}
-.dnd-blue{background:#5080ff}
-.dnd-orange{background:#ff9500}
-
-/* Main content */
-.dash-main{padding:20px;display:flex;flex-direction:column;gap:12px}
-.dash-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-
-.dash-card{background:#fff;border-radius:12px;padding:16px;border:1px solid rgba(0,0,0,.06)}
-
-.dc-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#b0b0c8;margin-bottom:8px}
-.dc-value{font-size:26px;font-weight:800;color:#1a1a2e;letter-spacing:-1px;line-height:1}
-.dc-trend{font-size:12px;font-weight:600;margin-top:4px;display:flex;align-items:center;gap:4px}
-.trend-up{color:#28b464}
-.trend-label{font-size:11px;color:#b0b0c8;font-weight:400}
-
-/* Animated bar chart */
-.bar-chart{display:flex;align-items:flex-end;gap:4px;height:48px;margin-top:8px}
-.bc-bar{border-radius:3px 3px 0 0;transform-origin:bottom;animation:barGrow 1.5s ease-out forwards}
-@keyframes barGrow{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-.bc-b1{width:14px;background:#e8e8f6;height:40%;animation-delay:.05s}
-.bc-b2{width:14px;background:linear-gradient(180deg,#5080ff,#a0b8ff);height:65%;animation-delay:.1s}
-.bc-b3{width:14px;background:#e8e8f6;height:50%;animation-delay:.15s}
-.bc-b4{width:14px;background:linear-gradient(180deg,#E8130A,#ff9999);height:90%;animation-delay:.2s}
-.bc-b5{width:14px;background:#e8e8f6;height:58%;animation-delay:.25s}
-.bc-b6{width:14px;background:linear-gradient(180deg,#28b464,#7dd8a8);height:75%;animation-delay:.3s}
-.bc-b7{width:14px;background:linear-gradient(180deg,#E8130A,#ff9999);height:85%;animation-delay:.35s}
-
-/* Progress bars */
-.prog-rows{display:flex;flex-direction:column;gap:8px}
-.prog-row{display:flex;align-items:center;gap:8px}
-.prog-lbl{font-size:10px;color:#9090a8;width:72px;flex-shrink:0}
-.prog-track{flex:1;height:5px;background:#f0f0f8;border-radius:3px;overflow:hidden}
-.prog-fill{height:100%;border-radius:3px;animation:fillBar 1.5s ease-out forwards;transform-origin:left}
-@keyframes fillBar{from{transform:scaleX(0)}to{transform:scaleX(1)}}
-.pf-red{background:linear-gradient(90deg,#E8130A,#ff8888)}
-.pf-blue{background:linear-gradient(90deg,#5080ff,#a0b8ff)}
-.pf-green{background:linear-gradient(90deg,#28b464,#7dd8a8)}
-.pf-orange{background:linear-gradient(90deg,#ff9500,#ffcc80)}
-.prog-val{font-size:10px;font-weight:700;color:#E8130A;width:28px;text-align:right}
-
-/* SVG ring */
-.ring-wrap{display:flex;align-items:center;gap:14px}
-.ring-info{flex:1}
-.ring-big{font-size:20px;font-weight:800;color:#1a1a2e;letter-spacing:-0.5px}
-.ring-sub{font-size:10px;color:#9090a8;margin-top:2px}
-
-/* Right panel */
-.dash-right{padding:20px;display:flex;flex-direction:column;gap:12px;background:#fff;border-left:1px solid rgba(0,0,0,.05)}
-
-.metrics-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.metric-box{background:#fafafc;border-radius:10px;padding:14px;border:1px solid rgba(0,0,0,.05)}
-.metric-box.red-box{background:linear-gradient(135deg,rgba(232,19,10,.06),rgba(255,107,107,.04));border-color:rgba(232,19,10,.1)}
-.metric-box.green-box{background:linear-gradient(135deg,rgba(40,180,100,.06),rgba(80,200,130,.04));border-color:rgba(40,180,100,.1)}
-.metric-box.blue-box{background:linear-gradient(135deg,rgba(80,130,255,.06),rgba(120,160,255,.04));border-color:rgba(80,130,255,.1)}
-.metric-box.purple-box{background:linear-gradient(135deg,rgba(160,80,255,.06),rgba(200,120,255,.04));border-color:rgba(160,80,255,.1)}
-.mb-label{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#b0b0c8;margin-bottom:6px}
-.mb-value{font-size:22px;font-weight:800;letter-spacing:-1px;color:#1a1a2e;line-height:1}
-.mb-value.red{color:#E8130A}
-.mb-value.green{color:#28b464}
-.mb-value.blue{color:#5080ff}
-.mb-value.purple{color:#a050ff}
-.mb-trend{font-size:10px;font-weight:600;margin-top:4px}
-.mt-up{color:#28b464}
-
-.activity-list{display:flex;flex-direction:column;gap:6px}
-.activity-item{display:flex;align-items:center;gap:10px;padding:8px 10px;background:#fafafc;border-radius:8px;border:1px solid rgba(0,0,0,.04)}
-.ai-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
-.ai-text{font-size:11px;color:#4a4a6a;flex:1}
-.ai-val{font-size:11px;font-weight:700}
-.aiv-red{color:#E8130A}
-.aiv-green{color:#28b464}
-.aiv-blue{color:#5080ff}
+/* HERO SHOWREEL */
+.hero-showreel{margin-top:64px;width:100%;max-width:860px;opacity:0;animation:fadeUp .9s .8s forwards}
+.showreel-inner{position:relative;background:linear-gradient(135deg,#0d0d0d 0%,#1a1a2e 60%,rgba(232,19,10,.18) 100%);border-radius:20px;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(255,255,255,.1);cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,.06),0 20px 60px rgba(0,0,0,.22),0 40px 100px rgba(0,0,0,.1);transition:box-shadow .3s}
+.showreel-inner:hover{box-shadow:0 4px 6px rgba(0,0,0,.06),0 20px 60px rgba(0,0,0,.3),0 40px 100px rgba(0,0,0,.15)}
+.showreel-inner:hover .showreel-play{transform:scale(1.1);background:#E8130A;box-shadow:0 12px 40px rgba(232,19,10,.5)}
+.showreel-grain{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");background-size:200px;opacity:.4;pointer-events:none}
+.showreel-label{position:absolute;top:20px;left:24px;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.35)}
+.showreel-play{width:76px;height:76px;border-radius:50%;background:rgba(232,19,10,.85);display:flex;align-items:center;justify-content:center;transition:all .3s cubic-bezier(.16,1,.3,1);box-shadow:0 8px 32px rgba(232,19,10,.35)}
+.showreel-play svg{margin-left:4px}
+.showreel-caption{position:absolute;bottom:20px;left:24px;right:24px;display:flex;justify-content:space-between;align-items:center}
+.showreel-caption-text{font-size:13px;font-weight:600;color:rgba(255,255,255,.4)}
+.showreel-caption-badge{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);padding:4px 12px;border-radius:100px}
 
 
 /* SECTIONS */
@@ -579,9 +499,9 @@ footer{background:#0d0d0d;padding:64px 64px 32px}
 .d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
 
 /* LANG */
-[data-lang="en"]{display:none}
-body.en [data-lang="de"]{display:none}
-body.en [data-lang="en"]{display:unset}
+[data-lang="en"]{display:none!important}
+body.en [data-lang="de"]{display:none!important}
+body.en [data-lang="en"]{display:revert!important}
 
 /* RESPONSIVE */
 @media(max-width:1280px){
@@ -738,8 +658,8 @@ body.en [data-lang="en"]{display:unset}
 
   <div class="hero-badge">
     <span class="badge-dot"></span>
-    <span data-lang="de">Medienproduktion · KI-Marketing · Website</span>
-    <span data-lang="en">Media Production · AI Marketing · Website</span>
+    <span data-lang="de">Medienproduktion · Social Media · KI-Marketing · Website</span>
+    <span data-lang="en">Media Production · Social Media · AI Marketing · Website</span>
   </div>
 
   <p class="hero-eyebrow-standalone">
@@ -762,138 +682,19 @@ body.en [data-lang="en"]{display:unset}
     <a href="#how" class="btn-outline"><span data-lang="de">Wie es funktioniert</span><span data-lang="en">How it works</span><span class="arr">→</span></a>
   </div>
 
-  <!-- Rich animated dashboard -->
-  <div class="hero-mockup">
-    <div class="mockup-window">
-      <div class="mockup-bar">
-        <div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div>
-        <div class="mockup-url">recmo.de · Marketing Dashboard</div>
+  <!-- SHOWREEL – ersetze href mit echtem YouTube/Vimeo Link wenn vorhanden -->
+  <div class="hero-showreel">
+    <a href="#kontakt" class="showreel-inner" aria-label="Showreel ansehen">
+      <div class="showreel-grain"></div>
+      <div class="showreel-label">SHOWREEL</div>
+      <div class="showreel-play">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
       </div>
-      <div class="dash-body">
-        <!-- Sidebar -->
-        <div class="dash-sidebar">
-          <div class="dash-sidebar-logo"><span class="dash-logo-dot"></span>RECmode</div>
-          <div class="dash-nav-item active">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
-            Dashboard
-          </div>
-          <div class="dash-nav-item"><span class="dash-nav-dot dnd-blue"></span>Analytics</div>
-          <div class="dash-nav-item"><span class="dash-nav-dot dnd-green"></span>Kampagnen</div>
-          <div class="dash-nav-item"><span class="dash-nav-dot dnd-orange"></span>Content</div>
-          <div class="dash-nav-item"><span class="dash-nav-dot dnd-red"></span>Reports</div>
-        </div>
-
-        <!-- Main -->
-        <div class="dash-main">
-          <div class="dash-row">
-            <!-- Bar chart -->
-            <div class="dash-card">
-              <div class="dc-label">Reichweite (letzte 7 Tage)</div>
-              <div class="dc-value">12,456</div>
-              <div class="dc-trend"><span class="trend-up">↑ +89%</span><span class="trend-label">&nbsp;vs. Vormonat</span></div>
-              <div class="bar-chart">
-                <div class="bc-bar bc-b1"></div><div class="bc-bar bc-b2"></div>
-                <div class="bc-bar bc-b3"></div><div class="bc-bar bc-b4"></div>
-                <div class="bc-bar bc-b5"></div><div class="bc-bar bc-b6"></div>
-                <div class="bc-bar bc-b7"></div>
-              </div>
-            </div>
-            <!-- Progress bars -->
-            <div class="dash-card">
-              <div class="dc-label">Kanal-Performance</div>
-              <div class="prog-rows" style="margin-top:8px;">
-                <div class="prog-row">
-                  <span class="prog-lbl">Instagram</span>
-                  <div class="prog-track"><div class="prog-fill pf-red" style="width:85%"></div></div>
-                  <span class="prog-val" style="color:#E8130A;">85%</span>
-                </div>
-                <div class="prog-row">
-                  <span class="prog-lbl">YouTube</span>
-                  <div class="prog-track"><div class="prog-fill pf-blue" style="width:72%;animation-delay:.1s"></div></div>
-                  <span class="prog-val" style="color:#5080ff;">72%</span>
-                </div>
-                <div class="prog-row">
-                  <span class="prog-lbl">TikTok</span>
-                  <div class="prog-track"><div class="prog-fill pf-green" style="width:91%;animation-delay:.2s"></div></div>
-                  <span class="prog-val" style="color:#28b464;">91%</span>
-                </div>
-                <div class="prog-row">
-                  <span class="prog-lbl">LinkedIn</span>
-                  <div class="prog-track"><div class="prog-fill pf-orange" style="width:60%;animation-delay:.3s"></div></div>
-                  <span class="prog-val" style="color:#ff9500;">60%</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Ring + metric -->
-          <div class="dash-card" style="display:flex;align-items:center;gap:20px;">
-            <div class="ring-wrap">
-              <svg width="72" height="72" viewBox="0 0 72 72" style="transform:rotate(-90deg)">
-                <circle cx="36" cy="36" r="28" fill="none" stroke="#f0f0f8" stroke-width="7"/>
-                <circle cx="36" cy="36" r="28" fill="none" stroke="#E8130A" stroke-width="7" stroke-linecap="round" stroke-dasharray="176" stroke-dashoffset="44"/>
-                <circle cx="36" cy="36" r="20" fill="none" stroke="#5080ff" stroke-width="5" stroke-linecap="round" stroke-dasharray="126" stroke-dashoffset="50" opacity=".6"/>
-              </svg>
-              <div class="ring-info">
-                <div class="ring-big">+75%</div>
-                <div class="ring-sub" data-lang="de">Conversion Rate</div>
-                <div class="ring-sub" data-lang="en">Conversion Rate</div>
-              </div>
-            </div>
-            <div style="flex:1;display:flex;gap:8px;flex-wrap:wrap;">
-              <span style="padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;background:rgba(232,19,10,.08);color:#E8130A;">+34% Anfragen</span>
-              <span style="padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;background:rgba(40,180,100,.08);color:#28b464;">+56% Umsatz</span>
-              <span style="padding:5px 12px;border-radius:100px;font-size:11px;font-weight:700;background:rgba(80,130,255,.08);color:#5080ff;">+120% KI-Boost</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right panel -->
-        <div class="dash-right">
-          <div class="metrics-grid">
-            <div class="metric-box red-box">
-              <div class="mb-label" data-lang="de">Anfragen</div>
-              <div class="mb-label" data-lang="en">Inquiries</div>
-              <div class="mb-value red">+34%</div>
-              <div class="mb-trend mt-up">↑ diesen Monat</div>
-            </div>
-            <div class="metric-box green-box">
-              <div class="mb-label" data-lang="de">Umsatz</div>
-              <div class="mb-label" data-lang="en">Revenue</div>
-              <div class="mb-value green">+56%</div>
-              <div class="mb-trend mt-up">↑ vs. Vorjahr</div>
-            </div>
-            <div class="metric-box blue-box">
-              <div class="mb-label">Video Views</div>
-              <div class="mb-value blue">+89%</div>
-              <div class="mb-trend mt-up">↑ organisch</div>
-            </div>
-            <div class="metric-box purple-box">
-              <div class="mb-label">KI-Content</div>
-              <div class="mb-value purple">+120%</div>
-              <div class="mb-trend mt-up">↑ Reichweite</div>
-            </div>
-          </div>
-          <div class="activity-list">
-            <div class="activity-item">
-              <div class="ai-dot" style="background:#E8130A;"></div>
-              <span class="ai-text" data-lang="de">Imagefilm veröffentlicht</span>
-              <span class="ai-text" data-lang="en">Image film published</span>
-              <span class="ai-val aiv-red">+47%</span>
-            </div>
-            <div class="activity-item">
-              <div class="ai-dot" style="background:#28b464;"></div>
-              <span class="ai-text">Social Media Post</span>
-              <span class="ai-val aiv-green">+2.4k</span>
-            </div>
-            <div class="activity-item">
-              <div class="ai-dot" style="background:#5080ff;"></div>
-              <span class="ai-text">KI-Content Live</span>
-              <span class="ai-val aiv-blue">+89%</span>
-            </div>
-          </div>
-        </div>
+      <div class="showreel-caption">
+        <span class="showreel-caption-text"><span data-lang="de">Dein Auftritt. Professionell.</span><span data-lang="en">Your appearance. Professional.</span></span>
+        <span class="showreel-caption-badge"><span data-lang="de">Anfrage stellen</span><span data-lang="en">Get in touch</span></span>
       </div>
-    </div>
+    </a>
   </div>
 </section>
 
@@ -1062,76 +863,15 @@ body.en [data-lang="en"]{display:unset}
 
 
 
-<!-- ABOUT -->
-<section id="ueber-uns" class="section" aria-label="Über uns">
-  <div class="about-grid">
-    <div class="about-img reveal" style="display:block;">
-      <img src="./ismail.jpg" alt="Ismail Khudida – Gründer & Kreativdirektor RECmode Marketing Agentur" width="280" height="373" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
-      <div class="about-badge-float">
-        <div class="about-badge-icon">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-        </div>
-        <div>
-          <div class="about-badge-name">Ismail Khudida</div>
-          <div class="about-badge-role" data-lang="de">Gründer · RECmode</div>
-          <div class="about-badge-role" data-lang="en">Founder · RECmode</div>
-        </div>
-      </div>
-    </div>
-    <div class="reveal d1">
-      <p class="section-tag"><span data-lang="de">Über uns</span><span data-lang="en">About us</span></p>
-      <h2 class="section-title"><span data-lang="de">Der Mensch hinter <span class="g">RECmode.</span></span><span data-lang="en">The person behind <span class="g">RECmode.</span></span></h2>
-      <p class="about-text" data-lang="de">Ich bin Filmemacher, Content Creator und kreativer Produzent. Mit langjähriger Erfahrung in Medienproduktion und digitalem Marketing habe ich für Unternehmen aus verschiedenen Branchen gearbeitet und ihnen geholfen, ihre Produkte und Dienstleistungen professionell zu präsentieren und mehr Kunden zu gewinnen.</p>
-      <p class="about-text" data-lang="en">RECmode was founded by me, filmmaker, content creator and creative producer. With many years of experience in media production and digital marketing, I have worked for companies from various industries, helping them professionally present their products and services and win more customers.</p>
-
-      <!-- 3 horizontal points -->
-      <div class="about-points-h">
-        <div class="ap-h">
-          <div class="aph-icon aphi-1">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8130A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-          </div>
-          <div class="aph-title" data-lang="de">Persönliche Betreuung</div>
-          <div class="aph-title" data-lang="en">Personal support</div>
-          <p class="aph-sub" data-lang="de">Direkt mit Ismail, kein anonymes Team</p>
-          <p class="aph-sub" data-lang="en">Directly with Ismail, no anonymous team</p>
-        </div>
-        <div class="ap-h">
-          <div class="aph-icon aphi-2">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5080ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-          </div>
-          <div class="aph-title" data-lang="de">Langjährige Erfahrung</div>
-          <div class="aph-title" data-lang="en">Years of experience</div>
-          <p class="aph-sub" data-lang="de">In Medienproduktion & digitalem Marketing</p>
-          <p class="aph-sub" data-lang="en">In media production & digital marketing</p>
-        </div>
-        <div class="ap-h">
-          <div class="aph-icon aphi-3">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#28b464" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          </div>
-          <div class="aph-title" data-lang="de">Viele Branchen</div>
-          <div class="aph-title" data-lang="en">Many industries</div>
-          <p class="aph-sub" data-lang="de">Von Startups bis etablierten Unternehmen</p>
-          <p class="aph-sub" data-lang="en">From startups to established companies</p>
-        </div>
-      </div>
-
-      <!-- TEAM -->
-      <div class="team-section reveal">
-        <div class="team-label"><span data-lang="de">Mein Team</span><span data-lang="en">My Team</span></div>
-        
-        <!-- Team intro -->
-        <div style="background:#fafafc;border-radius:16px;padding:24px 28px;border:1px solid rgba(0,0,0,.06);margin-bottom:24px;display:flex;align-items:flex-start;gap:16px;">
-          <div style="width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,rgba(80,130,255,.12),rgba(120,160,255,.08));display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#5080ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-          </div>
-          <div>
-            <div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:6px;" data-lang="de">Individuell konfigurierte KI-Agenten</div>
-            <div style="font-size:14px;font-weight:700;color:#1a1a2e;margin-bottom:6px;" data-lang="en">Individually configured AI agents</div>
-            <p style="font-size:13px;line-height:1.7;color:#8888a8;" data-lang="de">Diese Agenten sind keine Standard-KI. Jeder Agent wird von mir speziell konfiguriert: mit maßgeschneiderten Prompts, abgestimmt auf Branche, Zielgruppe und Markenstimme. Das Ergebnis: Inhalte die klingen als wären sie intern entstanden.</p>
-            <p style="font-size:13px;line-height:1.7;color:#8888a8;" data-lang="en">These are not standard AI tools. Each agent is specifically configured by me for your company and supplied with tailored prompts adapted to your industry, target group and brand voice. The result: content that sounds like you wrote it yourself.</p>
-          </div>
-        </div>
-        <div class="team-grid">
+<!-- KI-TEAM -->
+<section id="ki-team" class="section" style="background:#fff;" aria-label="KI-Team">
+  <div class="reveal" style="text-align:center;margin-bottom:56px;">
+    <p class="section-tag" style="display:inline-flex;"><span data-lang="de">Dein Team</span><span data-lang="en">Your team</span></p>
+    <h2 class="section-title" style="text-align:center;"><span data-lang="de">Dein persönliches <span class="g">KI-Team.</span></span><span data-lang="en">Your personal <span class="g">AI team.</span></span></h2>
+    <p style="font-size:17px;line-height:1.75;color:#8888a8;margin:16px auto 0;max-width:560px;text-align:center;"><span data-lang="de">Kein Standard-KI. Jeder Agent wird individuell konfiguriert — abgestimmt auf Branche, Zielgruppe und Markenstimme.</span><span data-lang="en">No off-the-shelf AI. Each agent is individually configured — tuned to your industry, audience and brand voice.</span></p>
+  </div>
+  <div class="team-section">
+    <div class="team-grid">
 
           <!-- Ismail -->
           <div class="team-card">
@@ -1241,8 +981,12 @@ body.en [data-lang="en"]{display:unset}
                 <path d="M45 21 Q50 17 55 21" stroke="#a050ff" stroke-width="2" stroke-linecap="round" fill="none"/>
                 <circle cx="50" cy="23" r="2" fill="#a050ff"/>
                 <!-- Eyes - code brackets style -->
-                <text x="29" y="52" font-family="monospace" font-size="16" fill="#a050ff" font-weight="bold">&lt;/&gt;</text>
-                <text x="55" y="52" font-family="monospace" font-size="16" fill="#a050ff" font-weight="bold">&lt;&gt;</text>
+                <circle cx="37" cy="44" r="7" fill="white" stroke="#a050ff" stroke-width="2"/>
+                <circle cx="63" cy="44" r="7" fill="white" stroke="#a050ff" stroke-width="2"/>
+                <circle cx="37" cy="44" r="3.5" fill="#a050ff"/>
+                <circle cx="63" cy="44" r="3.5" fill="#a050ff"/>
+                <circle cx="38.5" cy="42.5" r="1.5" fill="white"/>
+                <circle cx="64.5" cy="42.5" r="1.5" fill="white"/>
                 <!-- Happy mouth -->
                 <path d="M34 63 Q50 74 66 63" stroke="#a050ff" stroke-width="2.5" stroke-linecap="round" fill="none"/>
                 <!-- Arms with hands up -->
@@ -1266,7 +1010,64 @@ body.en [data-lang="en"]{display:unset}
 
         </div>
       </div>
-      <!-- END TEAM -->
+    </div>
+  </div>
+</section>
+
+
+<!-- ABOUT -->
+<section id="ueber-uns" class="section" aria-label="Über uns">
+  <div class="about-grid">
+    <div class="about-img reveal" style="display:block;">
+      <img src="./ismail.jpg" alt="Ismail Khudida – Gründer & Kreativdirektor RECmode Marketing Agentur" width="280" height="373" loading="lazy" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+      <div class="about-badge-float">
+        <div class="about-badge-icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <div>
+          <div class="about-badge-name">Ismail Khudida</div>
+          <div class="about-badge-role" data-lang="de">Gründer · RECmode</div>
+          <div class="about-badge-role" data-lang="en">Founder · RECmode</div>
+        </div>
+      </div>
+    </div>
+    <div class="reveal d1">
+      <p class="section-tag"><span data-lang="de">Über uns</span><span data-lang="en">About us</span></p>
+      <h2 class="section-title"><span data-lang="de">Der Mensch hinter <span class="g">RECmode.</span></span><span data-lang="en">The person behind <span class="g">RECmode.</span></span></h2>
+      <p class="about-text" data-lang="de">Ich bin Filmemacher, Content Creator und kreativer Produzent. Mit langjähriger Erfahrung in Medienproduktion und digitalem Marketing habe ich für Unternehmen aus verschiedenen Branchen gearbeitet und ihnen geholfen, ihre Produkte und Dienstleistungen professionell zu präsentieren und mehr Kunden zu gewinnen.</p>
+      <p class="about-text" data-lang="en">RECmode was founded by me, filmmaker, content creator and creative producer. With many years of experience in media production and digital marketing, I have worked for companies from various industries, helping them professionally present their products and services and win more customers.</p>
+
+      <!-- 3 horizontal points -->
+      <div class="about-points-h">
+        <div class="ap-h">
+          <div class="aph-icon aphi-1">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#E8130A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+          </div>
+          <div class="aph-title" data-lang="de">Persönliche Betreuung</div>
+          <div class="aph-title" data-lang="en">Personal support</div>
+          <p class="aph-sub" data-lang="de">Direkt mit Ismail, kein anonymes Team</p>
+          <p class="aph-sub" data-lang="en">Directly with Ismail, no anonymous team</p>
+        </div>
+        <div class="ap-h">
+          <div class="aph-icon aphi-2">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#5080ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div class="aph-title" data-lang="de">Langjährige Erfahrung</div>
+          <div class="aph-title" data-lang="en">Years of experience</div>
+          <p class="aph-sub" data-lang="de">In Medienproduktion & digitalem Marketing</p>
+          <p class="aph-sub" data-lang="en">In media production & digital marketing</p>
+        </div>
+        <div class="ap-h">
+          <div class="aph-icon aphi-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#28b464" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="aph-title" data-lang="de">Viele Branchen</div>
+          <div class="aph-title" data-lang="en">Many industries</div>
+          <p class="aph-sub" data-lang="de">Von Startups bis etablierten Unternehmen</p>
+          <p class="aph-sub" data-lang="en">From startups to established companies</p>
+        </div>
+      </div>
+
 
     </div>
   </div>
