@@ -898,6 +898,9 @@ function restart(){
   document.getElementById('stepCount').textContent='';
   showScreen('s-intro');
 }
+
+// Auto-Start wenn ?start=1 in URL
+if(new URLSearchParams(location.search).get('start')==='1'){start();}
 </script>
 
 <footer class="quiz-footer">

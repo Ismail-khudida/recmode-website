@@ -205,6 +205,50 @@
     }
   ]
 }
+
+// ── 3D KARUSSELL JS ──────────────────────────────────────────────────────
+(function(){
+  var scene = document.querySelector('.carousel-scene');
+  if(!scene) return;
+  var wrap = scene.parentElement;
+  var rot = 0;
+  var speed = -16.36; // deg/s = -360/22
+  var lastT = null;
+  var hovered = false;
+  var dragging = false;
+  var lastX = 0;
+
+  scene.style.transform = 'rotateY(0deg)';
+
+  function tick(t){
+    if(lastT===null) lastT=t;
+    var dt=(t-lastT)/1000;
+    lastT=t;
+    if(!hovered) rot+=speed*dt;
+    scene.style.transform='rotateY('+rot+'deg)';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  wrap.addEventListener('mouseenter',function(){ hovered=true; });
+  wrap.addEventListener('mouseleave',function(){ hovered=false; dragging=false; });
+  wrap.addEventListener('mousedown',function(e){ dragging=true; lastX=e.clientX; e.preventDefault(); });
+  document.addEventListener('mouseup',function(){ dragging=false; });
+  wrap.addEventListener('mousemove',function(e){
+    if(!dragging) return;
+    rot+=(e.clientX-lastX)*0.45;
+    lastX=e.clientX;
+  });
+  wrap.addEventListener('touchstart',function(e){ hovered=true; dragging=true; lastX=e.touches[0].clientX; },{passive:true});
+  wrap.addEventListener('touchend',function(){ hovered=false; dragging=false; });
+  wrap.addEventListener('touchmove',function(e){
+    if(!dragging) return;
+    rot+=(e.touches[0].clientX-lastX)*0.45;
+    lastX=e.touches[0].clientX;
+    e.preventDefault();
+  },{passive:false});
+})();
+
 </script>
 
 <!-- ============================================
@@ -270,7 +314,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;ali
 .nav-cta:hover{background:#c8100a;transform:translateY(-1px);box-shadow:0 8px 24px rgba(232,19,10,.3)}
 
 /* HERO */
-#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 64px 80px;position:relative;overflow:hidden}
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 64px 60px;position:relative;overflow:hidden}
 .hero-bg{position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 15% 40%,rgba(255,100,100,.10) 0%,transparent 60%),radial-gradient(ellipse 60% 60% at 85% 20%,rgba(100,160,255,.08) 0%,transparent 60%),radial-gradient(ellipse 80% 50% at 50% 110%,rgba(200,100,255,.05) 0%,transparent 60%),#fff}
 .blob{position:absolute;border-radius:50%;filter:blur(70px);pointer-events:none;animation:blobFloat 12s ease-in-out infinite}
 .blob-1{width:500px;height:500px;background:radial-gradient(circle,rgba(255,80,80,.10),transparent);top:-50px;left:-50px;animation-delay:0s}
@@ -296,10 +340,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;ali
 .btn-outline:hover .arr{transform:translateX(4px)}
 
 /* HERO CAROUSEL 3D */
-.hero-carousel{margin-top:64px;width:100%;max-width:960px;opacity:0;animation:fadeUp .9s .8s forwards;display:flex;flex-direction:column;align-items:center;gap:28px}
-.carousel-wrap{width:100%;height:300px;position:relative;perspective:1000px;perspective-origin:50% 55%}
-.carousel-scene{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:carouselSpin 22s linear infinite}
-.carousel-scene:hover{animation-play-state:paused}
+.hero-carousel{margin-top:64px;width:100%;max-width:960px;opacity:0;animation:fadeUp .9s .8s forwards;display:flex;flex-direction:column;align-items:center;gap:0}
+.carousel-wrap{width:100%;height:300px;position:relative;perspective:1000px;perspective-origin:50% 55%;padding-bottom:24px}
+.carousel-scene{width:100%;height:100%;position:relative;transform-style:preserve-3d}
+.carousel-wrap{cursor:grab}.carousel-wrap:active{cursor:grabbing}
 .c-card{position:absolute;width:186px;height:248px;left:calc(50% - 93px);top:calc(50% - 124px);border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 32px rgba(0,0,0,.45),0 2px 8px rgba(0,0,0,.3);cursor:pointer;text-decoration:none;display:block;transform-style:preserve-3d;transition:filter .3s}
 .c-card:hover{filter:brightness(1.18)}
 .cc-1{transform:rotateY(0deg) translateZ(360px)}
@@ -308,7 +352,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;ali
 .cc-4{transform:rotateY(180deg) translateZ(360px)}
 .cc-5{transform:rotateY(240deg) translateZ(360px)}
 .cc-6{transform:rotateY(300deg) translateZ(360px)}
-@keyframes carouselSpin{from{transform:rotateY(0deg)}to{transform:rotateY(-360deg)}}
+/* carouselSpin via JS */
 .cc-bg{position:absolute;inset:0}
 .cc-shimmer{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,0) 50%,rgba(255,255,255,.04) 100%)}
 .cc-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);opacity:.55}
@@ -316,7 +360,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;ali
 .cc-label-type{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:5px}
 .cc-label-name{font-size:13px;font-weight:700;color:#fff;letter-spacing:-.1px}
 .cc-tag{position:absolute;top:14px;right:14px;font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);padding:3px 9px;border-radius:100px;backdrop-filter:blur(6px)}
-.carousel-cta{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#8888a8;text-decoration:none;transition:color .2s;padding:12px 24px;background:#fafafc;border-radius:100px;border:1.5px solid rgba(0,0,0,.08)}
+.carousel-cta{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#8888a8;text-decoration:none;transition:color .2s;padding:12px 24px;background:#fafafc;border-radius:100px;border:1.5px solid rgba(0,0,0,.08);margin-top:48px;position:relative;z-index:10}
 .carousel-cta:hover{color:#E8130A;border-color:rgba(232,19,10,.2);background:#fff}
 .carousel-cta .arr{transition:transform .3s}
 .carousel-cta:hover .arr{transform:translateX(4px)}
@@ -333,7 +377,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;ali
 
 
 /* SECTIONS */
-.section{padding:100px 64px}
+.section{padding:72px 64px}
 .section-tag{display:inline-flex;align-items:center;gap:8px;background:rgba(232,19,10,.06);border:1px solid rgba(232,19,10,.12);padding:6px 16px;border-radius:100px;font-size:12px;font-weight:600;color:#E8130A;letter-spacing:.5px;text-transform:uppercase;margin-bottom:20px}
 .section-title{font-size:clamp(32px,4vw,52px);font-weight:800;line-height:1.08;letter-spacing:-1.5px;color:#1a1a2e}
 .section-title .g{background:linear-gradient(135deg,#E8130A,#FF6B6B);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -345,7 +389,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;ali
 .how-header .section-desc{margin:16px auto 0}
 
 /* 2x2 process grid */
-.process-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-bottom:64px}
+.process-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:64px}
 
 .process-box{background:#fff;border-radius:20px;padding:36px 32px;border:1px solid rgba(0,0,0,.06);transition:all .4s cubic-bezier(.16,1,.3,1);position:relative;overflow:hidden}
 .process-box::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#E8130A,#FF6B6B);transform:scaleX(0);transform-origin:left;transition:transform .4s}
@@ -528,7 +572,6 @@ body.en [data-lang="en"]{display:revert!important}
 
 /* RESPONSIVE */
 @media(max-width:1280px){
-  .process-grid{grid-template-columns:repeat(4,1fr)}
   .services-grid-2x2{grid-template-columns:repeat(2,1fr)}
   .ki-grid-2x2{grid-template-columns:repeat(2,1fr)}
   .how-features-h{grid-template-columns:repeat(3,1fr)}
@@ -536,9 +579,9 @@ body.en [data-lang="en"]{display:revert!important}
 }
 @media(max-width:768px){
   nav,.section,#hero,footer{padding-left:20px;padding-right:20px}
-  .section{padding-top:64px;padding-bottom:64px}
+  .section{padding-top:48px;padding-bottom:48px}
   .nav-links{display:none}
-  .process-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .process-grid{grid-template-columns:repeat(2,1fr);gap:10px}
   .process-box{padding:24px 20px}
   .pb-icon{width:48px;height:48px}
   .pb-title{font-size:16px}
@@ -644,11 +687,17 @@ body.en [data-lang="en"]{display:revert!important}
   .ref-grid { grid-template-columns:1fr;max-width:480px;margin:0 auto; }
 }
 
-/* REF FILTER */
-.ref-filter-btn{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;padding:9px 18px;border-radius:100px;border:1.5px solid rgba(0,0,0,.1);background:#fff;color:#8888a8;cursor:pointer;transition:all .25s}
-.ref-filter-btn:hover{border-color:#E8130A;color:#E8130A}
-.ref-filter-btn.active{background:#E8130A;color:#fff;border-color:#E8130A}
-.ref-card[hidden]{display:none}
+/* REF KATEGORIE KACHELN */
+.ref-cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.ref-cat-card{background:#fff;border-radius:20px;overflow:hidden;border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 24px rgba(0,0,0,.05);transition:all .35s cubic-bezier(.16,1,.3,1)}
+.ref-cat-card:hover{transform:translateY(-6px);box-shadow:0 16px 48px rgba(0,0,0,.11)}
+.ref-cat-thumb{height:140px;display:flex;align-items:center;justify-content:center}
+.ref-cat-body{padding:24px}
+.ref-cat-name{font-size:18px;font-weight:800;color:#1a1a2e;letter-spacing:-.3px;margin-bottom:8px}
+.ref-cat-desc{font-size:14px;line-height:1.65;color:#8888a8;margin-bottom:14px}
+.ref-cat-soon{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(232,19,10,.55);background:rgba(232,19,10,.06);border:1px solid rgba(232,19,10,.1);padding:4px 12px;border-radius:100px;display:inline-block}
+@media(max-width:900px){.ref-cat-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.ref-cat-grid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
@@ -708,7 +757,7 @@ body.en [data-lang="en"]{display:revert!important}
   </p>
 
   <div class="hero-btns">
-    <a href="/quiz" class="btn-dark"><span data-lang="de">Marketing-Check starten</span><span data-lang="en">Start marketing check</span></a>
+    <a href="/quiz?start=1" class="btn-dark"><span data-lang="de">Marketing-Check starten</span><span data-lang="en">Start marketing check</span></a>
     <a href="#how" class="btn-outline"><span data-lang="de">Wie es funktioniert</span><span data-lang="en">How it works</span><span class="arr">→</span></a>
   </div>
 
@@ -1304,7 +1353,7 @@ body.en [data-lang="en"]{display:revert!important}
         <div class="qpg-label" data-lang="en">Personal result</div>
       </div>
     </div>
-    <a href="/quiz" class="btn-quiz-start">
+    <a href="/quiz?start=1" class="btn-quiz-start">
       <span data-lang="de">Marketing-Check starten</span>
       <span data-lang="en">Start marketing check</span>
       →
@@ -1318,160 +1367,100 @@ body.en [data-lang="en"]{display:revert!important}
   <div class="reveal" style="text-align:center;margin-bottom:56px;">
     <p class="section-tag" style="display:inline-flex;"><span data-lang="de">Unsere Arbeit</span><span data-lang="en">Our work</span></p>
     <h2 class="section-title" style="text-align:center;"><span data-lang="de">Projekte die <span class="g">sprechen.</span></span><span data-lang="en">Projects that <span class="g">speak.</span></span></h2>
-    <p style="font-size:17px;line-height:1.75;color:#8888a8;margin:16px auto 0;max-width:500px;text-align:center;"><span data-lang="de">Echte Ergebnisse für echte Unternehmen. Klick auf eine Kategorie für Details.</span><span data-lang="en">Real results for real businesses. Click a category for details.</span></p>
+    <p style="font-size:17px;line-height:1.75;color:#8888a8;margin:16px auto 0;max-width:500px;text-align:center;"><span data-lang="de">Wähle eine Kategorie und sieh dir an, was wir produziert haben.</span><span data-lang="en">Choose a category and see what we've produced.</span></p>
   </div>
 
-  <!-- Filter Buttons -->
-  <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:40px;" class="reveal">
-    <button onclick="filterRef('all')" class="ref-filter-btn active" data-cat="all">
-      <span data-lang="de">Alle</span><span data-lang="en">All</span>
-    </button>
-    <button onclick="filterRef('video')" class="ref-filter-btn" data-cat="video">
-      <span data-lang="de">Imagefilm & Video</span><span data-lang="en">Brand Film & Video</span>
-    </button>
-    <button onclick="filterRef('social')" class="ref-filter-btn" data-cat="social">Social Media</button>
-    <button onclick="filterRef('web')" class="ref-filter-btn" data-cat="web">
-      <span data-lang="de">Website</span><span data-lang="en">Website</span>
-    </button>
-    <button onclick="filterRef('ki')" class="ref-filter-btn" data-cat="ki">
-      <span data-lang="de">KI-Content</span><span data-lang="en">AI Content</span>
-    </button>
+  <div class="ref-cat-grid reveal">
+
+    <div class="ref-cat-card">
+      <div class="ref-cat-thumb" style="background:linear-gradient(135deg,#0d0d0d,#1a1a2e,rgba(232,19,10,.3));">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(232,19,10,.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+      </div>
+      <div class="ref-cat-body">
+        <div class="ref-cat-name" data-lang="de">Imagefilme</div>
+        <div class="ref-cat-name" data-lang="en">Brand Films</div>
+        <p class="ref-cat-desc" data-lang="de">Unternehmens- und Werbefilme vom Dreh bis zum Schnitt.</p>
+        <p class="ref-cat-desc" data-lang="en">Corporate and commercial films from shoot to final cut.</p>
+        <span class="ref-cat-soon" data-lang="de">Projekte folgen</span>
+        <span class="ref-cat-soon" data-lang="en">Projects coming</span>
+      </div>
+    </div>
+
+    <div class="ref-cat-card">
+      <div class="ref-cat-thumb" style="background:linear-gradient(135deg,#060614,#0f1a3a,rgba(80,130,255,.3));">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(80,130,255,.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </div>
+      <div class="ref-cat-body">
+        <div class="ref-cat-name">Social Media</div>
+        <p class="ref-cat-desc" data-lang="de">Reels, Storys und Posts für Instagram, TikTok & YouTube.</p>
+        <p class="ref-cat-desc" data-lang="en">Reels, stories and posts for Instagram, TikTok & YouTube.</p>
+        <span class="ref-cat-soon" data-lang="de">Projekte folgen</span>
+        <span class="ref-cat-soon" data-lang="en">Projects coming</span>
+      </div>
+    </div>
+
+    <div class="ref-cat-card">
+      <div class="ref-cat-thumb" style="background:linear-gradient(135deg,#050d06,#0a1f0e,rgba(40,180,100,.3));">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(40,180,100,.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+      </div>
+      <div class="ref-cat-body">
+        <div class="ref-cat-name" data-lang="de">Produktfotos</div>
+        <div class="ref-cat-name" data-lang="en">Product Photos</div>
+        <p class="ref-cat-desc" data-lang="de">Professionelle Produktaufnahmen und Markenfotografie.</p>
+        <p class="ref-cat-desc" data-lang="en">Professional product shots and brand photography.</p>
+        <span class="ref-cat-soon" data-lang="de">Projekte folgen</span>
+        <span class="ref-cat-soon" data-lang="en">Projects coming</span>
+      </div>
+    </div>
+
+    <div class="ref-cat-card">
+      <div class="ref-cat-thumb" style="background:linear-gradient(135deg,#0a060d,#1a0a2e,rgba(160,80,255,.3));">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(160,80,255,.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      </div>
+      <div class="ref-cat-body">
+        <div class="ref-cat-name" data-lang="de">Webseiten</div>
+        <div class="ref-cat-name" data-lang="en">Websites</div>
+        <p class="ref-cat-desc" data-lang="de">Design, Entwicklung und Optimierung von Unternehmenswebseiten.</p>
+        <p class="ref-cat-desc" data-lang="en">Design, development and optimization of business websites.</p>
+        <span class="ref-cat-soon" data-lang="de">Projekte folgen</span>
+        <span class="ref-cat-soon" data-lang="en">Projects coming</span>
+      </div>
+    </div>
+
+    <div class="ref-cat-card">
+      <div class="ref-cat-thumb" style="background:linear-gradient(135deg,#040d0a,#0a1f15,rgba(40,180,100,.22));">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(40,200,160,.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div class="ref-cat-body">
+        <div class="ref-cat-name" data-lang="de">KI-Content</div>
+        <div class="ref-cat-name" data-lang="en">AI Content</div>
+        <p class="ref-cat-desc" data-lang="de">Texte, Grafiken und Videos generiert mit KI — volle Lizenz.</p>
+        <p class="ref-cat-desc" data-lang="en">Copy, graphics and videos generated with AI — full license.</p>
+        <span class="ref-cat-soon" data-lang="de">Projekte folgen</span>
+        <span class="ref-cat-soon" data-lang="en">Projects coming</span>
+      </div>
+    </div>
+
+    <div class="ref-cat-card">
+      <div class="ref-cat-thumb" style="background:linear-gradient(135deg,#000814,#001a2a,rgba(255,149,0,.25));">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="rgba(255,149,0,.8)" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      </div>
+      <div class="ref-cat-body">
+        <div class="ref-cat-name" data-lang="de">Präsentationen</div>
+        <div class="ref-cat-name" data-lang="en">Presentations</div>
+        <p class="ref-cat-desc" data-lang="de">Pitch Decks und Unternehmensvorstellungen für Kunden & Investoren.</p>
+        <p class="ref-cat-desc" data-lang="en">Pitch decks and company presentations for clients & investors.</p>
+        <span class="ref-cat-soon" data-lang="de">Projekte folgen</span>
+        <span class="ref-cat-soon" data-lang="en">Projects coming</span>
+      </div>
+    </div>
+
   </div>
 
-  <!-- Grid -->
-  <div class="ref-grid reveal" id="ref-grid">
-
-    <div class="ref-card" data-cat="video">
-      <div class="ref-thumb ref-thumb-1">
-        <div class="ref-thumb-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-        </div>
-        <span class="ref-tag" data-lang="de">Imagefilm</span>
-        <span class="ref-tag" data-lang="en">Brand Film</span>
-      </div>
-      <div class="ref-body">
-        <div class="ref-title" data-lang="de">Unternehmensfilm · Dienstleister</div>
-        <div class="ref-title" data-lang="en">Corporate Film · Service Provider</div>
-        <p class="ref-desc" data-lang="de">Professioneller Imagefilm inkl. Dreh, Schnitt, Musik und Farbkorrektur. Eingesetzt auf Website und Social Media.</p>
-        <p class="ref-desc" data-lang="en">Professional brand film including shoot, cut, music and color grading. Used on website and social media.</p>
-        <div class="ref-result">
-          <span class="ref-result-val">+340%</span>
-          <span class="ref-result-label" data-lang="de">mehr Profilbesuche<br>nach Veröffentlichung</span>
-          <span class="ref-result-label" data-lang="en">more profile visits<br>after publication</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="ref-card" data-cat="social">
-      <div class="ref-thumb ref-thumb-2">
-        <div class="ref-thumb-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        </div>
-        <span class="ref-tag">Social Media</span>
-      </div>
-      <div class="ref-body">
-        <div class="ref-title" data-lang="de">Social Media Betreuung · 3 Monate</div>
-        <div class="ref-title" data-lang="en">Social Media Management · 3 months</div>
-        <p class="ref-desc" data-lang="de">Komplette Übernahme: Strategie, Content-Produktion und tägliches Posting auf Instagram & TikTok.</p>
-        <p class="ref-desc" data-lang="en">Full takeover: strategy, content production and daily posting on Instagram & TikTok.</p>
-        <div class="ref-result">
-          <span class="ref-result-val">0 → 2.4k</span>
-          <span class="ref-result-label" data-lang="de">Follower in<br>90 Tagen</span>
-          <span class="ref-result-label" data-lang="en">followers in<br>90 days</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="ref-card" data-cat="web">
-      <div class="ref-thumb ref-thumb-3">
-        <div class="ref-thumb-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-        </div>
-        <span class="ref-tag" data-lang="de">Website</span>
-        <span class="ref-tag" data-lang="en">Website</span>
-      </div>
-      <div class="ref-body">
-        <div class="ref-title" data-lang="de">Website-Redesign · Handwerksbetrieb</div>
-        <div class="ref-title" data-lang="en">Website Redesign · Craft Business</div>
-        <p class="ref-desc" data-lang="de">Komplette Neuerstellung: moderne Optik, SEO-Optimierung, Kontaktformular und Google-Anbindung.</p>
-        <p class="ref-desc" data-lang="en">Complete rebuild: modern look, SEO optimization, contact form and Google integration.</p>
-        <div class="ref-result">
-          <span class="ref-result-val">+180%</span>
-          <span class="ref-result-label" data-lang="de">mehr Anfragen<br>via Website</span>
-          <span class="ref-result-label" data-lang="en">more inquiries<br>via website</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="ref-card" data-cat="ki">
-      <div class="ref-thumb" style="background:linear-gradient(135deg,#0d0d0d 0%,#1a0a2e 50%,rgba(160,80,255,.4) 100%);">
-        <div class="ref-thumb-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-        </div>
-        <span class="ref-tag" data-lang="de">KI-Content</span>
-        <span class="ref-tag" data-lang="en">AI Content</span>
-      </div>
-      <div class="ref-body">
-        <div class="ref-title" data-lang="de">KI-Texte & Grafiken · E-Commerce</div>
-        <div class="ref-title" data-lang="en">AI Copy & Graphics · E-Commerce</div>
-        <p class="ref-desc" data-lang="de">Produktbeschreibungen, Social Media Texte und KI-Produktbilder — alle mit kommerzieller Lizenz.</p>
-        <p class="ref-desc" data-lang="en">Product descriptions, social media copy and AI product images — all with commercial license.</p>
-        <div class="ref-result">
-          <span class="ref-result-val">−65%</span>
-          <span class="ref-result-label" data-lang="de">Produktionskosten<br>für Content</span>
-          <span class="ref-result-label" data-lang="en">content production<br>costs</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="ref-card" data-cat="video social">
-      <div class="ref-thumb" style="background:linear-gradient(135deg,#0d0d0d 0%,#1a2e1a 50%,rgba(40,180,100,.35) 100%);">
-        <div class="ref-thumb-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
-        </div>
-        <span class="ref-tag">Video + Social</span>
-      </div>
-      <div class="ref-body">
-        <div class="ref-title" data-lang="de">Produktvideo + Social Kampagne</div>
-        <div class="ref-title" data-lang="en">Product Video + Social Campaign</div>
-        <p class="ref-desc" data-lang="de">Produkt-Showcase-Video kombiniert mit einer 6-wöchigen Social-Kampagne auf TikTok und Instagram.</p>
-        <p class="ref-desc" data-lang="en">Product showcase video combined with a 6-week social campaign on TikTok and Instagram.</p>
-        <div class="ref-result">
-          <span class="ref-result-val">82k</span>
-          <span class="ref-result-label" data-lang="de">Views in der<br>ersten Woche</span>
-          <span class="ref-result-label" data-lang="en">views in the<br>first week</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="ref-card" data-cat="web ki">
-      <div class="ref-thumb" style="background:linear-gradient(135deg,#000814 0%,#001a2e 50%,rgba(255,149,0,.3) 100%);">
-        <div class="ref-thumb-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <span class="ref-tag" data-lang="de">Web + KI</span>
-        <span class="ref-tag" data-lang="en">Web + AI</span>
-      </div>
-      <div class="ref-body">
-        <div class="ref-title" data-lang="de">Website + KI-Texte · Beratung</div>
-        <div class="ref-title" data-lang="en">Website + AI Copy · Consulting</div>
-        <p class="ref-desc" data-lang="de">Neue Website mit vollständiger KI-generierten Texten, die wie der Kunde klingen — weil der Kunde jeden Prompt freigegeben hat.</p>
-        <p class="ref-desc" data-lang="en">New website with fully AI-generated copy that sounds like the client — because the client approved every prompt.</p>
-        <div class="ref-result">
-          <span class="ref-result-val">4 Tage</span>
-          <span class="ref-result-label" data-lang="de">von Briefing<br>bis Live</span>
-          <span class="ref-result-label" data-lang="en">from briefing<br>to live</span>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- /ref-grid -->
-
-  <!-- CTA -->
-  <div class="ref-cta-row reveal">
+  <div class="ref-cta-row reveal" style="margin-top:48px;">
     <a href="#kontakt" class="btn-dark" style="display:inline-block;">
-      <span data-lang="de">Dein Projekt anfragen</span>
-      <span data-lang="en">Enquire about your project</span>
+      <span data-lang="de">Projekt anfragen</span>
+      <span data-lang="en">Request a project</span>
     </a>
   </div>
 </section>
@@ -1529,13 +1518,6 @@ body.en [data-lang="en"]{display:revert!important}
 
 <script>
 
-function filterRef(cat){
-  document.querySelectorAll('.ref-filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
-  document.querySelectorAll('.ref-card').forEach(card=>{
-    const cats=card.dataset.cat||'';
-    card.hidden=cat!=='all'&&!cats.split(' ').includes(cat);
-  });
-}
 const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
