@@ -295,18 +295,41 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;ali
 .arr{transition:transform .3s}
 .btn-outline:hover .arr{transform:translateX(4px)}
 
-/* HERO SHOWREEL */
-.hero-showreel{margin-top:64px;width:100%;max-width:860px;opacity:0;animation:fadeUp .9s .8s forwards}
-.showreel-inner{position:relative;background:linear-gradient(135deg,#0d0d0d 0%,#1a1a2e 60%,rgba(232,19,10,.18) 100%);border-radius:20px;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid rgba(255,255,255,.1);cursor:pointer;box-shadow:0 4px 6px rgba(0,0,0,.06),0 20px 60px rgba(0,0,0,.22),0 40px 100px rgba(0,0,0,.1);transition:box-shadow .3s}
-.showreel-inner:hover{box-shadow:0 4px 6px rgba(0,0,0,.06),0 20px 60px rgba(0,0,0,.3),0 40px 100px rgba(0,0,0,.15)}
-.showreel-inner:hover .showreel-play{transform:scale(1.1);background:#E8130A;box-shadow:0 12px 40px rgba(232,19,10,.5)}
-.showreel-grain{position:absolute;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.06'/%3E%3C/svg%3E");background-size:200px;opacity:.4;pointer-events:none}
-.showreel-label{position:absolute;top:20px;left:24px;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,.35)}
-.showreel-play{width:76px;height:76px;border-radius:50%;background:rgba(232,19,10,.85);display:flex;align-items:center;justify-content:center;transition:all .3s cubic-bezier(.16,1,.3,1);box-shadow:0 8px 32px rgba(232,19,10,.35)}
-.showreel-play svg{margin-left:4px}
-.showreel-caption{position:absolute;bottom:20px;left:24px;right:24px;display:flex;justify-content:space-between;align-items:center}
-.showreel-caption-text{font-size:13px;font-weight:600;color:rgba(255,255,255,.4)}
-.showreel-caption-badge{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);padding:4px 12px;border-radius:100px}
+/* HERO CAROUSEL 3D */
+.hero-carousel{margin-top:64px;width:100%;max-width:960px;opacity:0;animation:fadeUp .9s .8s forwards;display:flex;flex-direction:column;align-items:center;gap:28px}
+.carousel-wrap{width:100%;height:300px;position:relative;perspective:1000px;perspective-origin:50% 55%}
+.carousel-scene{width:100%;height:100%;position:relative;transform-style:preserve-3d;animation:carouselSpin 22s linear infinite}
+.carousel-scene:hover{animation-play-state:paused}
+.c-card{position:absolute;width:186px;height:248px;left:calc(50% - 93px);top:calc(50% - 124px);border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 32px rgba(0,0,0,.45),0 2px 8px rgba(0,0,0,.3);cursor:pointer;text-decoration:none;display:block;transform-style:preserve-3d;transition:filter .3s}
+.c-card:hover{filter:brightness(1.18)}
+.cc-1{transform:rotateY(0deg) translateZ(360px)}
+.cc-2{transform:rotateY(60deg) translateZ(360px)}
+.cc-3{transform:rotateY(120deg) translateZ(360px)}
+.cc-4{transform:rotateY(180deg) translateZ(360px)}
+.cc-5{transform:rotateY(240deg) translateZ(360px)}
+.cc-6{transform:rotateY(300deg) translateZ(360px)}
+@keyframes carouselSpin{from{transform:rotateY(0deg)}to{transform:rotateY(-360deg)}}
+.cc-bg{position:absolute;inset:0}
+.cc-shimmer{position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,.06) 0%,rgba(255,255,255,0) 50%,rgba(255,255,255,.04) 100%)}
+.cc-icon{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);opacity:.55}
+.cc-label{position:absolute;bottom:0;left:0;right:0;padding:20px 16px 16px;background:linear-gradient(0deg,rgba(0,0,0,.85) 0%,transparent 100%)}
+.cc-label-type{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:5px}
+.cc-label-name{font-size:13px;font-weight:700;color:#fff;letter-spacing:-.1px}
+.cc-tag{position:absolute;top:14px;right:14px;font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);padding:3px 9px;border-radius:100px;backdrop-filter:blur(6px)}
+.carousel-cta{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:#8888a8;text-decoration:none;transition:color .2s;padding:12px 24px;background:#fafafc;border-radius:100px;border:1.5px solid rgba(0,0,0,.08)}
+.carousel-cta:hover{color:#E8130A;border-color:rgba(232,19,10,.2);background:#fff}
+.carousel-cta .arr{transition:transform .3s}
+.carousel-cta:hover .arr{transform:translateX(4px)}
+@media(max-width:768px){
+  .carousel-wrap{height:220px;perspective:700px}
+  .c-card{width:140px;height:186px;left:calc(50% - 70px);top:calc(50% - 93px)}
+  .cc-1{transform:rotateY(0deg) translateZ(260px)}
+  .cc-2{transform:rotateY(60deg) translateZ(260px)}
+  .cc-3{transform:rotateY(120deg) translateZ(260px)}
+  .cc-4{transform:rotateY(180deg) translateZ(260px)}
+  .cc-5{transform:rotateY(240deg) translateZ(260px)}
+  .cc-6{transform:rotateY(300deg) translateZ(260px)}
+}
 
 
 /* SECTIONS */
@@ -620,6 +643,12 @@ body.en [data-lang="en"]{display:revert!important}
 @media(max-width:900px){
   .ref-grid { grid-template-columns:1fr;max-width:480px;margin:0 auto; }
 }
+
+/* REF FILTER */
+.ref-filter-btn{font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;font-weight:600;padding:9px 18px;border-radius:100px;border:1.5px solid rgba(0,0,0,.1);background:#fff;color:#8888a8;cursor:pointer;transition:all .25s}
+.ref-filter-btn:hover{border-color:#E8130A;color:#E8130A}
+.ref-filter-btn.active{background:#E8130A;color:#fff;border-color:#E8130A}
+.ref-card[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -638,6 +667,7 @@ body.en [data-lang="en"]{display:revert!important}
     <li><a href="#leistungen"><span data-lang="de">Leistungen</span><span data-lang="en">Services</span></a></li>
     <li><a href="#ueber-uns"><span data-lang="de">Über uns</span><span data-lang="en">About</span></a></li>
     <li><a href="#kontakt"><span data-lang="de">Kontakt</span><span data-lang="en">Contact</span></a></li>
+    <li><a href="#referenzen"><span data-lang="de">Referenzen</span><span data-lang="en">References</span></a></li>
     <li><a href="/tools" style="color:#E8130A;font-weight:700">Tools ↗</a></li>
   </ul>
   <div class="nav-right">
@@ -682,20 +712,112 @@ body.en [data-lang="en"]{display:revert!important}
     <a href="#how" class="btn-outline"><span data-lang="de">Wie es funktioniert</span><span data-lang="en">How it works</span><span class="arr">→</span></a>
   </div>
 
-  <!-- SHOWREEL – ersetze href mit echtem YouTube/Vimeo Link wenn vorhanden -->
-  <div class="hero-showreel">
-    <a href="#kontakt" class="showreel-inner" aria-label="Showreel ansehen">
-      <div class="showreel-grain"></div>
-      <div class="showreel-label">SHOWREEL</div>
-      <div class="showreel-play">
-        <svg width="26" height="26" viewBox="0 0 24 24" fill="white" stroke="none"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      </div>
-      <div class="showreel-caption">
-        <span class="showreel-caption-text"><span data-lang="de">Dein Auftritt. Professionell.</span><span data-lang="en">Your appearance. Professional.</span></span>
-        <span class="showreel-caption-badge"><span data-lang="de">Anfrage stellen</span><span data-lang="en">Get in touch</span></span>
-      </div>
+  <!-- 3D KARUSSELL – Karten mit echten Assets ersetzen sobald vorhanden -->
+  <div class="hero-carousel">
+    <div class="carousel-wrap">
+      <div class="carousel-scene">
+
+        <!-- Karte 1: Imagefilm -->
+        <a href="#referenzen" class="c-card cc-1">
+          <div class="cc-bg" style="background:linear-gradient(145deg,#0d0d0d 0%,#1a1a2e 55%,rgba(232,19,10,.22) 100%)"></div>
+          <div class="cc-shimmer"></div>
+          <div class="cc-tag">VIDEO</div>
+          <div class="cc-icon">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(232,19,10,.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+          </div>
+          <div class="cc-label">
+            <div class="cc-label-type" data-lang="de">Medienproduktion</div>
+            <div class="cc-label-type" data-lang="en">Media Production</div>
+            <div class="cc-label-name">Imagefilm</div>
+          </div>
+        </a>
+
+        <!-- Karte 2: Social Media -->
+        <a href="#referenzen" class="c-card cc-2">
+          <div class="cc-bg" style="background:linear-gradient(145deg,#060614 0%,#0f1a3a 55%,rgba(80,130,255,.25) 100%)"></div>
+          <div class="cc-shimmer"></div>
+          <div class="cc-tag">SOCIAL</div>
+          <div class="cc-icon">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(80,130,255,.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </div>
+          <div class="cc-label">
+            <div class="cc-label-type">Social Media</div>
+            <div class="cc-label-name">Instagram Reel</div>
+          </div>
+        </a>
+
+        <!-- Karte 3: KI-Content -->
+        <a href="#referenzen" class="c-card cc-3">
+          <div class="cc-bg" style="background:linear-gradient(145deg,#040d0a 0%,#0a1f15 55%,rgba(40,180,100,.22) 100%)"></div>
+          <div class="cc-shimmer"></div>
+          <div class="cc-tag">KI</div>
+          <div class="cc-icon">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(40,180,100,.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="cc-label">
+            <div class="cc-label-type" data-lang="de">KI-Marketing</div>
+            <div class="cc-label-type" data-lang="en">AI Marketing</div>
+            <div class="cc-label-name" data-lang="de">KI-Content</div>
+            <div class="cc-label-name" data-lang="en">AI Content</div>
+          </div>
+        </a>
+
+        <!-- Karte 4: Website -->
+        <a href="#referenzen" class="c-card cc-4">
+          <div class="cc-bg" style="background:linear-gradient(145deg,#0a060d 0%,#1a0a2e 55%,rgba(160,80,255,.22) 100%)"></div>
+          <div class="cc-shimmer"></div>
+          <div class="cc-tag">WEB</div>
+          <div class="cc-icon">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(160,80,255,.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </div>
+          <div class="cc-label">
+            <div class="cc-label-type" data-lang="de">Website</div>
+            <div class="cc-label-type" data-lang="en">Website</div>
+            <div class="cc-label-name" data-lang="de">Web-Design</div>
+            <div class="cc-label-name" data-lang="en">Web Design</div>
+          </div>
+        </a>
+
+        <!-- Karte 5: Produktfoto -->
+        <a href="#referenzen" class="c-card cc-5">
+          <div class="cc-bg" style="background:linear-gradient(145deg,#0d0800 0%,#2a1500 55%,rgba(255,149,0,.22) 100%)"></div>
+          <div class="cc-shimmer"></div>
+          <div class="cc-tag">FOTO</div>
+          <div class="cc-icon">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(255,149,0,.7)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <div class="cc-label">
+            <div class="cc-label-type" data-lang="de">Medienproduktion</div>
+            <div class="cc-label-type" data-lang="en">Media Production</div>
+            <div class="cc-label-name" data-lang="de">Produktfoto</div>
+            <div class="cc-label-name" data-lang="en">Product Photo</div>
+          </div>
+        </a>
+
+        <!-- Karte 6: Präsentation -->
+        <a href="#referenzen" class="c-card cc-6">
+          <div class="cc-bg" style="background:linear-gradient(145deg,#00080d 0%,#001a2a 55%,rgba(0,180,200,.2) 100%)"></div>
+          <div class="cc-shimmer"></div>
+          <div class="cc-tag">PITCH</div>
+          <div class="cc-icon">
+            <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="rgba(0,200,220,.65)" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div class="cc-label">
+            <div class="cc-label-type" data-lang="de">Strategie</div>
+            <div class="cc-label-type" data-lang="en">Strategy</div>
+            <div class="cc-label-name" data-lang="de">Präsentation</div>
+            <div class="cc-label-name" data-lang="en">Presentation</div>
+          </div>
+        </a>
+
+      </div><!-- /carousel-scene -->
+    </div><!-- /carousel-wrap -->
+    <a href="#referenzen" class="carousel-cta">
+      <span data-lang="de">Alle Referenzen ansehen</span>
+      <span data-lang="en">View all references</span>
+      <span class="arr">→</span>
     </a>
-  </div>
+  </div><!-- /hero-carousel -->
 </section>
 
 <main id="main-content">
@@ -1191,6 +1313,169 @@ body.en [data-lang="en"]{display:revert!important}
 </section>
 
 </main>
+<!-- REFERENZEN -->
+<section id="referenzen" class="section" style="background:#f8f8fa;" aria-label="Referenzen">
+  <div class="reveal" style="text-align:center;margin-bottom:56px;">
+    <p class="section-tag" style="display:inline-flex;"><span data-lang="de">Unsere Arbeit</span><span data-lang="en">Our work</span></p>
+    <h2 class="section-title" style="text-align:center;"><span data-lang="de">Projekte die <span class="g">sprechen.</span></span><span data-lang="en">Projects that <span class="g">speak.</span></span></h2>
+    <p style="font-size:17px;line-height:1.75;color:#8888a8;margin:16px auto 0;max-width:500px;text-align:center;"><span data-lang="de">Echte Ergebnisse für echte Unternehmen. Klick auf eine Kategorie für Details.</span><span data-lang="en">Real results for real businesses. Click a category for details.</span></p>
+  </div>
+
+  <!-- Filter Buttons -->
+  <div style="display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:40px;" class="reveal">
+    <button onclick="filterRef('all')" class="ref-filter-btn active" data-cat="all">
+      <span data-lang="de">Alle</span><span data-lang="en">All</span>
+    </button>
+    <button onclick="filterRef('video')" class="ref-filter-btn" data-cat="video">
+      <span data-lang="de">Imagefilm & Video</span><span data-lang="en">Brand Film & Video</span>
+    </button>
+    <button onclick="filterRef('social')" class="ref-filter-btn" data-cat="social">Social Media</button>
+    <button onclick="filterRef('web')" class="ref-filter-btn" data-cat="web">
+      <span data-lang="de">Website</span><span data-lang="en">Website</span>
+    </button>
+    <button onclick="filterRef('ki')" class="ref-filter-btn" data-cat="ki">
+      <span data-lang="de">KI-Content</span><span data-lang="en">AI Content</span>
+    </button>
+  </div>
+
+  <!-- Grid -->
+  <div class="ref-grid reveal" id="ref-grid">
+
+    <div class="ref-card" data-cat="video">
+      <div class="ref-thumb ref-thumb-1">
+        <div class="ref-thumb-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </div>
+        <span class="ref-tag" data-lang="de">Imagefilm</span>
+        <span class="ref-tag" data-lang="en">Brand Film</span>
+      </div>
+      <div class="ref-body">
+        <div class="ref-title" data-lang="de">Unternehmensfilm · Dienstleister</div>
+        <div class="ref-title" data-lang="en">Corporate Film · Service Provider</div>
+        <p class="ref-desc" data-lang="de">Professioneller Imagefilm inkl. Dreh, Schnitt, Musik und Farbkorrektur. Eingesetzt auf Website und Social Media.</p>
+        <p class="ref-desc" data-lang="en">Professional brand film including shoot, cut, music and color grading. Used on website and social media.</p>
+        <div class="ref-result">
+          <span class="ref-result-val">+340%</span>
+          <span class="ref-result-label" data-lang="de">mehr Profilbesuche<br>nach Veröffentlichung</span>
+          <span class="ref-result-label" data-lang="en">more profile visits<br>after publication</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-card" data-cat="social">
+      <div class="ref-thumb ref-thumb-2">
+        <div class="ref-thumb-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </div>
+        <span class="ref-tag">Social Media</span>
+      </div>
+      <div class="ref-body">
+        <div class="ref-title" data-lang="de">Social Media Betreuung · 3 Monate</div>
+        <div class="ref-title" data-lang="en">Social Media Management · 3 months</div>
+        <p class="ref-desc" data-lang="de">Komplette Übernahme: Strategie, Content-Produktion und tägliches Posting auf Instagram & TikTok.</p>
+        <p class="ref-desc" data-lang="en">Full takeover: strategy, content production and daily posting on Instagram & TikTok.</p>
+        <div class="ref-result">
+          <span class="ref-result-val">0 → 2.4k</span>
+          <span class="ref-result-label" data-lang="de">Follower in<br>90 Tagen</span>
+          <span class="ref-result-label" data-lang="en">followers in<br>90 days</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-card" data-cat="web">
+      <div class="ref-thumb ref-thumb-3">
+        <div class="ref-thumb-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+        </div>
+        <span class="ref-tag" data-lang="de">Website</span>
+        <span class="ref-tag" data-lang="en">Website</span>
+      </div>
+      <div class="ref-body">
+        <div class="ref-title" data-lang="de">Website-Redesign · Handwerksbetrieb</div>
+        <div class="ref-title" data-lang="en">Website Redesign · Craft Business</div>
+        <p class="ref-desc" data-lang="de">Komplette Neuerstellung: moderne Optik, SEO-Optimierung, Kontaktformular und Google-Anbindung.</p>
+        <p class="ref-desc" data-lang="en">Complete rebuild: modern look, SEO optimization, contact form and Google integration.</p>
+        <div class="ref-result">
+          <span class="ref-result-val">+180%</span>
+          <span class="ref-result-label" data-lang="de">mehr Anfragen<br>via Website</span>
+          <span class="ref-result-label" data-lang="en">more inquiries<br>via website</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-card" data-cat="ki">
+      <div class="ref-thumb" style="background:linear-gradient(135deg,#0d0d0d 0%,#1a0a2e 50%,rgba(160,80,255,.4) 100%);">
+        <div class="ref-thumb-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="ref-tag" data-lang="de">KI-Content</span>
+        <span class="ref-tag" data-lang="en">AI Content</span>
+      </div>
+      <div class="ref-body">
+        <div class="ref-title" data-lang="de">KI-Texte & Grafiken · E-Commerce</div>
+        <div class="ref-title" data-lang="en">AI Copy & Graphics · E-Commerce</div>
+        <p class="ref-desc" data-lang="de">Produktbeschreibungen, Social Media Texte und KI-Produktbilder — alle mit kommerzieller Lizenz.</p>
+        <p class="ref-desc" data-lang="en">Product descriptions, social media copy and AI product images — all with commercial license.</p>
+        <div class="ref-result">
+          <span class="ref-result-val">−65%</span>
+          <span class="ref-result-label" data-lang="de">Produktionskosten<br>für Content</span>
+          <span class="ref-result-label" data-lang="en">content production<br>costs</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-card" data-cat="video social">
+      <div class="ref-thumb" style="background:linear-gradient(135deg,#0d0d0d 0%,#1a2e1a 50%,rgba(40,180,100,.35) 100%);">
+        <div class="ref-thumb-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+        </div>
+        <span class="ref-tag">Video + Social</span>
+      </div>
+      <div class="ref-body">
+        <div class="ref-title" data-lang="de">Produktvideo + Social Kampagne</div>
+        <div class="ref-title" data-lang="en">Product Video + Social Campaign</div>
+        <p class="ref-desc" data-lang="de">Produkt-Showcase-Video kombiniert mit einer 6-wöchigen Social-Kampagne auf TikTok und Instagram.</p>
+        <p class="ref-desc" data-lang="en">Product showcase video combined with a 6-week social campaign on TikTok and Instagram.</p>
+        <div class="ref-result">
+          <span class="ref-result-val">82k</span>
+          <span class="ref-result-label" data-lang="de">Views in der<br>ersten Woche</span>
+          <span class="ref-result-label" data-lang="en">views in the<br>first week</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="ref-card" data-cat="web ki">
+      <div class="ref-thumb" style="background:linear-gradient(135deg,#000814 0%,#001a2e 50%,rgba(255,149,0,.3) 100%);">
+        <div class="ref-thumb-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        </div>
+        <span class="ref-tag" data-lang="de">Web + KI</span>
+        <span class="ref-tag" data-lang="en">Web + AI</span>
+      </div>
+      <div class="ref-body">
+        <div class="ref-title" data-lang="de">Website + KI-Texte · Beratung</div>
+        <div class="ref-title" data-lang="en">Website + AI Copy · Consulting</div>
+        <p class="ref-desc" data-lang="de">Neue Website mit vollständiger KI-generierten Texten, die wie der Kunde klingen — weil der Kunde jeden Prompt freigegeben hat.</p>
+        <p class="ref-desc" data-lang="en">New website with fully AI-generated copy that sounds like the client — because the client approved every prompt.</p>
+        <div class="ref-result">
+          <span class="ref-result-val">4 Tage</span>
+          <span class="ref-result-label" data-lang="de">von Briefing<br>bis Live</span>
+          <span class="ref-result-label" data-lang="en">from briefing<br>to live</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /ref-grid -->
+
+  <!-- CTA -->
+  <div class="ref-cta-row reveal">
+    <a href="#kontakt" class="btn-dark" style="display:inline-block;">
+      <span data-lang="de">Dein Projekt anfragen</span>
+      <span data-lang="en">Enquire about your project</span>
+    </a>
+  </div>
+</section>
+
 <!-- FOOTER - BLACK with full nav -->
 <footer>
   <div class="footer-top">
@@ -1243,6 +1528,14 @@ body.en [data-lang="en"]{display:revert!important}
 </footer>
 
 <script>
+
+function filterRef(cat){
+  document.querySelectorAll('.ref-filter-btn').forEach(b=>b.classList.toggle('active',b.dataset.cat===cat));
+  document.querySelectorAll('.ref-card').forEach(card=>{
+    const cats=card.dataset.cat||'';
+    card.hidden=cat!=='all'&&!cats.split(' ').includes(cat);
+  });
+}
 const cursor=document.getElementById('cursor'),ring=document.getElementById('cursorRing');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
