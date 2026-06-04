@@ -206,49 +206,6 @@
   ]
 }
 
-// ── 3D KARUSSELL JS ──────────────────────────────────────────────────────
-(function(){
-  var scene = document.querySelector('.carousel-scene');
-  if(!scene) return;
-  var wrap = scene.parentElement;
-  var rot = 0;
-  var speed = -16.36; // deg/s = -360/22
-  var lastT = null;
-  var hovered = false;
-  var dragging = false;
-  var lastX = 0;
-
-  scene.style.transform = 'rotateY(0deg)';
-
-  function tick(t){
-    if(lastT===null) lastT=t;
-    var dt=(t-lastT)/1000;
-    lastT=t;
-    if(!hovered) rot+=speed*dt;
-    scene.style.transform='rotateY('+rot+'deg)';
-    requestAnimationFrame(tick);
-  }
-  requestAnimationFrame(tick);
-
-  wrap.addEventListener('mouseenter',function(){ hovered=true; });
-  wrap.addEventListener('mouseleave',function(){ hovered=false; dragging=false; });
-  wrap.addEventListener('mousedown',function(e){ dragging=true; lastX=e.clientX; e.preventDefault(); });
-  document.addEventListener('mouseup',function(){ dragging=false; });
-  wrap.addEventListener('mousemove',function(e){
-    if(!dragging) return;
-    rot+=(e.clientX-lastX)*0.45;
-    lastX=e.clientX;
-  });
-  wrap.addEventListener('touchstart',function(e){ hovered=true; dragging=true; lastX=e.touches[0].clientX; },{passive:true});
-  wrap.addEventListener('touchend',function(){ hovered=false; dragging=false; });
-  wrap.addEventListener('touchmove',function(e){
-    if(!dragging) return;
-    rot+=(e.touches[0].clientX-lastX)*0.45;
-    lastX=e.touches[0].clientX;
-    e.preventDefault();
-  },{passive:false});
-})();
-
 </script>
 
 <!-- ============================================
@@ -340,8 +297,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;height:68px;display:flex;ali
 .btn-outline:hover .arr{transform:translateX(4px)}
 
 /* HERO CAROUSEL 3D */
-.hero-carousel{margin-top:64px;width:100%;max-width:960px;opacity:0;animation:fadeUp .9s .8s forwards;display:flex;flex-direction:column;align-items:center;gap:0}
-.carousel-wrap{width:100%;height:300px;position:relative;perspective:1000px;perspective-origin:50% 55%;padding-bottom:24px}
+.hero-carousel{margin-top:80px;width:100%;max-width:960px;opacity:0;animation:fadeUp .9s .8s forwards;display:flex;flex-direction:column;align-items:center;gap:0}
+.carousel-wrap{width:100%;height:340px;position:relative;perspective:1000px;perspective-origin:50% 62%}
 .carousel-scene{width:100%;height:100%;position:relative;transform-style:preserve-3d}
 .carousel-wrap{cursor:grab}.carousel-wrap:active{cursor:grabbing}
 .c-card{position:absolute;width:186px;height:248px;left:calc(50% - 93px);top:calc(50% - 124px);border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.12);box-shadow:0 8px 32px rgba(0,0,0,.45),0 2px 8px rgba(0,0,0,.3);cursor:pointer;text-decoration:none;display:block;transform-style:preserve-3d;transition:filter .3s}
@@ -1574,6 +1531,50 @@ async function sendForm(){
     alert(isEN?'Something went wrong. Please email us at info@recmo.de':'Etwas ist schiefgelaufen. Bitte schreib uns direkt an info@recmo.de');
   }
 }
+
+// ── 3D KARUSSELL JS ──────────────────────────────────────────────────────
+(function(){
+  var scene = document.querySelector('.carousel-scene');
+  if(!scene) return;
+  var wrap = scene.parentElement;
+  var rot = 0;
+  var speed = -16.36; // deg/s = -360/22
+  var lastT = null;
+  var hovered = false;
+  var dragging = false;
+  var lastX = 0;
+
+  scene.style.transform = 'rotateY(0deg)';
+
+  function tick(t){
+    if(lastT===null) lastT=t;
+    var dt=(t-lastT)/1000;
+    lastT=t;
+    if(!hovered) rot+=speed*dt;
+    scene.style.transform='rotateY('+rot+'deg)';
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+
+  wrap.addEventListener('mouseenter',function(){ hovered=true; });
+  wrap.addEventListener('mouseleave',function(){ hovered=false; dragging=false; });
+  wrap.addEventListener('mousedown',function(e){ dragging=true; lastX=e.clientX; e.preventDefault(); });
+  document.addEventListener('mouseup',function(){ dragging=false; });
+  wrap.addEventListener('mousemove',function(e){
+    if(!dragging) return;
+    rot+=(e.clientX-lastX)*0.45;
+    lastX=e.clientX;
+  });
+  wrap.addEventListener('touchstart',function(e){ hovered=true; dragging=true; lastX=e.touches[0].clientX; },{passive:true});
+  wrap.addEventListener('touchend',function(){ hovered=false; dragging=false; });
+  wrap.addEventListener('touchmove',function(e){
+    if(!dragging) return;
+    rot+=(e.touches[0].clientX-lastX)*0.45;
+    lastX=e.touches[0].clientX;
+    e.preventDefault();
+  },{passive:false});
+})();
+
 </script>
 </body>
 </html>
