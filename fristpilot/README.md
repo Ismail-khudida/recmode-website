@@ -34,9 +34,17 @@ npm install
 1. Auf [supabase.com](https://supabase.com) ein Projekt erstellen.
 2. Im **SQL Editor** das Skript `supabase/schema.sql` ausführen. Es legt die
    Tabellen `documents` und `reminders`, die Row-Level-Security-Policies und den
-   Storage-Bucket `documents` an. Das Skript ist idempotent; für eine bereits
-   bestehende Datenbank genügt erneutes Ausführen (oder die Migrationen in
-   `supabase/migrations/`).
+   Storage-Bucket `documents` an. Das Skript ist idempotent und enthält das
+   vollständige aktuelle Datenmodell – für eine **frische** Datenbank reicht
+   `schema.sql` allein.
+
+   Für eine **bestehende** Datenbank die Migrationen in `supabase/migrations/`
+   in Reihenfolge ausführen (idempotent):
+   - `0002_document_status.sql` – fügt `documents.status` (`processing` /
+     `done` / `failed`) und `analysis_error` hinzu; bestehende Dokumente mit
+     Analyse werden auf `done` gesetzt.
+   - `0003_analysis_usage.sql` – legt die Tabelle `analysis_usage` und die
+     Rate-Limit-Funktionen an.
 3. Unter **Settings → API** die Projekt-URL und die Keys kopieren.
 4. Optional unter **Authentication → Providers → Email** einstellen, ob eine
    E-Mail-Bestätigung erforderlich ist (für lokale Tests kann sie deaktiviert
