@@ -6,9 +6,13 @@ import { login, register, type AuthState } from "@/app/auth/actions";
 
 interface AuthFormProps {
   mode: "login" | "register";
+  /** Nur Login: relatives Ziel nach erfolgreicher Anmeldung. */
+  redirectTo?: string;
+  /** Optionaler Hinweis (z. B. nach Passwort-Reset). */
+  notice?: string;
 }
 
-export function AuthForm({ mode }: AuthFormProps) {
+export function AuthForm({ mode, redirectTo, notice }: AuthFormProps) {
   const action = mode === "login" ? login : register;
   const [state, formAction, pending] = useActionState<AuthState, FormData>(
     action,
@@ -33,7 +37,17 @@ export function AuthForm({ mode }: AuthFormProps) {
           {isLogin ? "Anmelden" : "Registrieren"}
         </h1>
 
+        {notice && (
+          <p className="mb-4 rounded-lg bg-green-50 px-3 py-2 text-sm text-green-700">
+            {notice}
+          </p>
+        )}
+
         <form action={formAction} className="space-y-4">
+          {isLogin && redirectTo && (
+            <input type="hidden" name="redirect" value={redirectTo} />
+          )}
+
           <div>
             <label htmlFor="email" className="field-label">
               E-Mail-Adresse
@@ -84,6 +98,17 @@ export function AuthForm({ mode }: AuthFormProps) {
                 : "Konto erstellen"}
           </button>
         </form>
+
+        {isLogin && (
+          <p className="mt-4 text-center text-sm">
+            <Link
+              href="/forgot-password"
+              className="font-medium text-navy underline"
+            >
+              Passwort vergessen?
+            </Link>
+          </p>
+        )}
       </div>
 
       <p className="mt-6 text-center text-sm text-ink-soft">

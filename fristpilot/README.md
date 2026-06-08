@@ -41,6 +41,10 @@ npm install
 4. Optional unter **Authentication → Providers → Email** einstellen, ob eine
    E-Mail-Bestätigung erforderlich ist (für lokale Tests kann sie deaktiviert
    werden).
+5. Unter **Authentication → URL Configuration** die Redirect-URL
+   `<APP_ORIGIN>/auth/callback` zur Allowlist hinzufügen (lokal
+   `http://localhost:3000/auth/callback`). Sie wird für E-Mail-Bestätigung und
+   Passwort-Reset benötigt.
 
 ### 3. Umgebungsvariablen
 
@@ -55,7 +59,9 @@ cp .env.example .env.local
 | `NEXT_PUBLIC_SUPABASE_URL` | Projekt-URL aus Supabase |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon/Public Key |
 | `SUPABASE_STORAGE_BUCKET` | Bucket-Name (Standard: `documents`) |
-| `APP_ORIGIN` | Eigene App-Domain für den CSRF-Schutz (lokal `http://localhost:3000`) |
+| `APP_ORIGIN` | Eigene App-Domain für CSRF-Schutz & E-Mail-Links (lokal `http://localhost:3000`) |
+| `DAILY_USER_ANALYSIS_LIMIT` | optional, Analysen pro Nutzer/Tag (Standard `10`) |
+| `DAILY_GLOBAL_ANALYSIS_LIMIT` | optional, globale Analysen pro Tag (Standard `200`) |
 | `ANTHROPIC_API_KEY` | API-Key von Anthropic |
 | `ANTHROPIC_MODEL` | optional, Standard `claude-opus-4-8` |
 
@@ -94,6 +100,12 @@ Die App ist unter `http://localhost:3000` erreichbar.
   fehlerhaften KI-Antworten greift ein sicherer Fallback (`src/lib/analysis-schema.ts`).
 - Der Claude-Modellname kommt ausschließlich aus `ANTHROPIC_MODEL`
   (Fallback: `claude-opus-4-8`).
+- **Kostenkontrolle:** pro Nutzer und global ein Tageslimit für Analysen
+  (`analysis_usage`-Tabelle + serverseitige DB-Funktionen). Bei Erreichen
+  → HTTP 429, kein Storage-/Claude-Aufruf.
+- **Auth-Flows:** Passwort vergessen/zurücksetzen, E-Mail-Bestätigung mit
+  Resend und ein `/auth/callback`, der den Supabase-Code gegen eine Session
+  tauscht. Login respektiert das ursprüngliche Ziel (nur relative Pfade).
 
 ## Projektstruktur
 

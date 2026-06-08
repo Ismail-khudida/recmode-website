@@ -3,7 +3,14 @@ import { NextResponse, type NextRequest } from "next/server";
 
 // Aktualisiert die Supabase-Session bei jeder Anfrage und schützt
 // die App-Bereiche vor nicht angemeldeten Nutzern.
-const PUBLIC_PATHS = ["/login", "/register", "/auth"];
+const PUBLIC_PATHS = [
+  "/login",
+  "/register",
+  "/auth",
+  "/forgot-password",
+  "/reset-password",
+  "/confirm-email",
+];
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });

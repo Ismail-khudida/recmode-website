@@ -2,6 +2,12 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { analyzeDocument } from "@/lib/ai";
 import { detectFileType, isAllowedOrigin } from "@/lib/upload";
+import {
+  checkQuota,
+  consumeQuota,
+  finalizeQuota,
+  quotaMessage,
+} from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 // KI-Analyse kann einige Sekunden dauern.
@@ -12,12 +18,8 @@ const BUCKET = process.env.SUPABASE_STORAGE_BUCKET || "documents";
 
 export async function POST(request: Request) {
   // 1. CSRF-Schutz: nur Anfragen von der eigenen App-Domain zulassen.
-  //    Vor jeder Storage-/Claude-Aktion und vor dem Lesen des Bodys.
   if (!isAllowedOrigin(request)) {
-    return NextResponse.json(
-      { error: "Zugriff verweigert." },
-      { status: 403 },
-    );
+    return NextResponse.json({ error: "Zugriff verweigert." }, { status: 403 });
   }
 
   // 2. Authentifizierung (session-gebundener Client, RLS aktiv).
@@ -61,7 +63,16 @@ export async function POST(request: Request) {
     );
   }
 
-  // 5. Dokumentzeile zuerst anlegen (status='processing'), damit eine spätere
+  // 5. Rate-Limit VOR Upload, DB-Anlage und Claude prüfen.
+  const quota = await checkQuota(supabase);
+  if (!quota.allowed) {
+    return NextResponse.json(
+      { error: quotaMessage(quota.reason) },
+      { status: 429 },
+    );
+  }
+
+  // 6. Dokumentzeile zuerst anlegen (status='processing'), damit eine spätere
   //    Datei stets durch eine Eigentümer-Zeile referenziert wird.
   const { data: created, error: createError } = await supabase
     .from("documents")
@@ -84,12 +95,17 @@ export async function POST(request: Request) {
   const documentId = created.id as string;
   const storagePath = `${user.id}/${documentId}.${detected.ext}`;
 
-  // Hilfsfunktionen für saubere Fehlerpfade.
   const cleanupStorage = async () => {
     const { error } = await supabase.storage.from(BUCKET).remove([storagePath]);
-    if (error) {
-      console.error("Storage-Cleanup fehlgeschlagen:", error);
-    }
+    if (error) console.error("Storage-Cleanup fehlgeschlagen:", error);
+  };
+  const deleteDocumentRow = async () => {
+    const { error } = await supabase
+      .from("documents")
+      .delete()
+      .eq("id", documentId)
+      .eq("user_id", user.id);
+    if (error) console.error("Dokumentzeile konnte nicht entfernt werden:", error);
   };
   const markFailed = async (message: string) => {
     const { error } = await supabase
@@ -97,12 +113,10 @@ export async function POST(request: Request) {
       .update({ status: "failed", analysis_error: message, file_url: null })
       .eq("id", documentId)
       .eq("user_id", user.id);
-    if (error) {
-      console.error("Status 'failed' konnte nicht gesetzt werden:", error);
-    }
+    if (error) console.error("Status 'failed' konnte nicht gesetzt werden:", error);
   };
 
-  // 6. Datei in den Storage legen (session-gebundener Client, RLS schützt
+  // 7. Datei in den Storage legen (session-gebundener Client, RLS schützt
   //    den user_id/...-Ordner).
   const { error: uploadError } = await supabase.storage
     .from(BUCKET)
@@ -113,6 +127,7 @@ export async function POST(request: Request) {
 
   if (uploadError) {
     console.error("Upload fehlgeschlagen:", uploadError);
+    // Upload fehlgeschlagen -> kein Verbrauch buchen (Claude lief nie).
     await markFailed("Die Datei konnte nicht gespeichert werden.");
     return NextResponse.json(
       { error: "Die Datei konnte nicht gespeichert werden.", documentId },
@@ -120,8 +135,21 @@ export async function POST(request: Request) {
     );
   }
 
-  // 7. Analyse durchführen. Jeder Fehler nach dem Upload räumt die Datei
-  //    wieder ab und markiert das Dokument als fehlgeschlagen.
+  // 8. Verbrauch buchen, unmittelbar vor dem Claude-Aufruf. Sollte das Limit
+  //    zwischen Vorprüfung und hier (Race) erreicht worden sein, wieder
+  //    aufräumen und 429 zurückgeben.
+  const consumed = await consumeQuota(supabase);
+  if (!consumed.allowed) {
+    await cleanupStorage();
+    await deleteDocumentRow();
+    return NextResponse.json(
+      { error: quotaMessage(consumed.reason) },
+      { status: 429 },
+    );
+  }
+
+  // 9. Analyse durchführen. Verbrauch ist gebucht und zählt ab jetzt, auch
+  //    wenn Claude fehlschlägt (Kosten können entstanden sein).
   try {
     const analysis = await analyzeDocument({
       data: buffer,
@@ -141,24 +169,25 @@ export async function POST(request: Request) {
       .eq("user_id", user.id);
 
     if (updateError) {
-      // Analyse war erfolgreich, ließ sich aber nicht speichern -> aufräumen.
       console.error("Speichern der Analyse fehlgeschlagen:", updateError);
       await cleanupStorage();
       await markFailed("Die Analyse konnte nicht gespeichert werden.");
+      await finalizeQuota(supabase, consumed.usageId, documentId, "failed");
       return NextResponse.json(
         { error: "Die Analyse konnte nicht gespeichert werden.", documentId },
         { status: 500 },
       );
     }
 
+    await finalizeQuota(supabase, consumed.usageId, documentId, "completed");
     return NextResponse.json({ documentId });
   } catch (err) {
-    // Claude-, Parsing-/Validierungs- oder sonstige unerwartete Fehler.
     console.error("Analyse fehlgeschlagen:", err);
     await cleanupStorage();
     await markFailed(
       "Die automatische Analyse ist fehlgeschlagen. Bitte versuche es später erneut.",
     );
+    await finalizeQuota(supabase, consumed.usageId, documentId, "failed");
     return NextResponse.json(
       {
         error:
