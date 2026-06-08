@@ -1,5 +1,5 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { parseAnalysis, type DocumentAnalysis } from "./analysis-schema";
+import { parseAnalysisResult, type DocumentAnalysis } from "./analysis-schema";
 
 // Modellname ausschließlich über Environment Variable, mit sinnvollem Fallback.
 const DEFAULT_MODEL = "claude-opus-4-8";
@@ -18,9 +18,10 @@ export const ALLOWED_MIME_TYPES = [
 
 export type AllowedMimeType = (typeof ALLOWED_MIME_TYPES)[number];
 
-// Eigene Fehlerklasse, damit Aufrufer Konfigurationsfehler von
-// Laufzeitfehlern unterscheiden können.
+// Eigene Fehlerklassen, damit Aufrufer Konfigurations-, Antwort- und
+// Validierungsfehler unterscheiden können.
 export class AnalysisConfigError extends Error {}
+export class AnalysisParseError extends Error {}
 
 const SYSTEM_PROMPT = `Du bist FristPilot, ein Assistent, der deutschsprachigen Nutzern hilft, MÖGLICHE Fristen und Handlungspflichten aus Dokumenten zu erkennen (Briefe, Behördenpost, Rechnungen, Verträge, Versicherungen).
 
@@ -126,10 +127,17 @@ export async function analyzeDocument({
 
   const textBlock = response.content.find((b) => b.type === "text");
   if (!textBlock || textBlock.type !== "text") {
-    throw new Error("Die KI-Analyse lieferte keine verwertbare Antwort.");
+    throw new AnalysisParseError(
+      "Die KI-Analyse lieferte keine verwertbare Antwort.",
+    );
   }
 
-  // parseAnalysis validiert und liefert bei fehlerhaften Antworten einen
-  // sicheren Fallback statt einer Exception.
-  return parseAnalysis(textBlock.text);
+  // Validierung per Zod. Bei fehlerhaften Antworten wird ein klarer Fehler
+  // geworfen, damit das Dokument als "failed" markiert werden kann – kein
+  // stiller Fallback, der wie ein Erfolg aussieht.
+  const result = parseAnalysisResult(textBlock.text);
+  if (!result.success) {
+    throw new AnalysisParseError(result.error);
+  }
+  return result.data;
 }

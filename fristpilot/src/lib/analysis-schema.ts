@@ -93,9 +93,15 @@ export const FALLBACK_ANALYSIS: DocumentAnalysis = {
   confidence: 0,
 };
 
+export type ParseAnalysisResult =
+  | { success: true; data: DocumentAnalysis }
+  | { success: false; error: string };
+
 // Extrahiert robust ein JSON-Objekt aus der Modellantwort und validiert es.
-// Schlägt das Parsen oder die Validierung fehl, wird der Fallback geliefert.
-export function parseAnalysis(raw: string): DocumentAnalysis {
+// Liefert ein diskriminiertes Ergebnis, damit der Aufrufer einen echten
+// Fehler (-> status "failed") von einer gültigen Analyse unterscheiden kann.
+// Es wird NICHT still ein Fallback als Erfolg ausgegeben.
+export function parseAnalysisResult(raw: string): ParseAnalysisResult {
   let text = raw.trim();
 
   const fence = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
@@ -111,9 +117,15 @@ export function parseAnalysis(raw: string): DocumentAnalysis {
   try {
     candidate = JSON.parse(text);
   } catch {
-    return FALLBACK_ANALYSIS;
+    return { success: false, error: "Die KI-Antwort war kein gültiges JSON." };
   }
 
   const result = AnalysisSchema.safeParse(candidate);
-  return result.success ? result.data : FALLBACK_ANALYSIS;
+  if (!result.success) {
+    return {
+      success: false,
+      error: "Die KI-Antwort entsprach nicht dem erwarteten Format.",
+    };
+  }
+  return { success: true, data: result.data };
 }

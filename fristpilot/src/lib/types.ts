@@ -10,6 +10,8 @@ export type {
 
 import type { DocumentAnalysis } from "./analysis-schema";
 
+export type DocumentStatus = "processing" | "done" | "failed";
+
 export interface DocumentRow {
   id: string;
   user_id: string;
@@ -18,6 +20,8 @@ export interface DocumentRow {
   file_type: string | null;
   extracted_text: string | null;
   analysis_json: DocumentAnalysis | null;
+  status: DocumentStatus;
+  analysis_error: string | null;
   created_at: string;
 }
 

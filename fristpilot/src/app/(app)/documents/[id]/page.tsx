@@ -39,12 +39,21 @@ export default async function DocumentPage({
         </p>
       </div>
 
-      {!analysis ? (
+      {doc.status === "processing" ? (
         <div className="card">
-          <p className="text-sm text-ink-soft">
-            Für dieses Dokument liegt noch keine Analyse vor. Möglicherweise ist
-            die automatische Auswertung fehlgeschlagen. Bitte lade das Dokument
-            erneut hoch.
+          <p className="text-sm font-medium text-ink">Analyse läuft noch …</p>
+          <p className="mt-1 text-sm text-ink-soft">
+            Dein Dokument wird gerade ausgewertet. Bitte lade die Seite in einem
+            Moment neu.
+          </p>
+        </div>
+      ) : doc.status === "failed" || !analysis ? (
+        <div className="card border-l-4 border-l-accent">
+          <p className="text-sm font-semibold text-ink">Analyse fehlgeschlagen</p>
+          <p className="mt-1 text-sm leading-relaxed text-ink-soft">
+            {doc.analysis_error ??
+              "Dieses Dokument konnte nicht automatisch ausgewertet werden."}{" "}
+            Bitte prüfe das Dokument selbst oder lade es erneut hoch.
           </p>
         </div>
       ) : (

@@ -127,8 +127,18 @@ export default async function DashboardPage() {
                     {formatDateTime(doc.created_at)}
                   </p>
                 </div>
-                {doc.analysis_json && (
-                  <RiskBadge risk={doc.analysis_json.risk_level} />
+                {doc.status === "processing" ? (
+                  <span className="inline-flex items-center rounded-full border border-gray-200 bg-surface-muted px-3 py-1 text-xs font-medium text-ink-soft">
+                    Analyse läuft …
+                  </span>
+                ) : doc.status === "failed" ? (
+                  <span className="inline-flex items-center rounded-full border border-accent/30 bg-accent-soft px-3 py-1 text-xs font-medium text-accent">
+                    Analyse fehlgeschlagen
+                  </span>
+                ) : (
+                  doc.analysis_json && (
+                    <RiskBadge risk={doc.analysis_json.risk_level} />
+                  )
                 )}
               </Link>
             ))}

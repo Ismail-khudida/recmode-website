@@ -29,21 +29,6 @@ export async function createClient() {
   );
 }
 
-// Service-Role-Client (serverseitig, umgeht RLS). Nur für Storage-Uploads
-// und andere vertrauenswürdige Serveroperationen verwenden.
-export function createServiceClient() {
-  return createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.SUPABASE_SERVICE_ROLE_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return [];
-        },
-        setAll() {
-          // keine Cookies im Service-Client
-        },
-      },
-    },
-  );
-}
+// Hinweis: Es gibt bewusst keinen Service-Role-Client mehr. Upload und Löschen
+// laufen über den session-gebundenen Client; die RLS- und Storage-Policies
+// (Ordner user_id/...) sind die Schutzschicht. So bleibt der Blast-Radius klein.

@@ -15,11 +15,37 @@ create table if not exists public.documents (
   -- strukturiertes KI-Ergebnis. deadlines[] enthält pro Frist zusätzlich
   -- confidence, evidence_text und page_number zur Nachvollziehbarkeit.
   analysis_json   jsonb,
+  -- Verarbeitungsstatus der Analyse.
+  status          text not null default 'processing'
+                    check (status in ('processing', 'done', 'failed')),
+  analysis_error  text,                 -- kurze Fehlermeldung bei status='failed'
   created_at      timestamptz not null default now()
 );
 
 create index if not exists documents_user_id_created_at_idx
   on public.documents (user_id, created_at desc);
+
+-- Idempotentes Upgrade für bestehende Installationen (create table if not
+-- exists fügt keine neuen Spalten zu einer vorhandenen Tabelle hinzu).
+alter table public.documents
+  add column if not exists status text not null default 'processing';
+alter table public.documents
+  add column if not exists analysis_error text;
+
+do $$
+begin
+  if not exists (
+    select 1 from pg_constraint where conname = 'documents_status_check'
+  ) then
+    alter table public.documents
+      add constraint documents_status_check
+      check (status in ('processing', 'done', 'failed'));
+  end if;
+end $$;
+
+-- Bestehende Dokumente mit Analyse als erledigt markieren.
+update public.documents set status = 'done'
+  where analysis_json is not null and status = 'processing';
 
 -- ------------------------------------------------------------------
 -- reminders

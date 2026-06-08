@@ -2,7 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { createClient, createServiceClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 
 const BUCKET = process.env.SUPABASE_STORAGE_BUCKET || "documents";
 
@@ -60,9 +60,10 @@ export async function deleteDocument(
   }
 
   // 4. Datei aus dem Storage entfernen (best effort, nach DB-Löschung).
+  //    Session-gebundener Client – die Storage-Policy erlaubt nur den eigenen
+  //    user_id/...-Ordner, daher kein Service-Role-Key nötig.
   if (doc.file_url) {
-    const service = createServiceClient();
-    const { error: storageError } = await service.storage
+    const { error: storageError } = await supabase.storage
       .from(BUCKET)
       .remove([doc.file_url]);
     if (storageError) {

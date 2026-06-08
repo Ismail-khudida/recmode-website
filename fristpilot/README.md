@@ -34,7 +34,9 @@ npm install
 1. Auf [supabase.com](https://supabase.com) ein Projekt erstellen.
 2. Im **SQL Editor** das Skript `supabase/schema.sql` ausführen. Es legt die
    Tabellen `documents` und `reminders`, die Row-Level-Security-Policies und den
-   Storage-Bucket `documents` an.
+   Storage-Bucket `documents` an. Das Skript ist idempotent; für eine bereits
+   bestehende Datenbank genügt erneutes Ausführen (oder die Migrationen in
+   `supabase/migrations/`).
 3. Unter **Settings → API** die Projekt-URL und die Keys kopieren.
 4. Optional unter **Authentication → Providers → Email** einstellen, ob eine
    E-Mail-Bestätigung erforderlich ist (für lokale Tests kann sie deaktiviert
@@ -52,10 +54,13 @@ cp .env.example .env.local
 | --- | --- |
 | `NEXT_PUBLIC_SUPABASE_URL` | Projekt-URL aus Supabase |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon/Public Key |
-| `SUPABASE_SERVICE_ROLE_KEY` | Service-Role-Key (nur serverseitig) |
 | `SUPABASE_STORAGE_BUCKET` | Bucket-Name (Standard: `documents`) |
+| `APP_ORIGIN` | Eigene App-Domain für den CSRF-Schutz (lokal `http://localhost:3000`) |
 | `ANTHROPIC_API_KEY` | API-Key von Anthropic |
 | `ANTHROPIC_MODEL` | optional, Standard `claude-opus-4-8` |
+
+> Ein Service-Role-Key wird nicht mehr benötigt: Upload und Löschen laufen über
+> den session-gebundenen Client, abgesichert durch RLS- und Storage-Policies.
 
 ### 4. Entwicklungsserver starten
 
