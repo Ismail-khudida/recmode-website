@@ -71,9 +71,24 @@ Die App ist unter `http://localhost:3000` erreichbar.
 2. Dashboard öffnen (`/dashboard`).
 3. Dokument hochladen (`/upload`) – die Datei wird gespeichert und analysiert.
 4. Ergebnisansicht (`/documents/[id]`): Dokumenttyp, Absender, Zusammenfassung,
-   erkannte Fristen, empfohlene Schritte und Wichtigkeit.
+   **mögliche** Fristen, empfohlene Schritte und Wichtigkeit. Jede mögliche
+   Frist ist nachvollziehbar – mit Confidence, der zugrunde liegenden
+   Textstelle (Evidence) und – falls bestimmbar – der Seitennummer.
 5. Aus einer Frist eine Erinnerung erstellen.
 6. Erinnerungen verwalten (`/reminders`) und im Dashboard im Blick behalten.
+7. Dokumente bei Bedarf vollständig löschen (Datei im Storage, Datenbankeintrag,
+   Analyse und verknüpfte Erinnerungen).
+
+## Vertrauen & Datenschutz
+
+- Fristen werden konsequent als **mögliche** Fristen formuliert – keine
+  Rechtsberatung, keine vorgetäuschte Sicherheit.
+- `<LegalDisclaimer />` (Haftung) und `<PrivacyNotice />` (KI-Hinweis)
+  erscheinen überall dort, wo Analyseergebnisse angezeigt werden.
+- Das Analyse-JSON wird serverseitig mit einem **Zod-Schema** validiert; bei
+  fehlerhaften KI-Antworten greift ein sicherer Fallback (`src/lib/analysis-schema.ts`).
+- Der Claude-Modellname kommt ausschließlich aus `ANTHROPIC_MODEL`
+  (Fallback: `claude-opus-4-8`).
 
 ## Projektstruktur
 

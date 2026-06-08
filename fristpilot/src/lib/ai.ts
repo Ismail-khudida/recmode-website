@@ -1,7 +1,13 @@
 import Anthropic from "@anthropic-ai/sdk";
-import type { DocumentAnalysis, RiskLevel } from "./types";
+import { parseAnalysis, type DocumentAnalysis } from "./analysis-schema";
 
-const MODEL = process.env.ANTHROPIC_MODEL || "claude-opus-4-8";
+// Modellname ausschließlich über Environment Variable, mit sinnvollem Fallback.
+const DEFAULT_MODEL = "claude-opus-4-8";
+
+function resolveModel(): string {
+  const fromEnv = process.env.ANTHROPIC_MODEL?.trim();
+  return fromEnv && fromEnv.length > 0 ? fromEnv : DEFAULT_MODEL;
+}
 
 // Erlaubte Upload-Typen und die zugehörigen Claude-Content-Blöcke.
 export const ALLOWED_MIME_TYPES = [
@@ -10,7 +16,18 @@ export const ALLOWED_MIME_TYPES = [
   "image/png",
 ] as const;
 
-const SYSTEM_PROMPT = `Du bist FristPilot, ein Assistent, der deutschsprachigen Nutzern hilft, wichtige Fristen und Handlungspflichten aus Dokumenten zu erkennen (Briefe, Behördenpost, Rechnungen, Verträge, Versicherungen).
+export type AllowedMimeType = (typeof ALLOWED_MIME_TYPES)[number];
+
+// Eigene Fehlerklasse, damit Aufrufer Konfigurationsfehler von
+// Laufzeitfehlern unterscheiden können.
+export class AnalysisConfigError extends Error {}
+
+const SYSTEM_PROMPT = `Du bist FristPilot, ein Assistent, der deutschsprachigen Nutzern hilft, MÖGLICHE Fristen und Handlungspflichten aus Dokumenten zu erkennen (Briefe, Behördenpost, Rechnungen, Verträge, Versicherungen).
+
+Wichtige Grundhaltung:
+- Stelle Fristen niemals als sichere Fakten dar. Es sind immer MÖGLICHE Fristen.
+- Du gibst keine Rechtsberatung und suggerierst keine absolute Sicherheit.
+- Formuliere vorsichtig ("wahrscheinlich", "möglicherweise") statt absolut.
 
 Analysiere das Dokument und gib AUSSCHLIESSLICH ein JSON-Objekt zurück – kein einleitender Text, keine Erklärungen, keine Markdown-Codeblöcke.
 
@@ -23,7 +40,10 @@ Das JSON-Objekt hat exakt diese Struktur:
     {
       "date": "YYYY-MM-DD oder null, falls kein konkretes Datum erkennbar",
       "description": "Was passiert an diesem Datum?",
-      "required_action": "Was muss der Nutzer konkret tun?"
+      "required_action": "Was muss der Nutzer wahrscheinlich tun?",
+      "confidence": 0.0,
+      "evidence_text": "Die wörtliche Textstelle aus dem Dokument, auf der diese Frist beruht",
+      "page_number": 1
     }
   ],
   "recommended_actions": ["Konkreter nächster Schritt", "..."],
@@ -35,9 +55,11 @@ Das JSON-Objekt hat exakt diese Struktur:
 Regeln:
 - Antworte auf Deutsch.
 - Erfinde keine Fristen. Wenn keine Frist erkennbar ist, gib ein leeres Array zurück.
-- "confidence" ist eine Zahl zwischen 0.0 und 1.0 und beschreibt, wie sicher du dir bei der Analyse bist.
-- "risk_level": high = wichtige Frist mit möglichen rechtlichen/finanziellen Folgen, medium = relevant aber unkritisch, low = informativ.
-- Sei vorsichtig: Im Zweifel weise auf Unsicherheit hin, statt zu raten.`;
+- "evidence_text": Zitiere möglichst wörtlich die Stelle, die zur Frist führt, damit der Nutzer die Aussage nachvollziehen kann. Lass das Feld leer, wenn es keine eindeutige Stelle gibt.
+- "page_number": Seitenzahl der Fundstelle (1-basiert). Wenn nicht bestimmbar, gib null an – rate nicht.
+- "confidence" (pro Frist und gesamt) ist eine Zahl zwischen 0.0 und 1.0 und beschreibt, wie sicher du dir bist.
+- "risk_level": high = wichtige mögliche Frist mit potenziellen rechtlichen/finanziellen Folgen, medium = relevant aber unkritisch, low = informativ.
+- Sei vorsichtig: Im Zweifel weise auf Unsicherheit hin (niedrige confidence), statt zu raten.`;
 
 interface AnalyzeInput {
   /** Rohdaten der Datei. */
@@ -45,109 +67,54 @@ interface AnalyzeInput {
   mimeType: string;
 }
 
-function clampRisk(value: unknown): RiskLevel {
-  return value === "high" || value === "medium" || value === "low"
-    ? value
-    : "medium";
-}
-
-function clampConfidence(value: unknown): number {
-  const n = typeof value === "number" ? value : Number(value);
-  if (!Number.isFinite(n)) return 0;
-  return Math.min(1, Math.max(0, n));
-}
-
-// Extrahiert das erste JSON-Objekt aus dem Modelltext – robust gegen
-// versehentliche Codeblöcke oder Vor-/Nachtext.
-function parseAnalysis(raw: string): DocumentAnalysis {
-  let text = raw.trim();
-  const fence = text.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  if (fence) text = fence[1].trim();
-
-  const start = text.indexOf("{");
-  const end = text.lastIndexOf("}");
-  if (start !== -1 && end !== -1 && end > start) {
-    text = text.slice(start, end + 1);
+function buildContentBlock(
+  base64: string,
+  mimeType: string,
+): Anthropic.ContentBlockParam {
+  if (mimeType === "application/pdf") {
+    return {
+      type: "document",
+      source: {
+        type: "base64",
+        media_type: "application/pdf",
+        data: base64,
+      },
+    };
   }
-
-  const parsed = JSON.parse(text) as Record<string, unknown>;
-
-  const deadlines = Array.isArray(parsed.deadlines)
-    ? parsed.deadlines.map((d) => {
-        const item = (d ?? {}) as Record<string, unknown>;
-        return {
-          date:
-            typeof item.date === "string" && item.date.trim() !== ""
-              ? item.date
-              : null,
-          description: String(item.description ?? ""),
-          required_action: String(item.required_action ?? ""),
-        };
-      })
-    : [];
-
-  const recommended = Array.isArray(parsed.recommended_actions)
-    ? parsed.recommended_actions.map((a) => String(a)).filter(Boolean)
-    : [];
-
   return {
-    document_type: String(parsed.document_type ?? "Sonstiges"),
-    sender: String(parsed.sender ?? "Unbekannt"),
-    summary_simple: String(parsed.summary_simple ?? ""),
-    deadlines,
-    recommended_actions: recommended,
-    risk_level: clampRisk(parsed.risk_level),
-    confidence: clampConfidence(parsed.confidence),
-    extracted_text:
-      typeof parsed.extracted_text === "string"
-        ? parsed.extracted_text
-        : undefined,
+    type: "image",
+    source: {
+      type: "base64",
+      media_type: mimeType as "image/jpeg" | "image/png",
+      data: base64,
+    },
   };
 }
 
 // Schickt das Dokument direkt an Claude. PDFs werden als Dokument-Block,
 // Bilder als Bild-Block übergeben – Claude übernimmt Texterkennung (OCR)
-// und Analyse in einem Schritt.
+// und Analyse in einem Schritt. Das Ergebnis wird per Zod-Schema validiert.
 export async function analyzeDocument({
   data,
   mimeType,
 }: AnalyzeInput): Promise<DocumentAnalysis> {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.ANTHROPIC_API_KEY?.trim();
   if (!apiKey) {
-    throw new Error("ANTHROPIC_API_KEY ist nicht gesetzt.");
+    throw new AnalysisConfigError("ANTHROPIC_API_KEY ist nicht gesetzt.");
   }
 
   const client = new Anthropic({ apiKey });
   const base64 = data.toString("base64");
 
-  const documentBlock =
-    mimeType === "application/pdf"
-      ? {
-          type: "document" as const,
-          source: {
-            type: "base64" as const,
-            media_type: "application/pdf" as const,
-            data: base64,
-          },
-        }
-      : {
-          type: "image" as const,
-          source: {
-            type: "base64" as const,
-            media_type: mimeType as "image/jpeg" | "image/png",
-            data: base64,
-          },
-        };
-
   const response = await client.messages.create({
-    model: MODEL,
+    model: resolveModel(),
     max_tokens: 4000,
     system: SYSTEM_PROMPT,
     messages: [
       {
         role: "user",
         content: [
-          documentBlock,
+          buildContentBlock(base64, mimeType),
           {
             type: "text",
             text: "Analysiere dieses Dokument und gib nur das beschriebene JSON-Objekt zurück.",
@@ -162,5 +129,7 @@ export async function analyzeDocument({
     throw new Error("Die KI-Analyse lieferte keine verwertbare Antwort.");
   }
 
+  // parseAnalysis validiert und liefert bei fehlerhaften Antworten einen
+  // sicheren Fallback statt einer Exception.
   return parseAnalysis(textBlock.text);
 }

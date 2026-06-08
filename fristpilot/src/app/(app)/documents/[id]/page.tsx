@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Disclaimer } from "@/components/Disclaimer";
+import { LegalDisclaimer } from "@/components/LegalDisclaimer";
+import { PrivacyNotice } from "@/components/PrivacyNotice";
 import { RiskBadge } from "@/components/RiskBadge";
 import { CreateReminderButton } from "@/components/CreateReminderButton";
-import { formatDate, formatDateTime, dueLabel } from "@/lib/format";
+import { DeleteDocumentButton } from "@/components/DeleteDocumentButton";
+import { formatDate, formatDateTime } from "@/lib/format";
 import type { DocumentRow } from "@/lib/types";
 
 export default async function DocumentPage({
@@ -57,7 +59,8 @@ export default async function DocumentPage({
                 <RiskBadge risk={analysis.risk_level} />
               </div>
               <span className="text-xs text-ink-soft">
-                Sicherheit der Analyse: {Math.round((analysis.confidence ?? 0) * 100)}%
+                Sicherheit der Analyse:{" "}
+                {Math.round((analysis.confidence ?? 0) * 100)}%
               </span>
             </div>
 
@@ -76,15 +79,15 @@ export default async function DocumentPage({
             </div>
           </div>
 
-          {/* Erkannte Fristen */}
+          {/* Mögliche Fristen */}
           <section>
             <h2 className="mb-3 text-lg font-semibold text-ink">
-              Erkannte Fristen
+              Mögliche Fristen
             </h2>
             {analysis.deadlines.length === 0 ? (
               <div className="card">
                 <p className="text-sm text-ink-soft">
-                  In diesem Dokument wurde keine konkrete Frist erkannt. Bitte
+                  In diesem Dokument wurde keine mögliche Frist erkannt. Bitte
                   prüfe das Dokument trotzdem selbst.
                 </p>
               </div>
@@ -92,31 +95,67 @@ export default async function DocumentPage({
               <div className="space-y-4">
                 {analysis.deadlines.map((deadline, i) => (
                   <div key={i} className="card space-y-3">
-                    <div className="flex flex-wrap items-baseline justify-between gap-2">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="inline-flex items-center rounded-full bg-accent-soft px-3 py-1 text-xs font-medium text-accent">
+                        Mögliche Frist erkannt
+                      </span>
+                      <span className="text-xs text-ink-soft">
+                        Confidence: {Math.round((deadline.confidence ?? 0) * 100)}%
+                      </span>
+                    </div>
+
+                    <div>
+                      <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                        Datum
+                      </p>
                       <p className="text-base font-semibold text-ink">
                         {formatDate(deadline.date)}
                       </p>
                       {deadline.date && (
-                        <span className="text-xs font-medium text-accent">
-                          {dueLabel(deadline.date)}
-                        </span>
+                        <p className="mt-1 text-sm text-ink-soft">
+                          Wahrscheinlich ist bis zum {formatDate(deadline.date)}{" "}
+                          eine Reaktion erforderlich.
+                        </p>
                       )}
                     </div>
+
                     {deadline.description && (
                       <p className="text-sm text-ink">{deadline.description}</p>
                     )}
+
                     {deadline.required_action && (
                       <p className="rounded-lg bg-surface-muted px-3 py-2 text-sm text-ink-soft">
-                        <span className="font-medium text-ink">Zu tun: </span>
+                        <span className="font-medium text-ink">
+                          Wahrscheinlich zu tun:{" "}
+                        </span>
                         {deadline.required_action}
                       </p>
                     )}
+
+                    {/* Nachvollziehbarkeit: Grundlage (Evidence) + Seite */}
+                    {deadline.evidence_text && (
+                      <div>
+                        <p className="text-xs font-semibold uppercase tracking-wide text-ink-soft">
+                          Grundlage im Dokument
+                        </p>
+                        <blockquote className="mt-1 border-l-2 border-navy/30 pl-3 text-sm italic text-ink-soft">
+                          „{deadline.evidence_text}“
+                        </blockquote>
+                      </div>
+                    )}
+
+                    {deadline.page_number != null && (
+                      <p className="text-xs text-ink-soft">
+                        Gefunden auf Seite {deadline.page_number}
+                      </p>
+                    )}
+
                     <CreateReminderButton
                       documentId={doc.id}
                       defaultTitle={
                         deadline.required_action ||
                         deadline.description ||
-                        `Frist: ${doc.file_name}`
+                        `Mögliche Frist: ${doc.file_name}`
                       }
                       defaultDescription={deadline.description}
                       defaultDueDate={deadline.date}
@@ -146,7 +185,20 @@ export default async function DocumentPage({
         </>
       )}
 
-      <Disclaimer />
+      <PrivacyNotice />
+      <LegalDisclaimer />
+
+      {/* Dokument vollständig löschen */}
+      <div className="border-t border-gray-200 pt-6">
+        <h2 className="mb-1 text-sm font-semibold text-ink">
+          Dokument verwalten
+        </h2>
+        <p className="mb-3 text-xs text-ink-soft">
+          Beim Löschen werden die Datei, die Analyse und alle verknüpften
+          Erinnerungen unwiderruflich entfernt.
+        </p>
+        <DeleteDocumentButton documentId={doc.id} />
+      </div>
     </div>
   );
 }

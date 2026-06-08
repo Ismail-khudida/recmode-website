@@ -1,28 +1,14 @@
 // Gemeinsame Typen für FristPilot.
+// Die Analyse-Typen werden aus dem Zod-Schema abgeleitet (Single Source of
+// Truth) und hier wiederveröffentlicht, damit bestehende Importe weiter gelten.
 
-export type RiskLevel = "low" | "medium" | "high";
+export type {
+  RiskLevel,
+  Deadline,
+  DocumentAnalysis,
+} from "./analysis-schema";
 
-export interface Deadline {
-  /** Datum im Format YYYY-MM-DD, falls erkannt. */
-  date: string | null;
-  /** Was passiert an diesem Datum? */
-  description: string;
-  /** Was muss der Nutzer tun? */
-  required_action: string;
-}
-
-export interface DocumentAnalysis {
-  document_type: string;
-  sender: string;
-  summary_simple: string;
-  deadlines: Deadline[];
-  recommended_actions: string[];
-  risk_level: RiskLevel;
-  /** 0.0 – 1.0 */
-  confidence: number;
-  /** Best-effort Transkription des Dokuments. */
-  extracted_text?: string;
-}
+import type { DocumentAnalysis } from "./analysis-schema";
 
 export interface DocumentRow {
   id: string;

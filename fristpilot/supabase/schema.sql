@@ -12,7 +12,9 @@ create table if not exists public.documents (
   file_url        text,                 -- Pfad im Storage-Bucket
   file_type       text,                 -- z.B. application/pdf, image/png
   extracted_text  text,                 -- erkannter Rohtext (best effort)
-  analysis_json   jsonb,                -- strukturiertes KI-Ergebnis
+  -- strukturiertes KI-Ergebnis. deadlines[] enthält pro Frist zusätzlich
+  -- confidence, evidence_text und page_number zur Nachvollziehbarkeit.
+  analysis_json   jsonb,
   created_at      timestamptz not null default now()
 );
 

@@ -1,5 +1,6 @@
 import { UploadForm } from "@/components/UploadForm";
-import { Disclaimer } from "@/components/Disclaimer";
+import { LegalDisclaimer } from "@/components/LegalDisclaimer";
+import { PrivacyNotice } from "@/components/PrivacyNotice";
 
 export default function UploadPage() {
   return (
@@ -17,7 +18,8 @@ export default function UploadPage() {
         <UploadForm />
       </div>
 
-      <Disclaimer />
+      <PrivacyNotice />
+      <LegalDisclaimer />
     </div>
   );
 }
