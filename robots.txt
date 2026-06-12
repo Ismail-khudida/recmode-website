@@ -1,24 +1,72 @@
+# robots.txt – recmo.de
+# Alle Such- und KI-Crawler sind ausdrücklich erlaubt.
+
 User-agent: *
 Allow: /
-Sitemap: https://recmo.de/sitemap.xml
+
+# --- KI-Crawler explizit erlauben (GEO / AI Search) ---
 
 User-agent: GPTBot
 Allow: /
 
-User-agent: PerplexityBot
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
 Allow: /
 
 User-agent: anthropic-ai
 Allow: /
 
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
 User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
 Allow: /
 
 User-agent: bingbot
 Allow: /
 
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
 User-agent: Meta-ExternalAgent
+Allow: /
+
+User-agent: FacebookBot
 Allow: /
 
 User-agent: CCBot
 Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: DuckAssistBot
+Allow: /
+
+User-agent: MistralAI-User
+Allow: /
+
+Sitemap: https://recmo.de/sitemap.xml

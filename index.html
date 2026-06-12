@@ -65,32 +65,47 @@
       "@id": "https://recmo.de/#business",
       "name": "RECmode",
       "alternateName": "RECmode Marketing",
-      "description": "RECmode ist eine digitale Marketing-Agentur die professionelle Medienproduktion, Social Media Marketing, KI-gestütztes Marketing und Website-Optimierung anbietet. Gegründet von Ismail Khudida.",
+      "description": "RECmode ist eine digitale Marketing-Agentur aus Porta Westfalica (Kreis Minden-Lübbecke, Ostwestfalen-Lippe), die professionelle Medienproduktion, Social Media Marketing, KI-gestütztes Marketing und Website-Optimierung anbietet. Gegründet von Ismail Khudida.",
       "url": "https://recmo.de",
+      "image": "https://recmo.de/og-image.jpg",
+      "logo": "https://recmo.de/Recmode.PNG",
+      "vatID": "DE356097542",
       "sameAs": [
         "https://recmode.de",
-        "https://instagram.com/recmode",
-        "https://linkedin.com/company/recmode"
+        "https://www.instagram.com/recmo.de",
+        "https://www.linkedin.com/company/recmode/",
+        "https://www.tiktok.com/@recmo.de",
+        "https://www.facebook.com/share/1CfgPvsfjj/"
       ],
       "founder": {
         "@type": "Person",
+        "@id": "https://recmo.de/#ismail",
         "name": "Ismail Khudida",
+        "image": "https://recmo.de/ismail.jpg",
         "jobTitle": "Gründer & Kreativdirektor",
         "description": "Filmemacher, Content Creator und kreativer Produzent mit langjähriger Erfahrung in Medienproduktion und digitalem Marketing."
       },
       "email": "info@recmo.de",
-      "telephone": "+4917832489043",
+      "telephone": "+491783248904",
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "Bückeburger Str. 14",
         "addressLocality": "Porta Westfalica",
+        "addressRegion": "NW",
         "postalCode": "32457",
         "addressCountry": "DE"
       },
-      "areaServed": {
-        "@type": "Country",
-        "name": "Deutschland"
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 52.2322,
+        "longitude": 8.9060
       },
+      "areaServed": [
+        {"@type": "City", "name": "Porta Westfalica"},
+        {"@type": "City", "name": "Minden"},
+        {"@type": "AdministrativeArea", "name": "Ostwestfalen-Lippe"},
+        {"@type": "Country", "name": "Deutschland"}
+      ],
       "priceRange": "€€",
       "openingHours": "Mo-Fr 09:00-18:00",
       "hasOfferCatalog": {
@@ -141,12 +156,7 @@
       "publisher": {
         "@id": "https://recmo.de/#business"
       },
-      "inLanguage": ["de", "en"],
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "https://recmo.de/?s={search_term_string}",
-        "query-input": "required name=search_term_string"
-      }
+      "inLanguage": "de"
     },
     {
       "@type": "WebPage",
@@ -200,6 +210,30 @@
             "@type": "Answer",
             "text": "Beides ist möglich. RECmode bietet sowohl einmalige Projekte (Imagefilm, Fotoshooting, Website) als auch monatliche Abo-Pakete für kontinuierliches Marketing an."
           }
+        },
+        {
+          "@type": "Question",
+          "name": "Wo sitzt RECmode und welche Regionen werden betreut?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "RECmode sitzt in Porta Westfalica im Kreis Minden-Lübbecke (Nordrhein-Westfalen) und betreut Unternehmen in Minden, Ostwestfalen-Lippe und deutschlandweit. Videodrehs und Fotoshootings finden vor Ort statt, alles andere läuft remote."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Was kostet die Zusammenarbeit mit RECmode?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Der Preis richtet sich nach Umfang und Modell: einmaliges Projekt (z. B. Imagefilm, Fotoshooting oder Website) oder monatliches Paket. Im kostenlosen 30-minütigen Erstgespräch gibt es ein konkretes, transparentes Angebot ohne versteckte Kosten."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Wie schnell liefert RECmode erste Ergebnisse?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Erste Inhalte sind in der Regel ein bis zwei Wochen nach dem Kickoff fertig. Sichtbarkeit auf Social Media und Google wächst danach kontinuierlich über Wochen bis Monate."
+          }
         }
       ]
     }
@@ -211,28 +245,6 @@
 <!-- ============================================
      WEBSITE SCHEMA (für Google Sitelinks Searchbox)
 ============================================ -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebSite",
-  "@id": "https://recmo.de/#website",
-  "name": "RECmode",
-  "url": "https://recmo.de",
-  "description": "Marketing Agentur für Video, Social Media & KI-Content – RECmode",
-  "publisher": {
-    "@id": "https://recmo.de/#business"
-  },
-  "inLanguage": "de-DE",
-  "potentialAction": {
-    "@type": "SearchAction",
-    "target": {
-      "@type": "EntryPoint",
-      "urlTemplate": "https://recmo.de/?s={search_term_string}"
-    },
-    "query-input": "required name=search_term_string"
-  }
-}
-</script>
 
 <!-- ============================================
      AEO – ANSWER ENGINE OPTIMIZATION
@@ -1162,8 +1174,8 @@ body.en [data-lang="en"]{display:revert!important}
     <div class="reveal d1">
       <p class="section-tag"><span data-lang="de">Über uns</span><span data-lang="en">About us</span></p>
       <h2 class="section-title"><span data-lang="de">Der Mensch hinter <span class="g">RECmode.</span></span><span data-lang="en">The person behind <span class="g">RECmode.</span></span></h2>
-      <p class="about-text" data-lang="de">Ich bin Filmemacher, Content Creator und kreativer Produzent. Mit langjähriger Erfahrung in Medienproduktion und digitalem Marketing habe ich für Unternehmen aus verschiedenen Branchen gearbeitet und ihnen geholfen, ihre Produkte und Dienstleistungen professionell zu präsentieren und mehr Kunden zu gewinnen.</p>
-      <p class="about-text" data-lang="en">RECmode was founded by me, filmmaker, content creator and creative producer. With many years of experience in media production and digital marketing, I have worked for companies from various industries, helping them professionally present their products and services and win more customers.</p>
+      <p class="about-text" data-lang="de">Ich bin Filmemacher, Content Creator und kreativer Produzent. Mit langjähriger Erfahrung in Medienproduktion und digitalem Marketing habe ich für Unternehmen aus verschiedenen Branchen gearbeitet und ihnen geholfen, ihre Produkte und Dienstleistungen professionell zu präsentieren und mehr Kunden zu gewinnen. RECmode sitzt in Porta Westfalica und betreut Kunden in Minden, Ostwestfalen-Lippe und deutschlandweit – Drehs vor Ort, alles Weitere remote.</p>
+      <p class="about-text" data-lang="en">RECmode was founded by me, filmmaker, content creator and creative producer. With many years of experience in media production and digital marketing, I have worked for companies from various industries, helping them professionally present their products and services and win more customers. RECmode is based in Porta Westfalica and works with clients in Minden, the OWL region and across Germany – shoots on site, everything else remote.</p>
 
       <!-- 3 horizontal points -->
       <div class="about-points-h">
@@ -1223,7 +1235,7 @@ body.en [data-lang="en"]{display:revert!important}
         </div>
         <div class="contact-links">
           <a href="mailto:info@recmo.de" class="contact-link-item"><span class="cl-dot"></span>info@recmo.de</a>
-          <a href="tel:+4917832489043" class="contact-link-item"><span class="cl-dot"></span>0178 3248904</a>
+          <a href="tel:+491783248904" class="contact-link-item"><span class="cl-dot"></span>0178 3248904</a>
         </div>
       </div>
     </div>
@@ -1422,16 +1434,68 @@ body.en [data-lang="en"]{display:revert!important}
   </div>
 </section>
 
+<!-- FAQ -->
+<section id="faq" class="section" aria-label="Häufige Fragen">
+  <style>
+    .faq-list{max-width:760px;margin:40px auto 0}
+    .faq-item{border:1px solid #ececf2;border-radius:12px;margin-bottom:12px;background:#fff;overflow:hidden}
+    .faq-item summary{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:18px 22px;cursor:pointer;font-weight:600;font-size:16px;color:#1a1a2e;list-style:none}
+    .faq-item summary::-webkit-details-marker{display:none}
+    .faq-item summary::after{content:"+";font-size:20px;color:#E8130A;flex-shrink:0;transition:transform .2s}
+    .faq-item[open] summary::after{transform:rotate(45deg)}
+    .faq-answer{padding:0 22px 18px;font-size:15px;line-height:1.75;color:#8888a8}
+    @media(max-width:640px){.faq-item summary{font-size:15px;padding:16px 18px}.faq-answer{padding:0 18px 16px}}
+  </style>
+  <div style="text-align:center;" class="reveal">
+    <p class="section-tag" style="display:inline-flex;"><span data-lang="de">Häufige Fragen</span><span data-lang="en">FAQ</span></p>
+    <h2 class="section-title" style="text-align:center;"><span data-lang="de">Fragen? <span class="g">Antworten.</span></span><span data-lang="en">Questions? <span class="g">Answers.</span></span></h2>
+  </div>
+  <div class="faq-list reveal d1">
+    <details class="faq-item">
+      <summary><span><span data-lang="de">Was macht RECmode?</span><span data-lang="en">What does RECmode do?</span></span></summary>
+      <div class="faq-answer"><span data-lang="de">RECmode produziert professionellen digitalen Marketing-Content für Unternehmen: Imagefilme, Produktfotos, Social-Media-Content, KI-generierte Texte und Grafiken sowie Website-Optimierung. Wir übernehmen entweder das komplette Marketing oder liefern das Material, damit Du es selbst posten kannst.</span><span data-lang="en">RECmode produces professional digital marketing content for companies: brand films, product photos, social media content, AI-generated copy and graphics, plus website optimization. We either handle your complete marketing or deliver the material so you can post it yourself.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span><span data-lang="de">Wo sitzt RECmode und welche Regionen werden betreut?</span><span data-lang="en">Where is RECmode based and which regions does it serve?</span></span></summary>
+      <div class="faq-answer"><span data-lang="de">RECmode sitzt in Porta Westfalica im Kreis Minden-Lübbecke (Nordrhein-Westfalen) und betreut Unternehmen in Minden, Ostwestfalen-Lippe und deutschlandweit. Videodrehs und Fotoshootings finden vor Ort statt, alles andere läuft remote.</span><span data-lang="en">RECmode is based in Porta Westfalica in the Minden-Lübbecke district (North Rhine-Westphalia) and serves companies in Minden, the OWL region and across Germany. Video and photo shoots happen on site, everything else runs remotely.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span><span data-lang="de">Was kostet die Zusammenarbeit mit RECmode?</span><span data-lang="en">What does working with RECmode cost?</span></span></summary>
+      <div class="faq-answer"><span data-lang="de">Der Preis richtet sich nach Umfang und Modell: einmaliges Projekt (z.&nbsp;B. Imagefilm, Fotoshooting oder Website) oder monatliches Paket. Im kostenlosen 30-minütigen Erstgespräch bekommst Du ein konkretes, transparentes Angebot ohne versteckte Kosten.</span><span data-lang="en">Pricing depends on scope and model: a one-off project (e.g. brand film, photo shoot or website) or a monthly package. In a free 30-minute call you get a concrete, transparent quote with no hidden costs.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span><span data-lang="de">Kann RECmode auch nur Content erstellen, ohne ihn zu posten?</span><span data-lang="en">Can RECmode create content without posting it?</span></span></summary>
+      <div class="faq-answer"><span data-lang="de">Ja. RECmode bietet drei Modelle: Komplettpaket (erstellen + posten), Content-Lieferpaket (wir erstellen, Du postest selbst) und Crash-Kurs (Beratung, damit Du es kosteneffizient selbst übernehmen kannst).</span><span data-lang="en">Yes. RECmode offers three models: full package (create + post), content delivery (we create, you post) and crash course (training so you can take over cost-efficiently yourself).</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span><span data-lang="de">Wie unterscheidet sich RECmode von anderen Agenturen?</span><span data-lang="en">How is RECmode different from other agencies?</span></span></summary>
+      <div class="faq-answer"><span data-lang="de">RECmode kombiniert menschliche Kreativität mit individuell konfigurierten KI-Agenten. Du arbeitest direkt mit dem Gründer Ismail Khudida – kein anonymes Team, kein Ticketsystem, schnelle Ergebnisse zu fairen Preisen.</span><span data-lang="en">RECmode combines human creativity with individually configured AI agents. You work directly with founder Ismail Khudida – no anonymous team, no ticket system, fast results at fair prices.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span><span data-lang="de">Einzelprojekt oder Monatsabo?</span><span data-lang="en">One-off project or monthly subscription?</span></span></summary>
+      <div class="faq-answer"><span data-lang="de">Beides ist möglich. RECmode bietet sowohl einmalige Projekte (Imagefilm, Fotoshooting, Website) als auch monatliche Pakete für kontinuierliches Marketing an.</span><span data-lang="en">Both are possible. RECmode offers one-off projects (brand film, photo shoot, website) as well as monthly packages for continuous marketing.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span><span data-lang="de">Wie schnell gibt es erste Ergebnisse?</span><span data-lang="en">How fast are first results?</span></span></summary>
+      <div class="faq-answer"><span data-lang="de">Erste Inhalte sind in der Regel ein bis zwei Wochen nach dem Kickoff fertig. Sichtbarkeit auf Social Media und Google wächst danach kontinuierlich über Wochen bis Monate.</span><span data-lang="en">First content is usually ready one to two weeks after kickoff. Visibility on social media and Google then grows continuously over weeks to months.</span></div>
+    </details>
+    <details class="faq-item">
+      <summary><span><span data-lang="de">Welche Leistungen bietet RECmode an?</span><span data-lang="en">What services does RECmode offer?</span></span></summary>
+      <div class="faq-answer"><span data-lang="de">Vier Bereiche: Medienproduktion (Imagefilm, Werbevideo, Produktfotos), Social Media Marketing (Instagram, TikTok, YouTube), KI-Marketing (Texte, Bilder, Strategie mit voller Lizenz) und Website-Optimierung inklusive Neuerstellung.</span><span data-lang="en">Four areas: media production (brand films, commercials, product photos), social media marketing (Instagram, TikTok, YouTube), AI marketing (copy, images, strategy with full license) and website optimization including new builds.</span></div>
+    </details>
+  </div>
+</section>
+
 <!-- FOOTER - BLACK with full nav -->
 <footer>
   <div class="footer-top">
     <div class="footer-brand">
       <img src="./Recmode_weiß.PNG" alt="RECmode Logo" style="height:26px;" onerror="this.src='https://i.imgur.com/Zvg0YSW.png'">
-      <p data-lang="de">Professionelle Medienproduktion und KI-gestütztes Marketing für Unternehmen.</p>
-      <p data-lang="en">Professional media production and AI-powered marketing for companies.</p>
+      <p data-lang="de">Professionelle Medienproduktion und KI-gestütztes Marketing. Aus Porta Westfalica – für Minden, OWL und ganz Deutschland.</p>
+      <p data-lang="en">Professional media production and AI-powered marketing. Based in Porta Westfalica – serving Minden, OWL and all of Germany.</p>
       <div class="footer-brand-contact">
         <a href="mailto:info@recmo.de" class="fbc-item"><span class="fbc-dot"></span>info@recmo.de</a>
-        <a href="tel:+4917832489043" class="fbc-item"><span class="fbc-dot"></span>0178 3248904</a>
+        <a href="tel:+491783248904" class="fbc-item"><span class="fbc-dot"></span>0178 3248904</a>
         <a href="https://recmo.de" class="fbc-item"><span class="fbc-dot"></span>recmo.de</a>
       </div>
     </div>
@@ -1457,8 +1521,7 @@ body.en [data-lang="en"]{display:revert!important}
       <h5 data-lang="de">Rechtliches</h5><h5 data-lang="en">Legal</h5>
       <ul>
         <li><a href="/impressum">Impressum</a></li>
-        <li><a href="/datenschutz" data-lang="de">Datenschutz</a>
-      <a href="/agb" data-lang="de">AGB</a><a href="/datenschutz" data-lang="en">Privacy Policy</a></li>
+        <li><a href="/datenschutz" data-lang="de">Datenschutz</a><a href="/datenschutz" data-lang="en">Privacy Policy</a></li>
         <li><a href="/agb" data-lang="de">AGB</a><a href="/agb" data-lang="en">Terms</a></li>
       </ul>
     </div>
